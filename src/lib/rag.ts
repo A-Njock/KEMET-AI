@@ -16,7 +16,7 @@ function getClient(): Groq {
 }
 
 export async function chunkDocument(document: string): Promise<string[]> {
-  const prompt = `You are an expert in legal document analysis. Given a Cameroon legal document, chunk it intelligently by section or article without splitting any article's content across multiple chunks. Detect headers like "Article X" or "Section Y" and preserve full context. Return a JSON array of chunks where each chunk is a complete article or section. Document: ${document}`;
+  const prompt = `You are an expert in legal document analysis. Given an African legal document, chunk it intelligently by section or article without splitting any article's content across multiple chunks. Detect headers like "Article X" or "Section Y" and preserve full context. Return a JSON array of chunks where each chunk is a complete article or section. Document: ${document}`;
   
   try {
     const groqClient = getClient();
@@ -59,7 +59,7 @@ export async function generateResponse(
       conversationHistory.slice(-4).map(msg => `${msg.role}: ${msg.content}`).join('\n')
     : '';
 
-  const prompt = `Tu es un expert juridique répondant aux questions sur le droit camerounais en te basant UNIQUEMENT sur les extraits de documents fournis.
+  const prompt = `Tu es un expert juridique répondant aux questions sur le droit africain en te basant UNIQUEMENT sur les extraits de documents fournis.
 
 RÈGLES CRITIQUES - SUIS CES RÈGLES EXACTEMENT:
 1. Tu DOIS baser ta réponse UNIQUEMENT sur les extraits de documents fournis. N'utilise AUCUNE connaissance externe.

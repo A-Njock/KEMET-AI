@@ -63,7 +63,7 @@ async function chunkDocument(document, maxLength = 50000) {
 }
 
 async function chunkDocumentPart(document) {
-  const prompt = `You are an expert in legal document analysis. Given a Cameroon legal document, chunk it intelligently by section or article without splitting any article's content across multiple chunks. Detect headers like "Article X" or "Section Y" and preserve full context. 
+  const prompt = `You are an expert in legal document analysis. Given an African legal document, chunk it intelligently by section or article without splitting any article's content across multiple chunks. Detect headers like "Article X" or "Section Y" and preserve full context. 
 
 Return ONLY a valid JSON array of strings, where each string is a complete article or section. Do not include any explanation, just the JSON array.
 

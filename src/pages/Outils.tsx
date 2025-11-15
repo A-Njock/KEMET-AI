@@ -37,10 +37,10 @@ export default function Outils() {
       <Header />
       <main className="max-w-4xl mx-auto px-4 py-12">
         <h1 className="text-4xl md:text-5xl font-heading font-bold text-gold mb-6 text-center">
-          Chatbot Loi Camerounaise
+          Chatbot Loi Africaine
         </h1>
         <p className="text-lg text-gray-300 mb-8 text-center">
-          Posez une question juridique et obtenez une réponse basée sur les documents légaux du Cameroun.
+          Posez une question juridique et obtenez une réponse basée sur les documents légaux de l'Afrique.
         </p>
 
         <div className="bg-white/5 rounded-xl p-6 md:p-8 border border-gold/20 mb-6">
