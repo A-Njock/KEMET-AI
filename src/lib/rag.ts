@@ -2,18 +2,25 @@ import { Groq } from 'groq-sdk';
 
 const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY;
 
-if (!GROQ_API_KEY) {
-  console.error('❌ GROQ_API_KEY is not set! Please set VITE_GROQ_API_KEY in your .env file');
-  throw new Error('GROQ_API_KEY is required. Please set VITE_GROQ_API_KEY in your .env file');
-}
+// Don't throw immediately - only check when actually using the API
+let client: Groq | null = null;
 
-const client = new Groq({ apiKey: GROQ_API_KEY });
+function getClient(): Groq {
+  if (!GROQ_API_KEY) {
+    throw new Error('GROQ_API_KEY is required. Please set VITE_GROQ_API_KEY in your .env file and restart the dev server.');
+  }
+  if (!client) {
+    client = new Groq({ apiKey: GROQ_API_KEY });
+  }
+  return client;
+}
 
 export async function chunkDocument(document: string): Promise<string[]> {
   const prompt = `You are an expert in legal document analysis. Given a Cameroon legal document, chunk it intelligently by section or article without splitting any article's content across multiple chunks. Detect headers like "Article X" or "Section Y" and preserve full context. Return a JSON array of chunks where each chunk is a complete article or section. Document: ${document}`;
   
   try {
-    const response = await client.chat.completions.create({
+    const groqClient = getClient();
+    const response = await groqClient.chat.completions.create({
       model: 'mixtral-8x7b-32768',
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.1,
@@ -80,7 +87,8 @@ Fournis ta réponse maintenant:`;
       console.warn('⚠️ Prompt is very long, truncating...');
       const chunksTextTruncated = retrievedChunks.slice(0, 3).join('\n\n---\n\n');
       const promptTruncated = prompt.replace(chunksText, chunksTextTruncated);
-      const response = await client.chat.completions.create({
+      const groqClient = getClient();
+      const response = await groqClient.chat.completions.create({
         model: 'mixtral-8x7b-32768',
         messages: [{ role: 'user', content: promptTruncated }],
         temperature: 0.3,
@@ -89,7 +97,8 @@ Fournis ta réponse maintenant:`;
       return response.choices[0].message.content || 'Erreur lors de la génération de la réponse.';
     }
     
-    const response = await client.chat.completions.create({
+    const groqClient = getClient();
+    const response = await groqClient.chat.completions.create({
       model: 'mixtral-8x7b-32768',
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.3,
