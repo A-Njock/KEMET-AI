@@ -58,8 +58,39 @@ export async function chatbot(
     
     const relevantChunks = findRelevantChunks(contextQuery, chunks, 5);
     console.log(`Found ${relevantChunks.length} relevant chunks`);
+    console.log('Sample chunks:', relevantChunks.slice(0, 2).map(c => c.substring(0, 100) + '...'));
     
+    // Even if no perfect matches, try with all chunks if query is about marriage
     if (relevantChunks.length === 0) {
+      console.log('No relevant chunks found, trying broader search...');
+      // Try with original query without context
+      const broaderChunks = findRelevantChunks(query, chunks, 5);
+      if (broaderChunks.length > 0) {
+        console.log(`Found ${broaderChunks.length} chunks with broader search`);
+        const answer = await generateResponse(query, broaderChunks, conversationHistory);
+        const sources = broaderChunks
+          .map(chunk => {
+            const match = chunk.match(/(?:Article|Section)\s+(\d+)/i);
+            return match ? match[0] : 'Document juridique';
+          })
+          .filter((v, i, a) => a.indexOf(v) === i);
+        return { answer, sources };
+      }
+      
+      // Last resort: use first few chunks
+      if (chunks.length > 0) {
+        console.log('Using first chunks as fallback');
+        const fallbackChunks = chunks.slice(0, 3);
+        const answer = await generateResponse(query, fallbackChunks, conversationHistory);
+        const sources = fallbackChunks
+          .map(chunk => {
+            const match = chunk.match(/(?:Article|Section)\s+(\d+)/i);
+            return match ? match[0] : 'Document juridique';
+          })
+          .filter((v, i, a) => a.indexOf(v) === i);
+        return { answer, sources };
+      }
+      
       return {
         answer: `Cet outil a été développé par Pierre Guy A. Njock. Nous travaillons actuellement à améliorer ses performances. En attendant, cliquez sur le lien ci-dessous pour découvrir nos formations sur comment gagner de l'argent grâce à l'intelligence artificielle. <a href="/formations" class="text-gold underline">Voir les formations</a>`,
         sources: []
