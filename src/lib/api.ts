@@ -134,18 +134,39 @@ export async function chatbot(
 
 // Load chunks from GitHub (in production, this would be from embeddings)
 async function loadChunksFromGitHub(): Promise<string[]> {
-  // First, try local file for development/testing
-  if (import.meta.env.DEV) {
-    try {
-      const localRes = await fetch('/mock-legal-docs/chunks.json');
-      if (localRes.ok) {
-        const localChunks = await localRes.json();
-        console.log('Loaded chunks from local file:', localChunks.length);
-        return localChunks;
+  // First, try local file (works in both dev and production)
+  try {
+    console.log('🔍 Trying to load chunks from local file...');
+    const localRes = await fetch('/mock-legal-docs/chunks.json', {
+      cache: 'no-cache'
+    });
+    
+    if (localRes.ok) {
+      console.log('📥 Parsing chunks.json (this may take a moment for large files)...');
+      const localChunks = await localRes.json();
+      console.log('✅ Loaded chunks from local file:', localChunks.length);
+      
+      // Validate chunks
+      if (!Array.isArray(localChunks)) {
+        console.error('❌ chunks.json is not an array!');
+        return [];
       }
-    } catch (error) {
-      console.log('Local chunks not found, trying GitHub...');
+      
+      // Filter out invalid chunks
+      const validChunks = localChunks.filter(chunk => 
+        chunk && typeof chunk === 'string' && chunk.length > 0
+      );
+      
+      if (validChunks.length !== localChunks.length) {
+        console.warn(`⚠️ Filtered out ${localChunks.length - validChunks.length} invalid chunks`);
+      }
+      
+      return validChunks;
+    } else {
+      console.log(`⚠️ Local chunks not found (status: ${localRes.status})`);
     }
+  } catch (error) {
+    console.error('❌ Error loading local chunks:', error);
   }
 
   // Try to load from GitHub raw content (from main repo)
