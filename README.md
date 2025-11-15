@@ -1,6 +1,6 @@
 # Kemet AI
 
-Kemet AI brings world-class AI solutions to Cameroon: Corporate AI Solutions, AI Tools (including a powerful RAG-based Cameroon law chatbot), and AI Training programs.
+Kemet AI brings world-class AI solutions to Africa: Corporate AI Solutions, AI Tools (including a powerful RAG-based African law chatbot), and AI Training programs.
 
 ## 🚀 Quick Start
 
@@ -36,7 +36,7 @@ kemet-ai/
    - Contact form for inquiries
 
 2. **Outils** (`/outils`)
-   - RAG-based Cameroon law chatbot
+   - RAG-based African law chatbot
    - Powered by Groq for intelligent chunking and response generation
    - Document-exclusive results with article/section numbers
 
@@ -172,7 +172,7 @@ npm run preview
 ## 🧪 Testing
 
 - Test bilingual toggle (French default, English on click)
-- Test chatbot with queries like "Droit de succession au Cameroun"
+- Test chatbot with queries like "Droit de succession en Afrique"
 - Verify mobile responsiveness
 - Check all GitHub links resolve correctly
 
