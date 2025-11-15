@@ -47,3 +47,4 @@ Then test at: **http://localhost:5173/outils**
 
 **That's it!** The script will process all PDFs it finds. 🎉
 
+
