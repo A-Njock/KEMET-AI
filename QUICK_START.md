@@ -1,71 +1,54 @@
-# Quick Start Guide - Kemet AI
+# ⚡ Quick Start - Get Running in 2 Minutes
 
-## 🚀 Quick Testing (5 Minutes)
+## One-Time Setup
 
-### 1. Install & Run
+### Option 1: Use the Script (Windows)
+```bash
+.\create-env.bat
+```
+
+### Option 2: Manual Setup
+1. Create a file named `.env` in the root directory
+2. Add this line (replace with your actual API key):
+```
+VITE_GROQ_API_KEY=your_groq_api_key_here
+```
+
+## Start the App
 
 ```bash
-# Install dependencies
-npm install
-
-# Create .env file (copy this exactly)
-echo "VITE_GROQ_API_KEY=your_groq_api_key_here" > .env
-echo "VITE_GITHUB_TOKEN=your_github_token_here" >> .env
-
-# Start dev server
 npm run dev
 ```
 
-### 2. Open Browser
+## Test It
 
-Go to: **http://localhost:5173**
+1. Open: http://localhost:5173/outils
+2. Ask: "a propos du mariage"
+3. Check browser console (F12) for logs
 
-### 3. Test Features
+## What You Should See
 
-- ✅ Homepage loads with connection counter
-- ✅ Click cards to navigate
-- ✅ Test language toggle (footer)
-- ✅ Go to `/outils` and try the chatbot
+✅ Console logs:
+- `✅ Loaded chunks from local file: 5151`
+- `Found X relevant chunks`
+- `✅ Groq response received`
 
----
+✅ Answer with:
+- Article numbers (e.g., "Article 82")
+- Legal citations
+- Related articles
 
-## 📄 Where to Put RAG Documents
+## Troubleshooting
 
-### Option A: GitHub Repository (Production)
+**"GROQ_API_KEY is required"**
+→ Create `.env` file and restart server
 
-1. **Create GitHub repo**: `kemet-ai/legal-docs`
-2. **Upload PDFs** to the repo root
-3. **Create folder**: `embeddings/`
-4. **The app loads from**:
-   ```
-   https://raw.githubusercontent.com/kemet-ai/legal-docs/main/embeddings/chunks.json
-   ```
+**"No chunks found"**
+→ Check `public/mock-legal-docs/chunks.json` exists (should be ~2MB)
 
-### Option B: Local Testing (Quick)
-
-Create this file structure for local testing:
-
-```
-public/
-└── mock-legal-docs/
-    └── chunks.json
-```
-
-**Create `public/mock-legal-docs/chunks.json`**:
-```json
-[
-  "Article 82 - Code Pénal: Le mariage entre personnes de même sexe est interdit au Cameroun. Les sanctions sont définies dans les articles suivants.",
-  "Article 83 - Code Pénal: Les infractions liées au mariage sont passibles d'emprisonnement et d'amendes selon les dispositions du présent code.",
-  "Article 123 - OHADA: Les successions sont régies par les dispositions du présent code uniforme. Les héritiers ont droit à leur part selon la loi.",
-  "Article 90 - Code Pénal: Les exceptions aux règles générales sont prévues dans des dispositions spéciales qui complètent ou modifient les articles précédents."
-]
-```
-
-Then update the API to use local file during development (see next section).
+**"403 Forbidden"**
+→ Wait a few minutes (rate limit) or check API key
 
 ---
 
-## 🔧 Enable Local Document Testing
-
-I'll update the code to support local testing. Here's what you need:
-
+**That's it! Everything else is already set up.** 🚀
