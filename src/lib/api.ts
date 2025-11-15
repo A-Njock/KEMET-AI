@@ -37,9 +37,15 @@ export async function chatbot(
   conversationHistory: Array<{role: string, content: string}> = []
 ): Promise<{ answer: string; sources: string[] }> {
   try {
-    console.log('Loading chunks from GitHub...');
+    console.log('📦 Loading chunks...');
     const chunks = await loadChunksFromGitHub();
-    console.log(`Loaded ${chunks.length} chunks`);
+    console.log(`✅ Loaded ${chunks.length} chunks`);
+    
+    if (chunks.length === 0) {
+      console.error('❌ No chunks loaded! Check if chunks.json exists and is accessible.');
+    } else {
+      console.log('📄 Sample chunk:', chunks[0]?.substring(0, 200) || 'N/A');
+    }
     
     if (chunks.length === 0) {
       console.warn('No chunks available - returning fallback message');
@@ -110,9 +116,17 @@ export async function chatbot(
     
     return { answer, sources };
   } catch (error) {
-    console.error('Error in chatbot:', error);
+    console.error('❌ Error in chatbot:', error);
+    console.error('Error details:', {
+      message: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      name: error instanceof Error ? error.name : typeof error
+    });
+    
+    // Return more informative error message
+    const errorMessage = error instanceof Error ? error.message : String(error);
     return {
-      answer: `Erreur lors du traitement de votre question. Veuillez réessayer. Si le problème persiste, contactez-nous.`,
+      answer: `Erreur lors du traitement de votre question: ${errorMessage}. Veuillez réessayer. Si le problème persiste, contactez-nous.`,
       sources: []
     };
   }
@@ -134,25 +148,42 @@ async function loadChunksFromGitHub(): Promise<string[]> {
     }
   }
 
-  // Try to load from GitHub raw content
+  // Try to load from GitHub raw content (from main repo)
   try {
-    const res = await fetch('https://raw.githubusercontent.com/kemet-ai/legal-docs/main/embeddings/chunks.json', {
+    console.log('🌐 Attempting to load chunks from GitHub...');
+    const res = await fetch('https://raw.githubusercontent.com/A-Njock/KEMET-AI/main/public/mock-legal-docs/chunks.json', {
       headers: {
         'Accept': 'application/json',
-      }
+      },
+      cache: 'no-cache'
     });
     
     if (res.ok) {
       const chunks = await res.json();
-      console.log('Loaded chunks from GitHub:', chunks.length);
+      console.log('✅ Loaded chunks from GitHub:', chunks.length);
+      if (chunks.length > 0) {
+        console.log('Sample chunk:', chunks[0].substring(0, 150));
+      }
       return chunks;
+    } else {
+      console.log('⚠️ GitHub chunks not found (status:', res.status, ')');
+      // Try alternative location
+      const altRes = await fetch('https://raw.githubusercontent.com/kemet-ai/legal-docs/main/embeddings/chunks.json', {
+        headers: { 'Accept': 'application/json' },
+        cache: 'no-cache'
+      });
+      if (altRes.ok) {
+        const chunks = await altRes.json();
+        console.log('✅ Loaded chunks from alternative GitHub location:', chunks.length);
+        return chunks;
+      }
     }
   } catch (error) {
-    console.log('Chunks not available from GitHub');
+    console.log('⚠️ Error loading chunks from GitHub:', error);
   }
   
   // Fallback: return empty array (will trigger fallback message)
-  console.log('No chunks found, using fallback message');
+  console.warn('❌ No chunks found anywhere - returning empty array');
   return [];
 }
 

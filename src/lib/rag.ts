@@ -1,6 +1,12 @@
 import { Groq } from 'groq-sdk';
 
-const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY || 'your_groq_api_key_here';
+const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY;
+
+if (!GROQ_API_KEY) {
+  console.error('❌ GROQ_API_KEY is not set! Please set VITE_GROQ_API_KEY in your .env file');
+  throw new Error('GROQ_API_KEY is required. Please set VITE_GROQ_API_KEY in your .env file');
+}
+
 const client = new Groq({ apiKey: GROQ_API_KEY });
 
 export async function chunkDocument(document: string): Promise<string[]> {
@@ -66,15 +72,53 @@ ${chunksText}
 Fournis ta réponse maintenant:`;
 
   try {
+    console.log('🤖 Calling Groq API with prompt length:', prompt.length);
+    console.log('🤖 Using API key:', GROQ_API_KEY ? GROQ_API_KEY.substring(0, 10) + '...' : 'NOT SET');
+    
+    // Check if prompt is too long (Groq has limits)
+    if (prompt.length > 200000) {
+      console.warn('⚠️ Prompt is very long, truncating...');
+      const chunksTextTruncated = retrievedChunks.slice(0, 3).join('\n\n---\n\n');
+      const promptTruncated = prompt.replace(chunksText, chunksTextTruncated);
+      const response = await client.chat.completions.create({
+        model: 'mixtral-8x7b-32768',
+        messages: [{ role: 'user', content: promptTruncated }],
+        temperature: 0.3,
+        max_tokens: 2000,
+      });
+      return response.choices[0].message.content || 'Erreur lors de la génération de la réponse.';
+    }
+    
     const response = await client.chat.completions.create({
       model: 'mixtral-8x7b-32768',
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.3,
+      max_tokens: 2000,
     });
     
-    return response.choices[0].message.content || 'Erreur lors de la génération de la réponse.';
-  } catch (error) {
-    console.error('Error generating response:', error);
+    const content = response.choices[0].message.content;
+    console.log('✅ Groq response received, length:', content?.length || 0);
+    return content || 'Erreur lors de la génération de la réponse.';
+  } catch (error: any) {
+    console.error('❌ Error generating response from Groq:', error);
+    console.error('Error details:', {
+      message: error?.message,
+      status: error?.status,
+      code: error?.code,
+      response: error?.response
+    });
+    
+    // Check for specific error types
+    if (error?.status === 401 || error?.message?.includes('401')) {
+      return `Erreur d'authentification avec l'API Groq. Veuillez vérifier la clé API.`;
+    }
+    if (error?.status === 403 || error?.message?.includes('403')) {
+      return `Accès refusé à l'API Groq. Vérifiez vos permissions ou attendez quelques minutes.`;
+    }
+    if (error?.status === 429 || error?.message?.includes('429')) {
+      return `Limite de requêtes atteinte. Veuillez réessayer dans quelques minutes.`;
+    }
+    
     return `Cet outil a été développé par Pierre Guy A. Njock. Nous travaillons actuellement à améliorer ses performances. En attendant, cliquez sur le lien ci-dessous pour découvrir nos formations sur comment gagner de l'argent grâce à l'intelligence artificielle. <a href="/formations" class="text-gold underline">Voir les formations</a>`;
   }
 }

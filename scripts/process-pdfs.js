@@ -2,12 +2,16 @@
 // Usage: npm run process-pdfs
 // Place your PDFs in the 'legal-docs' folder
 
-const { Groq } = require('groq-sdk');
-const pdf = require('pdf-parse');
-const fs = require('fs');
-const path = require('path');
+import { Groq } from 'groq-sdk';
+import pdf from 'pdf-parse';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const GROQ_API_KEY = process.env.GROQ_API_KEY || process.env.VITE_GROQ_API_KEY || 'your_groq_api_key_here';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const GROQ_API_KEY = process.env.GROQ_API_KEY || process.env.VITE_GROQ_API_KEY;
 const client = new Groq({ apiKey: GROQ_API_KEY });
 
 // Directories
