@@ -46,23 +46,24 @@ export async function generateResponse(
       conversationHistory.slice(-4).map(msg => `${msg.role}: ${msg.content}`).join('\n')
     : '';
 
-  const prompt = `You are a legal expert answering questions about Cameroon law based ONLY on the provided document chunks. 
+  const prompt = `Tu es un expert juridique répondant aux questions sur le droit camerounais en te basant UNIQUEMENT sur les extraits de documents fournis.
 
-CRITICAL RULES - FOLLOW THESE EXACTLY:
-1. You MUST base your answer ONLY on the provided document chunks. Do not use any external knowledge.
-2. Always provide exact article or section numbers in your answer (e.g., "Selon l'Article 82 du Code Pénal...").
-3. After your answer, suggest similar articles that complement or contradict the answer (e.g., "Articles similaires: Article 83 (complémentaire), Article 90 (contradictoire)").
-4. If the answer cannot be found in the provided chunks, respond EXACTLY: "Cet outil a été développé par Pierre Guy A. Njock. Nous travaillons actuellement à améliorer ses performances. En attendant, cliquez sur le lien ci-dessous pour découvrir nos formations sur comment gagner de l'argent grâce à l'intelligence artificielle." with a link to /formations.
-5. If the current question relates to previous questions in the conversation, reference them appropriately.
-6. Be precise, cite sources, and provide complete legal information.
+RÈGLES CRITIQUES - SUIS CES RÈGLES EXACTEMENT:
+1. Tu DOIS baser ta réponse UNIQUEMENT sur les extraits de documents fournis. N'utilise AUCUNE connaissance externe.
+2. Toujours fournir les numéros d'articles ou de sections exacts dans ta réponse (ex: "Selon l'Article 82 du Code Pénal...").
+3. Après ta réponse, suggérer des articles similaires qui complètent ou contredisent la réponse (ex: "Articles similaires: Article 83 (complémentaire), Article 90 (contradictoire)").
+4. Si la réponse ne peut PAS être trouvée dans les extraits fournis, répondre EXACTEMENT: "Cet outil a été développé par Pierre Guy A. Njock. Nous travaillons actuellement à améliorer ses performances. En attendant, cliquez sur le lien ci-dessous pour découvrir nos formations sur comment gagner de l'argent grâce à l'intelligence artificielle." avec un lien vers /formations.
+5. Si la question actuelle se rapporte aux questions précédentes dans la conversation, les référencer de manière appropriée.
+6. Sois précis, cite les sources, et fournis des informations juridiques complètes.
+7. Réponds EN FRANÇAIS, de manière professionnelle et claire.
 
-Current Question: ${query}
+Question actuelle: ${query}
 ${conversationContext}
 
-Document Chunks (use ONLY these):
+Extraits de documents (utilise UNIQUEMENT ceux-ci):
 ${chunksText}
 
-Provide your answer now:`;
+Fournis ta réponse maintenant:`;
 
   try {
     const response = await client.chat.completions.create({
@@ -78,32 +79,75 @@ Provide your answer now:`;
   }
 }
 
-// Simple similarity search (in production, use proper embeddings)
-export function findRelevantChunks(query: string, chunks: string[], maxResults: number = 3): string[] {
+// Improved similarity search with better matching
+export function findRelevantChunks(query: string, chunks: string[], maxResults: number = 5): string[] {
+  if (!chunks || chunks.length === 0) {
+    console.warn('No chunks provided to findRelevantChunks');
+    return [];
+  }
+
   const queryLower = query.toLowerCase();
-  const scoredChunks = chunks.map(chunk => {
+  const queryWords = queryLower.split(/\s+/).filter(w => w.length > 2);
+  
+  const scoredChunks = chunks.map((chunk, index) => {
+    if (!chunk || typeof chunk !== 'string') {
+      return { chunk: '', score: -1, index };
+    }
+    
     const chunkLower = chunk.toLowerCase();
     let score = 0;
     
-    // Simple keyword matching
-    const queryWords = queryLower.split(/\s+/);
+    // Exact phrase matching (highest priority)
+    if (chunkLower.includes(queryLower)) {
+      score += 10;
+    }
+    
+    // Word matching with frequency
     queryWords.forEach(word => {
-      if (word.length > 2 && chunkLower.includes(word)) {
+      const wordCount = (chunkLower.match(new RegExp(word, 'g')) || []).length;
+      score += wordCount * 2;
+    });
+    
+    // Boost for legal terms
+    const legalTerms = ['article', 'section', 'code', 'loi', 'droit', 'juridique', 'pénal', 'civil'];
+    legalTerms.forEach(term => {
+      if (chunkLower.includes(term)) {
         score += 1;
       }
     });
     
-    // Boost if article numbers are mentioned
-    if (chunkLower.includes('article') || chunkLower.includes('section')) {
-      score += 2;
+    // Boost if query mentions article numbers and chunk has them
+    const articleMatch = query.match(/(?:article|art\.?)\s*(\d+)/i);
+    if (articleMatch) {
+      const articleNum = articleMatch[1];
+      if (chunkLower.includes(`article ${articleNum}`) || chunkLower.includes(`art. ${articleNum}`)) {
+        score += 20; // Very high boost for exact article match
+      }
     }
     
-    return { chunk, score };
+    // Boost for longer, more complete chunks (likely more informative)
+    if (chunk.length > 100) {
+      score += 1;
+    }
+    
+    return { chunk, score, index };
   });
   
-  return scoredChunks
-    .sort((a, b) => b.score - a.score)
-    .slice(0, maxResults)
-    .map(item => item.chunk);
+  // Filter out invalid chunks and sort by score
+  const validChunks = scoredChunks
+    .filter(item => item.score > 0 && item.chunk.length > 0)
+    .sort((a, b) => b.score - a.score);
+  
+  console.log(`Scored ${validChunks.length} valid chunks, top scores:`, validChunks.slice(0, 3).map(c => c.score));
+  
+  const results = validChunks.slice(0, maxResults).map(item => item.chunk);
+  
+  // If no good matches, return first few chunks anyway (better than nothing)
+  if (results.length === 0 && chunks.length > 0) {
+    console.log('No good matches found, returning first chunks as fallback');
+    return chunks.slice(0, Math.min(3, chunks.length));
+  }
+  
+  return results;
 }
 

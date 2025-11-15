@@ -27,34 +27,44 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-black font-sans pb-10">
+    <div className="min-h-screen bg-gradient-to-b from-black via-[#0a0a0a] to-black font-sans">
       <Header />
-      <main className="max-w-6xl mx-auto px-4">
-        <section className="mt-12 text-center">
-          <h1 className="text-5xl md:text-6xl font-heading font-bold text-gold mb-4">
+      <main className="max-w-7xl mx-auto px-6 lg:px-8">
+        {/* Hero Section */}
+        <section className="mt-20 md:mt-32 text-center mb-20">
+          <div className="inline-block mb-6 px-4 py-2 rounded-full bg-gold/10 border border-gold/20">
+            <span className="text-gold text-sm font-medium">IA pour le Cameroun</span>
+          </div>
+          <h1 className="text-6xl md:text-7xl lg:text-8xl font-heading font-bold text-white mb-6 leading-tight">
             {t('hero_title')}
           </h1>
-          <h2 className="text-2xl md:text-3xl text-white mt-2 mb-4">
-            {t('hero_subhead')}
-          </h2>
-          <p className="text-lg md:text-xl text-gray-300 mt-2">
+          <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
             {t('hero_tagline')}
           </p>
         </section>
         
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+        {/* Cards Section */}
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
           {cards.map((props, idx) => (
             <Card key={idx} {...props} />
           ))}
         </section>
         
-        <section className="mt-8 mb-6 text-center">
-          <p className="text-sm italic text-gray-400">
-            Plus: <Link className="underline text-gold hover:text-gold/80" to="/immobilier">{t('plus_immobilier')}</Link> Achetez, louez, trouvez vite.{' '}
-            <Link className="underline text-gold hover:text-gold/80" to="/achat-vente">{t('plus_achat_vente')}</Link>-Achetez, vendez-marché intelligent.
+        {/* Secondary Links */}
+        <section className="mb-16 text-center">
+          <p className="text-sm text-gray-500">
+            <span className="text-gray-400">Plus: </span>
+            <Link className="text-gold hover:text-gold-light transition-colors font-medium" to="/immobilier">
+              {t('plus_immobilier')}
+            </Link>
+            <span className="text-gray-500"> • </span>
+            <Link className="text-gold hover:text-gold-light transition-colors font-medium" to="/achat-vente">
+              {t('plus_achat_vente')}
+            </Link>
           </p>
         </section>
         
+        {/* Gallery */}
         <Gallery />
       </main>
       <Footer />
