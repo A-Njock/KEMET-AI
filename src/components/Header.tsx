@@ -1,8 +1,6 @@
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 
 export default function Header() {
-  const { t } = useTranslation();
   return (
     <header className="w-full py-6 px-4 flex justify-between items-center bg-black border-b border-gold/20">
       <Link to="/" className="font-heading text-2xl text-gold hover:text-gold/80 transition-colors">
