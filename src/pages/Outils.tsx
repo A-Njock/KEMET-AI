@@ -21,7 +21,7 @@ export default function Outils() {
     setSources([]);
 
     try {
-      const result = await chatbot(query);
+      const result = await chatbot(query, []);
       setResponse(result.answer);
       setSources(result.sources);
     } catch (error) {

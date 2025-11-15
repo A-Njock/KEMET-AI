@@ -32,15 +32,42 @@ export async function fetchTrainings(): Promise<any[]> {
 
 // Chatbot API - in production, this would call a backend API
 // For now, we'll use a client-side implementation
-export async function chatbot(query: string): Promise<{ answer: string; sources: string[] }> {
+export async function chatbot(
+  query: string, 
+  conversationHistory: Array<{role: string, content: string}> = []
+): Promise<{ answer: string; sources: string[] }> {
   try {
-    // In production, this would fetch from /api/chatbot endpoint
-    // For now, we'll use a mock implementation that loads chunks from GitHub
+    console.log('Loading chunks from GitHub...');
     const chunks = await loadChunksFromGitHub();
+    console.log(`Loaded ${chunks.length} chunks`);
+    
+    if (chunks.length === 0) {
+      console.warn('No chunks available - returning fallback message');
+      return {
+        answer: `Cet outil a été développé par Pierre Guy A. Njock. Nous travaillons actuellement à améliorer ses performances. En attendant, cliquez sur le lien ci-dessous pour découvrir nos formations sur comment gagner de l'argent grâce à l'intelligence artificielle. <a href="/formations" class="text-gold underline">Voir les formations</a>`,
+        sources: []
+      };
+    }
+    
     const { findRelevantChunks, generateResponse } = await import('./rag');
     
-    const relevantChunks = findRelevantChunks(query, chunks, 3);
-    const answer = await generateResponse(query, relevantChunks);
+    // Find relevant chunks based on query and conversation context
+    const contextQuery = conversationHistory.length > 0
+      ? conversationHistory.slice(-2).map(m => m.content).join(' ') + ' ' + query
+      : query;
+    
+    const relevantChunks = findRelevantChunks(contextQuery, chunks, 5);
+    console.log(`Found ${relevantChunks.length} relevant chunks`);
+    
+    if (relevantChunks.length === 0) {
+      return {
+        answer: `Cet outil a été développé par Pierre Guy A. Njock. Nous travaillons actuellement à améliorer ses performances. En attendant, cliquez sur le lien ci-dessous pour découvrir nos formations sur comment gagner de l'argent grâce à l'intelligence artificielle. <a href="/formations" class="text-gold underline">Voir les formations</a>`,
+        sources: []
+      };
+    }
+    
+    const answer = await generateResponse(query, relevantChunks, conversationHistory);
+    console.log('Generated answer:', answer.substring(0, 100) + '...');
     
     // Extract sources from chunks
     const sources = relevantChunks
@@ -54,7 +81,7 @@ export async function chatbot(query: string): Promise<{ answer: string; sources:
   } catch (error) {
     console.error('Error in chatbot:', error);
     return {
-      answer: `Cet outil a été développé par Pierre Guy A. Njock. Nous travaillons actuellement à améliorer ses performances. En attendant, cliquez sur le lien ci-dessous pour découvrir nos formations sur comment gagner de l'argent grâce à l'intelligence artificielle. <a href="/formations" class="text-gold underline">Voir les formations</a>`,
+      answer: `Erreur lors du traitement de votre question. Veuillez réessayer. Si le problème persiste, contactez-nous.`,
       sources: []
     };
   }

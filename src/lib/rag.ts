@@ -29,23 +29,40 @@ export async function chunkDocument(document: string): Promise<string[]> {
   }
 }
 
-export async function generateResponse(query: string, retrievedChunks: string[]): Promise<string> {
+export async function generateResponse(
+  query: string, 
+  retrievedChunks: string[], 
+  conversationHistory: Array<{role: string, content: string}> = []
+): Promise<string> {
   if (!retrievedChunks || retrievedChunks.length === 0) {
     return `Cet outil a été développé par Pierre Guy A. Njock. Nous travaillons actuellement à améliorer ses performances. En attendant, cliquez sur le lien ci-dessous pour découvrir nos formations sur comment gagner de l'argent grâce à l'intelligence artificielle. <a href="/formations" class="text-gold underline">Voir les formations</a>`;
   }
 
   const chunksText = retrievedChunks.join('\n\n---\n\n');
+  
+  // Build conversation context
+  const conversationContext = conversationHistory.length > 0
+    ? '\n\nContexte de la conversation précédente:\n' + 
+      conversationHistory.slice(-4).map(msg => `${msg.role}: ${msg.content}`).join('\n')
+    : '';
+
   const prompt = `You are a legal expert answering questions about Cameroon law based ONLY on the provided document chunks. 
 
-Rules:
-1. Provide an accurate answer with exact article or section numbers (e.g., "Article 82, Penal Code").
-2. Suggest similar articles that complement or contradict the answer (e.g., "Article 83 (complémentaire), Article 90 (contradictoire)").
-3. If the answer cannot be found in the provided chunks, respond EXACTLY: "Cet outil a été développé par Pierre Guy A. Njock. Nous travaillons actuellement à améliorer ses performances. En attendant, cliquez sur le lien ci-dessous pour découvrir nos formations sur comment gagner de l'argent grâce à l'intelligence artificielle." with a link to /formations.
+CRITICAL RULES - FOLLOW THESE EXACTLY:
+1. You MUST base your answer ONLY on the provided document chunks. Do not use any external knowledge.
+2. Always provide exact article or section numbers in your answer (e.g., "Selon l'Article 82 du Code Pénal...").
+3. After your answer, suggest similar articles that complement or contradict the answer (e.g., "Articles similaires: Article 83 (complémentaire), Article 90 (contradictoire)").
+4. If the answer cannot be found in the provided chunks, respond EXACTLY: "Cet outil a été développé par Pierre Guy A. Njock. Nous travaillons actuellement à améliorer ses performances. En attendant, cliquez sur le lien ci-dessous pour découvrir nos formations sur comment gagner de l'argent grâce à l'intelligence artificielle." with a link to /formations.
+5. If the current question relates to previous questions in the conversation, reference them appropriately.
+6. Be precise, cite sources, and provide complete legal information.
 
-Query: ${query}
+Current Question: ${query}
+${conversationContext}
 
-Chunks:
-${chunksText}`;
+Document Chunks (use ONLY these):
+${chunksText}
+
+Provide your answer now:`;
 
   try {
     const response = await client.chat.completions.create({

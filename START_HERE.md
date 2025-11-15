@@ -76,3 +76,4 @@ After processing your PDFs, try asking:
 
 **That's it!** Your PDFs will be processed and ready to use in the chatbot. 🎉
 
+

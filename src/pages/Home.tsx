@@ -1,5 +1,4 @@
 import Card from '../components/Card';
-import ConnectionsCounter from '../components/ConnectionsCounter';
 import Header from '../components/Header';
 import Gallery from '../components/Gallery';
 import Footer from '../components/Footer';
@@ -29,7 +28,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-black font-sans pb-10">
-      <ConnectionsCounter />
       <Header />
       <main className="max-w-6xl mx-auto px-4">
         <section className="mt-12 text-center">
