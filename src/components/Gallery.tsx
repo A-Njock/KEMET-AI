@@ -1,7 +1,7 @@
 export default function Gallery() {
   const images = [
     {
-      src: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=500&h=400&fit=crop&q=80',
+      src: 'https://images.unsplash.com/photo-1511578314322-379afb476865?w=500&h=400&fit=crop&q=80',
       caption: 'Événement Douala 2024'
     },
     {
