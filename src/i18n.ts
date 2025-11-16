@@ -3,11 +3,21 @@ import { initReactI18next } from 'react-i18next';
 import fr from './locales/fr.json';
 import en from './locales/en.json';
 
-const savedLang =
-  (typeof window !== 'undefined' && window.localStorage.getItem('kemet_lang')) ||
-  (typeof navigator !== 'undefined' && (navigator.language || navigator['userLanguage']))?.toLowerCase().startsWith('fr')
-    ? 'fr'
-    : 'en';
+const getInitialLang = (): 'fr' | 'en' => {
+  try {
+    if (typeof window !== 'undefined') {
+      const stored = window.localStorage.getItem('kemet_lang');
+      if (stored === 'fr' || stored === 'en') return stored;
+    }
+  } catch {}
+  const browserLang =
+    typeof navigator !== 'undefined' && typeof navigator.language === 'string'
+      ? navigator.language.toLowerCase()
+      : 'en';
+  return browserLang.startsWith('fr') ? 'fr' : 'en';
+};
+
+const initialLang = getInitialLang();
 
 i18n
   .use(initReactI18next)
@@ -16,7 +26,7 @@ i18n
       fr: { translation: fr },
       en: { translation: en }
     },
-    lng: savedLang || 'fr',
+    lng: initialLang,
     fallbackLng: 'en',
     interpolation: {
       escapeValue: false
