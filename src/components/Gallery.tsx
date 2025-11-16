@@ -1,4 +1,7 @@
+import { useTranslation } from 'react-i18next';
+
 export default function Gallery() {
+  const { t } = useTranslation();
   const images = [
     {
       src: 'https://images.unsplash.com/photo-1511578314322-379afb476865?w=500&h=400&fit=crop&q=80',
@@ -21,7 +24,7 @@ export default function Gallery() {
   return (
     <section className="mb-20">
       <h2 className="text-3xl font-heading font-bold text-white text-center mb-12">
-        Nos Réalisations
+        {t('gallery_title')}
       </h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {images.map((img, i) => (

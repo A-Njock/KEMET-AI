@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function Header() {
+  const { t } = useTranslation();
   return (
     <header className="w-full py-4 px-6 lg:px-8 border-b border-gold/10 bg-black/50 backdrop-blur-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -12,19 +14,19 @@ export default function Header() {
             to="/solutions" 
             className="text-gray-300 hover:text-gold transition-colors text-sm font-medium"
           >
-            Solutions
+            {t('nav_solutions')}
           </Link>
           <Link 
             to="/outils" 
             className="text-gray-300 hover:text-gold transition-colors text-sm font-medium"
           >
-            Outils
+            {t('nav_tools')}
           </Link>
           <Link 
             to="/formations" 
             className="text-gray-300 hover:text-gold transition-colors text-sm font-medium"
           >
-            Formations
+            {t('nav_trainings')}
           </Link>
         </nav>
       </div>
