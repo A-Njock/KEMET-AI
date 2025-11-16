@@ -11,7 +11,8 @@ interface Message {
 }
 
 export default function Chatbot() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isFr = i18n.language === 'fr';
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -77,8 +78,8 @@ export default function Chatbot() {
         <div className="flex-1 overflow-y-auto px-4 py-6">
           {messages.length === 0 && (
             <div className="text-center text-gray-400 py-20">
-              <h2 className="text-2xl font-semibold text-white mb-2">Chatbot Loi Camerounaise</h2>
-              <p className="text-sm">Posez une question juridique pour commencer</p>
+              <h2 className="text-2xl font-semibold text-white mb-2">Kemet-chat Loi Camerounaise</h2>
+              <p className="text-sm">{isFr ? 'Posez une question juridique pour commencer' : 'Ask a legal question to begin'}</p>
             </div>
           )}
           
@@ -144,6 +145,23 @@ export default function Chatbot() {
           </div>
           
           <div ref={messagesEndRef} />
+        </div>
+
+        {/* Disclaimers above the input */}
+        <div className="px-4 pb-2">
+          {isFr ? (
+            <p className="text-[11px] italic text-gray-400">
+              Avertissement : Ce contenu est fourni uniquement à des fins éducatives et peut contenir des inexactitudes ou des
+              omissions. Il ne constitue pas un conseil professionnel. Pour toute décision ou action, veuillez consulter un
+              professionnel qualifié possédant l&apos;expertise appropriée.
+            </p>
+          ) : (
+            <p className="text-[11px] italic text-gray-400">
+              Disclaimer: This generated content is provided for educational purposes only and may contain inaccuracies or
+              omissions. It is not intended as professional advice. For any decisions or actions, please consult a qualified
+              professional with relevant expertise.
+            </p>
+          )}
         </div>
 
         <div className="border-t border-gray-700 bg-[#343541] px-4 py-3">
