@@ -33,10 +33,10 @@ export default function Home() {
         {/* Hero Section */}
         <section className="mt-20 md:mt-32 text-center mb-20">
           <div className="inline-block mb-6 px-4 py-2 rounded-full bg-gold/10 border border-gold/20">
-            <span className="text-gold text-sm font-medium">IA pour l'Afrique</span>
+            <span className="text-gold text-sm font-medium">IA pour l’Afrique</span>
           </div>
           <h1 className="text-6xl md:text-7xl lg:text-8xl font-heading font-bold text-white mb-6 leading-tight">
-            {t('hero_title')}
+            IA pour l’Afrique
           </h1>
           <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
             {t('hero_tagline')}
