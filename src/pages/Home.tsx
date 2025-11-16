@@ -39,7 +39,7 @@ export default function Home() {
             {i18n.language.startsWith('fr') ? (
               <>
                 <span className="text-gold">Intelligence Artificielle</span> Conçue pour l’Afrique,{' '}
-                <span className="text-gold">Pensée par les Africains</span>
+                <span className="">Pensée par les Africains</span>
               </>
             ) : (
               t('hero_title_full')
