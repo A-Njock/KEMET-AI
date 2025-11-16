@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 export default function Home() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   
   const cards = [
     {
@@ -36,7 +36,14 @@ export default function Home() {
             className="text-4xl md:text-5xl lg:text-5xl font-extrabold text-white mb-6 leading-[1.58] tracking-normal md:tracking-wide"
             style={{ fontFamily: 'Raleway, system-ui, sans-serif' }}
           >
-            {t('hero_title_full')}
+            {i18n.language.startsWith('fr') ? (
+              <>
+                <span className="text-gold">Intelligence Artificielle</span> Conçue pour l’Afrique,{' '}
+                <span className="text-gold">Pensée par les Africains</span>
+              </>
+            ) : (
+              t('hero_title_full')
+            )}
           </h1>
           <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
             {t('hero_tagline')}
