@@ -33,7 +33,7 @@ export default function Home() {
         {/* Hero Section */}
         <section className="mt-20 md:mt-32 text-center mb-20">
           <h1
-            className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight tracking-normal md:tracking-wide"
+            className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-relaxed md:leading-relaxed lg:leading-relaxed tracking-normal md:tracking-wide"
             style={{ fontFamily: 'Raleway, system-ui, sans-serif' }}
           >
             {t('hero_title_full')}
