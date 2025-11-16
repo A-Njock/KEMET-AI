@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 export default function Home() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   
   const cards = [
     {
@@ -32,11 +32,8 @@ export default function Home() {
       <main className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Hero Section */}
         <section className="mt-20 md:mt-32 text-center mb-20">
-          <div className="inline-block mb-6 px-4 py-2 rounded-full bg-gold/10 border border-gold/20">
-            <span className="text-gold text-sm font-medium">IA pour l’Afrique</span>
-          </div>
-          <h1 className="text-6xl md:text-7xl lg:text-8xl font-heading font-bold text-white mb-6 leading-tight">
-            IA pour l’Afrique
+          <h1 className="text-6xl md:text-7xl lg:text-8xl font-display font-extrabold text-white mb-6 leading-tight tracking-tight">
+            {i18n.language === 'fr' ? 'IA pour l’Afrique' : 'AI for Africa'}
           </h1>
           <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
             {t('hero_tagline')}
