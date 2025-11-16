@@ -32,8 +32,11 @@ export default function Home() {
       <main className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Hero Section */}
         <section className="mt-20 md:mt-32 text-center mb-20">
-          <h1 className="text-6xl md:text-7xl lg:text-8xl font-display font-extrabold text-white mb-6 leading-tight tracking-tight">
-            {i18n.language === 'fr' ? 'IA pour l’Afrique' : 'AI for Africa'}
+          <h1
+            className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 leading-tight tracking-tight"
+            style={{ fontFamily: 'Raleway, system-ui, sans-serif' }}
+          >
+            {t('hero_title_full')}
           </h1>
           <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
             {t('hero_tagline')}
