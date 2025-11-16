@@ -42,7 +42,9 @@ export default function Home() {
                 <span className="">Pensée par les Africains</span>
               </>
             ) : (
-              t('hero_title_full')
+              <>
+                <span className="text-gold">Artificial Intelligence</span> Built for Africa, Innovated by Africans
+              </>
             )}
           </h1>
           <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
