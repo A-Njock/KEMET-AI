@@ -53,7 +53,7 @@ export default function Home() {
         {/* Secondary Links */}
         <section className="mb-16 text-center">
           <p className="text-sm text-gray-500">
-            <span className="text-gray-400">Plus: </span>
+            <span className="text-gray-400">{t('plus_label')} </span>
             <Link className="text-gold hover:text-gold-light transition-colors font-medium" to="/immobilier">
               {t('plus_immobilier')}
             </Link>
