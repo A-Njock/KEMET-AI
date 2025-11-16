@@ -2,22 +2,23 @@ import { useTranslation } from 'react-i18next';
 
 export default function Gallery() {
   const { t } = useTranslation();
+  const captions = t('gallery_captions', { returnObjects: true }) as string[];
   const images = [
     {
       src: 'https://images.unsplash.com/photo-1511578314322-379afb476865?w=500&h=400&fit=crop&q=80',
-      caption: 'Événement Douala 2024'
+      caption: captions?.[0] ?? ''
     },
     {
       src: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=500&h=400&fit=crop&q=80',
-      caption: 'Premier Chatbot Lancé'
+      caption: captions?.[1] ?? ''
     },
     {
       src: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=500&h=400&fit=crop&q=80',
-      caption: 'Formation Yaoundé'
+      caption: captions?.[2] ?? ''
     },
     {
       src: 'https://images.unsplash.com/photo-1556761175-4b46a572b786?w=500&h=400&fit=crop&q=80',
-      caption: 'Partenariat Entreprise'
+      caption: captions?.[3] ?? ''
     },
   ];
 

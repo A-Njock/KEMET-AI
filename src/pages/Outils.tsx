@@ -38,10 +38,10 @@ export default function Outils() {
       <Header />
       <main className="max-w-4xl mx-auto px-4 py-12">
         <h1 className="text-4xl md:text-5xl font-heading font-bold text-gold mb-6 text-center">
-          Kemet-chat Loi Camerounaise
+          {t('outils_title')}
         </h1>
         <p className="text-lg text-gray-300 mb-8 text-center">
-          Posez une question juridique et obtenez une réponse basée sur les documents légaux du Cameroun.
+          {t('outils_sub')}
         </p>
 
         <div className="bg-white/5 rounded-xl p-6 md:p-8 border border-gold/20 mb-6">
@@ -61,7 +61,7 @@ export default function Outils() {
               disabled={loading || !query.trim()}
               className="w-full bg-gold text-black font-bold py-3 rounded-lg hover:bg-gold/80 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Recherche...' : 'Poser la question'}
+              {loading ? t('searching') : t('ask_button')}
             </button>
           </form>
         </div>
@@ -84,14 +84,14 @@ export default function Outils() {
 
         {response && (
           <div className="bg-white/5 rounded-xl p-6 md:p-8 border border-gold/20 mb-6">
-            <h3 className="text-xl font-heading font-bold text-gold mb-4">Réponse:</h3>
+            <h3 className="text-xl font-heading font-bold text-gold mb-4">{t('answer_label')}</h3>
             <div
               className="text-gray-300 prose prose-invert max-w-none"
               dangerouslySetInnerHTML={{ __html: response }}
             />
             {sources.length > 0 && (
               <div className="mt-4 pt-4 border-t border-gold/20">
-                <p className="text-sm text-gold font-medium mb-2">Sources:</p>
+                <p className="text-sm text-gold font-medium mb-2">{t('sources_label')}</p>
                 <ul className="list-disc list-inside text-gray-400 text-sm">
                   {sources.map((source, idx) => (
                     <li key={idx}>{source}</li>
@@ -107,7 +107,7 @@ export default function Outils() {
             to="/chatbot"
             className="inline-block bg-gold text-black font-bold px-6 py-3 rounded-lg hover:bg-gold/80 transition-colors duration-200"
           >
-            Utiliser Kemet-chat
+            {t('use_kemet_chat')}
           </Link>
         </div>
       </main>
