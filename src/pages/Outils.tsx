@@ -6,11 +6,12 @@ import { Link } from 'react-router-dom';
 import { chatbot } from '../lib/api';
 
 export default function Outils() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [query, setQuery] = useState('');
   const [response, setResponse] = useState('');
   const [sources, setSources] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const isFr = i18n.language === 'fr';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,7 +38,7 @@ export default function Outils() {
       <Header />
       <main className="max-w-4xl mx-auto px-4 py-12">
         <h1 className="text-4xl md:text-5xl font-heading font-bold text-gold mb-6 text-center">
-          Chatbot Loi Camerounaise
+          Kemet-chat Loi Camerounaise
         </h1>
         <p className="text-lg text-gray-300 mb-8 text-center">
           Posez une question juridique et obtenez une réponse basée sur les documents légaux du Cameroun.
@@ -64,18 +65,21 @@ export default function Outils() {
             </button>
           </form>
         </div>
-        {/* Disclaimers */}
+        {/* Disclaimers (switch with language) */}
         <div className="mb-6">
-          <p className="text-xs italic text-gray-500">
-            Avertissement : Ce contenu est fourni uniquement à des fins éducatives et peut contenir des inexactitudes ou des omissions.
-            Il ne constitue pas un conseil professionnel. Pour toute décision ou action, veuillez consulter un professionnel qualifié
-            possédant l'expertise appropriée.
-          </p>
-          <p className="text-xs italic text-gray-500 mt-2">
-            Disclaimer: This generated content is provided for educational purposes only and may contain inaccuracies or omissions.
-            It is not intended as professional advice. For any decisions or actions, please consult a qualified professional with
-            relevant expertise.
-          </p>
+          {isFr ? (
+            <p className="text-xs italic text-gray-500">
+              Avertissement : Ce contenu est fourni uniquement à des fins éducatives et peut contenir des inexactitudes ou des
+              omissions. Il ne constitue pas un conseil professionnel. Pour toute décision ou action, veuillez consulter un
+              professionnel qualifié possédant l&apos;expertise appropriée.
+            </p>
+          ) : (
+            <p className="text-xs italic text-gray-500">
+              Disclaimer: This generated content is provided for educational purposes only and may contain inaccuracies or
+              omissions. It is not intended as professional advice. For any decisions or actions, please consult a qualified
+              professional with relevant expertise.
+            </p>
+          )}
         </div>
 
         {response && (
@@ -103,7 +107,7 @@ export default function Outils() {
             to="/chatbot"
             className="inline-block bg-gold text-black font-bold px-6 py-3 rounded-lg hover:bg-gold/80 transition-colors duration-200"
           >
-            {t('chatbot_button')}
+            Utiliser Kemet-chat
           </Link>
         </div>
       </main>
