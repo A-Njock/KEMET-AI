@@ -11,9 +11,10 @@
   "plus_immobilier": "Smart Real Estate",
   "plus_achat_vente": "Buy-Sell",
   "plus_text": "Buy, rent, find fast. Buy, sell-smart marketplace.",
-  "nav_solutions": "Solutions",
-  "nav_tools": "Tools",
-  "nav_trainings": "Trainings",
+  "nav_solutions": "Our Solutions",
+  "nav_tools": "Our Tools",
+  "nav_trainings": "Our Trainings",
+  "nav_about": "About Us",
   "gallery_title": "Our Achievements",
   "hero_title_full": "Artificial Intelligence Built for Africa, Innovated by Africans",
   "gallery_captions": ["Douala Event 2024", "First Chatbot Launched", "Yaoundé Training", "Enterprise Partnership"],
@@ -50,6 +51,8 @@
   "immobilier_text": "Coming soon: find, buy, rent with AI.",
   "achat_vente_title": "Ashavant Marketplace",
   "achat_vente_text": "Coming soon: buy and sell with AI recommendations.",
-  "more_tools_coming": "More tools coming soon..."
+  "more_tools_coming": "More tools coming soon...",
+  "about_title": "About Kemet AI",
+  "about_content": "Kemet AI is a research and development studio for artificial intelligence designed for Africa. We design AI assistants and tools rooted in local reality (our languages, our laws, our professions, etc.) so that technology serves our communities, our businesses, and our states first.\n\nOur independence also comes through technological emancipation. We must demystify science, make it accessible, show that it can be simple, engaging, and concrete. At Kemet AI, we transform curiosity into knowledge, then knowledge into operational skills: business support, elite training, and real transfer of technological skills to Africans.\n\nOur main objective is not only to provide AI solutions, but to train a generation capable of understanding, adapting, and creating them.\n\nPierre Guy Njock,\n\nCEO – Kemet AI"
 }
 

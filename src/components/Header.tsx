@@ -28,6 +28,12 @@ export default function Header() {
           >
             {t('nav_trainings')}
           </Link>
+          <Link 
+            to="/about" 
+            className="text-gray-300 hover:text-gold transition-colors text-sm font-medium"
+          >
+            {t('nav_about')}
+          </Link>
         </nav>
       </div>
     </header>
