@@ -18,8 +18,11 @@
   "hero_title_full": "Intelligence Artificielle Conçue pour l’Afrique, Pensée par les Africains",
   "gallery_captions": ["Événement Douala 2024", "Premier Chatbot Lancé", "Formation Yaoundé", "Partenariat Entreprise"],
   "plus_label": "Plus:",
-  "outils_title": "Kemet-chat Loi Camerounaise",
-  "outils_sub": "Posez une question juridique et obtenez une réponse basée sur les documents légaux du Cameroun.",
+  "outils_title": "Outils IA",
+  "outils_sub": "Découvrez nos outils d'intelligence artificielle conçus pour vous.",
+  "kemet_chat_title": "Kemet-chat",
+  "kemet_chat_desc": "Kemet-chat est un assistant IA qui fonctionne comme ChatGPT, mais spécialisé dans le droit camerounais.",
+  "kemet_chat_details": "Posez une question juridique et obtenez une réponse basée sur les documents légaux du Cameroun.",
   "ask_button": "Poser la question",
   "searching": "Recherche...",
   "answer_label": "Réponse:",
@@ -46,6 +49,7 @@
   "immobilier_title": "Immobilier Intelligent",
   "immobilier_text": "Bientôt: trouvez, achetez, louez avec IA.",
   "achat_vente_title": "Ashavant Marché",
-  "achat_vente_text": "Bientôt: achetez et vendez avec recommandations IA."
+  "achat_vente_text": "Bientôt: achetez et vendez avec recommandations IA.",
+  "more_tools_coming": "Plus d'outils à venir..."
 }
 

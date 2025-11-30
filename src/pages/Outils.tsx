@@ -1,118 +1,79 @@
-import { useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { chatbot } from '../lib/api';
 
 export default function Outils() {
-  const { t, i18n } = useTranslation();
-  const [query, setQuery] = useState('');
-  const [response, setResponse] = useState('');
-  const [sources, setSources] = useState<string[]>([]);
-  const [loading, setLoading] = useState(false);
-  const isFr = i18n.language === 'fr';
+  const { t } = useTranslation();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!query.trim()) return;
-
-    setLoading(true);
-    setResponse('');
-    setSources([]);
-
-    try {
-      const result = await chatbot(query, []);
-      setResponse(result.answer);
-      setSources(result.sources);
-    } catch (error) {
-      console.error('Error:', error);
-      setResponse('Erreur lors de la recherche. Veuillez réessayer.');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const tools = [
+    {
+      title: t('kemet_chat_title'),
+      description: t('kemet_chat_desc'),
+      details: t('kemet_chat_details'),
+      link: '/chatbot',
+      linkText: t('use_kemet_chat'),
+    },
+    // More tools can be added here in the future
+  ];
 
   return (
     <div className="min-h-screen bg-black font-sans">
       <Header />
-      <main className="max-w-4xl mx-auto px-4 py-12">
-        <h1 className="text-4xl md:text-5xl font-heading font-bold text-gold mb-6 text-center">
-          {t('outils_title')}
-        </h1>
-        <p className="text-lg text-gray-300 mb-8 text-center">
-          {t('outils_sub')}
-        </p>
-
-        <div className="bg-white/5 rounded-xl p-6 md:p-8 border border-gold/20 mb-6">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <input
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder={t('chatbot_placeholder')}
-                className="w-full px-4 py-3 bg-black border border-gold/30 rounded-lg text-white focus:outline-none focus:border-gold"
-                disabled={loading}
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={loading || !query.trim()}
-              className="w-full bg-gold text-black font-bold py-3 rounded-lg hover:bg-gold/80 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? t('searching') : t('ask_button')}
-            </button>
-          </form>
-        </div>
-        {/* Disclaimers (switch with language) */}
-        <div className="mb-6">
-          {isFr ? (
-            <p className="text-xs italic text-gray-500">
-              Avertissement : Ce contenu est fourni uniquement à des fins éducatives et peut contenir des inexactitudes ou des
-              omissions. Il ne constitue pas un conseil professionnel. Pour toute décision ou action, veuillez consulter un
-              professionnel qualifié possédant l&apos;expertise appropriée.
-            </p>
-          ) : (
-            <p className="text-xs italic text-gray-500">
-              Disclaimer: This generated content is provided for educational purposes only and may contain inaccuracies or
-              omissions. It is not intended as professional advice. For any decisions or actions, please consult a qualified
-              professional with relevant expertise.
-            </p>
-          )}
+      <main className="max-w-6xl mx-auto px-4 py-16 md:py-24">
+        {/* Page Header */}
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-gold mb-6">
+            {t('outils_title')}
+          </h1>
+          <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
+            {t('outils_sub')}
+          </p>
         </div>
 
-        {response && (
-          <div className="bg-white/5 rounded-xl p-6 md:p-8 border border-gold/20 mb-6">
-            <h3 className="text-xl font-heading font-bold text-gold mb-4">{t('answer_label')}</h3>
+        {/* Tools Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {tools.map((tool, index) => (
             <div
-              className="text-gray-300 prose prose-invert max-w-none"
-              dangerouslySetInnerHTML={{ __html: response }}
-            />
-            {sources.length > 0 && (
-              <div className="mt-4 pt-4 border-t border-gold/20">
-                <p className="text-sm text-gold font-medium mb-2">{t('sources_label')}</p>
-                <ul className="list-disc list-inside text-gray-400 text-sm">
-                  {sources.map((source, idx) => (
-                    <li key={idx}>{source}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
+              key={index}
+              className="group bg-gradient-to-br from-white/5 to-white/[0.02] rounded-2xl p-8 border border-gold/20 hover:border-gold/40 transition-all duration-300 hover:shadow-[0_0_30px_rgba(212,160,23,0.15)] hover:-translate-y-1"
+            >
+              {/* Tool Title */}
+              <h2 className="text-2xl md:text-3xl font-heading font-bold text-gold mb-4">
+                {tool.title}
+              </h2>
+
+              {/* Tool Description */}
+              <p className="text-gray-300 mb-4 leading-relaxed">
+                {tool.description}
+              </p>
+
+              {/* Tool Details */}
+              <p className="text-sm text-gray-400 mb-6 leading-relaxed">
+                {tool.details}
+              </p>
+
+              {/* Access Link */}
+              <Link
+                to={tool.link}
+                className="inline-block w-full text-center bg-gold text-black font-bold py-3 px-6 rounded-lg hover:bg-gold/80 transition-all duration-200 hover:shadow-[0_0_15px_rgba(212,160,23,0.4)]"
+              >
+                {tool.linkText}
+              </Link>
+            </div>
+          ))}
+        </div>
+
+        {/* Coming Soon Message for Future Tools */}
+        {tools.length === 1 && (
+          <div className="mt-16 text-center">
+            <p className="text-gray-500 italic">
+              {t('more_tools_coming') || 'Plus d\'outils à venir...'}
+            </p>
           </div>
         )}
-
-        <div className="text-center">
-          <Link
-            to="/chatbot"
-            className="inline-block bg-gold text-black font-bold px-6 py-3 rounded-lg hover:bg-gold/80 transition-colors duration-200"
-          >
-            {t('use_kemet_chat')}
-          </Link>
-        </div>
       </main>
       <Footer />
     </div>
   );
 }
-
