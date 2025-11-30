@@ -18,8 +18,11 @@
   "hero_title_full": "Artificial Intelligence Built for Africa, Innovated by Africans",
   "gallery_captions": ["Douala Event 2024", "First Chatbot Launched", "Yaoundé Training", "Enterprise Partnership"],
   "plus_label": "More:",
-  "outils_title": "Kemet-chat Cameroon Law",
-  "outils_sub": "Ask a legal question and get a response based on Cameroonian legal documents.",
+  "outils_title": "AI Tools",
+  "outils_sub": "Discover our artificial intelligence tools designed for you.",
+  "kemet_chat_title": "Kemet-chat",
+  "kemet_chat_desc": "Kemet-chat is an AI assistant that works like ChatGPT, but focused on Cameroonian law.",
+  "kemet_chat_details": "Ask a legal question and get a response based on Cameroonian legal documents.",
   "ask_button": "Ask question",
   "searching": "Searching...",
   "answer_label": "Answer:",
@@ -46,6 +49,7 @@
   "immobilier_title": "Smart Real Estate",
   "immobilier_text": "Coming soon: find, buy, rent with AI.",
   "achat_vente_title": "Ashavant Marketplace",
-  "achat_vente_text": "Coming soon: buy and sell with AI recommendations."
+  "achat_vente_text": "Coming soon: buy and sell with AI recommendations.",
+  "more_tools_coming": "More tools coming soon..."
 }
 
