@@ -17,7 +17,7 @@ export default function About() {
         <div className="space-y-8">
           <div 
             className="text-gray-300 leading-relaxed text-base md:text-lg space-y-6 italic"
-            style={{ fontFamily: 'Playfair Display, serif' }}
+            style={{ fontFamily: 'Sora, sans-serif' }}
           >
             {paragraphs.map((paragraph, index) => (
               <p key={index} className="text-justify">
@@ -28,7 +28,7 @@ export default function About() {
 
           {/* Signature */}
           <div className="mt-12 pt-8 border-t border-gold/20 text-right">
-            <p className="text-white font-medium mb-1" style={{ fontFamily: 'Playfair Display, serif' }}>
+            <p className="text-white font-medium mb-1" style={{ fontFamily: 'Sora, sans-serif' }}>
               {t('about_signature_name')}
             </p>
             <p className="text-gold text-sm">
