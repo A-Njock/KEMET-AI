@@ -11,9 +11,10 @@
   "plus_immobilier": "Immobilier-Intelligent",
   "plus_achat_vente": "Achat-Vente",
   "plus_text": "Achetez, louez, trouvez vite. Achetez, vendez-marché intelligent.",
-  "nav_solutions": "Solutions",
-  "nav_tools": "Outils",
-  "nav_trainings": "Formations",
+  "nav_solutions": "Nos Solutions",
+  "nav_tools": "Nos Outils",
+  "nav_trainings": "Nos Formations",
+  "nav_about": "À Propos",
   "gallery_title": "Nos Réalisations",
   "hero_title_full": "Intelligence Artificielle Conçue pour l’Afrique, Pensée par les Africains",
   "gallery_captions": ["Événement Douala 2024", "Premier Chatbot Lancé", "Formation Yaoundé", "Partenariat Entreprise"],
@@ -50,6 +51,8 @@
   "immobilier_text": "Bientôt: trouvez, achetez, louez avec IA.",
   "achat_vente_title": "Ashavant Marché",
   "achat_vente_text": "Bientôt: achetez et vendez avec recommandations IA.",
-  "more_tools_coming": "Plus d'outils à venir..."
+  "more_tools_coming": "Plus d'outils à venir...",
+  "about_title": "À Propos de Kemet AI",
+  "about_content": "Kemet AI est un studio de recherche et développement d'intelligence artificielle pensé pour l'Afrique. Nous concevons des assistants et des outils IA ancrés dans la réalité locale (nos langues, nos lois, nos métiers, etc.) pour que la technologie serve d'abord nos communautés, nos entreprises et nos États.\n\nNotre indépendance passe aussi par une émancipation technologique. Il faut démystifier la science, la rendre accessible, montrer qu'elle peut être simple, ludique et concrète. Chez Kemet AI, nous transformons la curiosité en savoir, puis le savoir en compétences opérationnelles : accompagnement des entreprises, formations d'élite, et transfert réel de compétences technologiques vers les Africains.\n\nNotre objectif principal n'est pas seulement de fournir des solutions d'IA, mais de former une génération capable de les comprendre, les adapter et les créer.\n\nPierre Guy Njock,\n\nCEO – Kemet AI"
 }
 

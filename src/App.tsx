@@ -6,6 +6,7 @@ import Formations from './pages/Formations';
 import Immobilier from './pages/Immobilier';
 import AchatVente from './pages/AchatVente';
 import Chatbot from './pages/Chatbot';
+import About from './pages/About';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/immobilier" element={<Immobilier />} />
         <Route path="/achat-vente" element={<AchatVente />} />
         <Route path="/chatbot" element={<Chatbot />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </Router>
   );
