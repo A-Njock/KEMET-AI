@@ -16,7 +16,7 @@ export default function About() {
         {/* Content */}
         <div className="space-y-8">
           <div 
-            className="text-gray-300 leading-relaxed text-base md:text-lg space-y-6"
+            className="text-gray-300 leading-relaxed text-base md:text-lg space-y-6 italic"
             style={{ fontFamily: 'Playfair Display, serif' }}
           >
             {paragraphs.map((paragraph, index) => (
@@ -27,7 +27,7 @@ export default function About() {
           </div>
 
           {/* Signature */}
-          <div className="mt-12 pt-8 border-t border-gold/20">
+          <div className="mt-12 pt-8 border-t border-gold/20 text-right">
             <p className="text-white font-medium mb-1" style={{ fontFamily: 'Playfair Display, serif' }}>
               {t('about_signature_name')}
             </p>
