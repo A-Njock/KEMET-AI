@@ -36,3 +36,19 @@ Thumbs.db
 build/
 dist/
 
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+*.egg-info/
+dist/
+*.egg
+embeddings_cache.npy
+index_file.*
+
