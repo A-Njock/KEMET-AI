@@ -36,8 +36,8 @@ export async function chatbot(
   conversationHistory: Array<{role: string, content: string}> = []
 ): Promise<{ answer: string; sources: string[] }> {
   try {
-    // Get backend URL from environment variable or use default
-    const backendUrl = import.meta.env.VITE_RAG_BACKEND_URL || 'http://localhost:8000';
+    // Get backend URL from environment variable or use Render default
+    const backendUrl = import.meta.env.VITE_RAG_BACKEND_URL || 'https://kemet-ai-2.onrender.com';
     
     console.log('📡 Calling RAG backend at:', backendUrl);
     
