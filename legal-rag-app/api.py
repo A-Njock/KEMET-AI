@@ -3,6 +3,7 @@ import pickle
 import faiss
 import numpy as np
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from openai import OpenAI
 from langchain_huggingface import HuggingFaceEmbeddings
@@ -19,6 +20,15 @@ API_KEY = os.getenv("DEEPSEEK_API_KEY")
 BASE_URL = "https://api.deepseek.com/v1"
 
 app = FastAPI()
+
+# Add CORS middleware to allow requests from Vercel frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # In production, replace with your Vercel domain
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class QueryRequest(BaseModel):
