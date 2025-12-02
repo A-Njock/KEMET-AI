@@ -66,6 +66,7 @@ class CameroonianLawRAG:
             api_key=DEEPSEEK_API_KEY,
             base_url="https://api.deepseek.com"
         )
+        print("✅ Cameroonian Law RAG Loaded Successfully!")
 
     def augment_query(self, user_input, chat_history):
         """
@@ -101,7 +102,7 @@ class CameroonianLawRAG:
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.0
             )
-            return response.choices[0].message.content
+            return response.choices[0].message.content.strip()
         except Exception as e:
             print(f"Error augmenting query: {e}")
             return user_input
@@ -125,7 +126,8 @@ class CameroonianLawRAG:
         """
         Uses Cohere API. This is statistically superior to BGE-base locally.
         """
-        if not candidates: return []
+        if not candidates:
+            return []
 
         documents_text = [doc.page_content for doc in candidates]
 
@@ -149,37 +151,40 @@ class CameroonianLawRAG:
             return candidates[:top_n]
 
     def generate_response(self, user_query, history=[]):
+        """Main method - FIXED CLI compatibility"""
         # 1. Augment Query (Using DeepSeek)
         refined_query = self.augment_query(user_query, history)
-        print(f"DEBUG: Original: {user_query} -> Refined: {refined_query}")
+        print(f"DEBUG: Original: '{user_query}' -> Refined: '{refined_query}'")
 
         # 2. Retrieval
         candidates = self.retrieve_hybrid(refined_query, top_k=30)
+        print(f"DEBUG: Found {len(candidates)} candidates")
 
         # 3. Reranking
         relevant_docs = self.rerank_results(refined_query, candidates, top_n=5)
+        print(f"DEBUG: After reranking, {len(relevant_docs)} relevant docs")
 
-        # 4. Fallback Logic (Restored)
+        # 4. Fallback Logic
         if not relevant_docs:
-            return "Cette question dépasse peut‑être les capacités actuelles de l’outil. Nos équipes l’améliorent en continu. En attendant, Essayez une reformulation de la question."
+            print("DEBUG: No relevant docs found, returning fallback")
+            return "Cette question dépasse peut-être les capacités actuelles de l'outil. Nos équipes l'améliorent en continu. En attendant, essayez une reformulation de la question."
 
-        # 5. Build Context (Restored full metadata support)
+        # 5. Build Context (Full metadata support)
         context_str = ""
         for i, doc in enumerate(relevant_docs):
             source = doc.metadata.get('source', 'Unknown')
             section = doc.metadata.get('section', 'Unknown')
-            # Use original text if available for cleaner reading
             content = doc.metadata.get('original_text', doc.page_content)
             context_str += f"--- Document {i + 1} ---\nSource: {source}\nSection: {section}\nContent: {content}\n\n"
 
-        # 6. Detailed System Prompt (Restored EXACTLY from your local code)
+        # 6. Detailed System Prompt
         system_prompt = """
         You are an expert Cameroonian Lawyer Assistant. Your job is to answer questions STRICTLY based on the provided legal context.
 
         Rules:
         1. Answer based strictly on the provided context.
         2. If the context contains relevant legal provisions (even if they are not a complete definition, e.g., only penal sanctions or specific conditions), explain them clearly. Do not say "I don't know" if partial information is present.
-        3. ONLY if the context is completely unrelated to the user's question, output exactly: "C'est Pierre Guy A.Njock qui a fais le song"
+        3. ONLY if the context is completely unrelated to the user's question, output exactly: "Cette question dépasse peut-être les capacités actuelles de l'outil. Nos équipes l'améliorent en continu. En attendant, essayez une reformulation de la question."
         4. Do not make up laws.
         5. Answer in the language of the user (French/English).
         6. Structure your answer exactly as requested below.
@@ -201,7 +206,8 @@ class CameroonianLawRAG:
 
         Question: {user_query}
         """
-	try:
+
+        try:
             response = self.client.chat.completions.create(
                 model="deepseek-chat",
                 messages=[
@@ -230,9 +236,11 @@ def load_models():
 def root():
     return {"status": "ok", "message": "Kemet AI RAG Backend is running"}
 
+
 @app.get("/health")
 def health():
     return {"status": "healthy", "rag_loaded": rag_system is not None}
+
 
 @app.post("/ask")
 def ask_question(request: QueryRequest):
@@ -242,4 +250,3 @@ def ask_question(request: QueryRequest):
     # Pass both query AND history to the logic
     answer = rag_system.generate_response(request.query, request.history)
     return {"answer": answer}
-
