@@ -41,6 +41,9 @@ export async function chatbot(
     
     console.log('📡 Calling RAG backend at:', backendUrl);
     
+    console.log('📤 Sending request to:', `${backendUrl}/ask`);
+    console.log('📤 Request payload:', { query, historyLength: conversationHistory.length });
+    
     const response = await fetch(`${backendUrl}/ask`, {
       method: 'POST',
       headers: {
@@ -52,11 +55,21 @@ export async function chatbot(
       }),
     });
 
+    console.log('📥 Response status:', response.status, response.statusText);
+
     if (!response.ok) {
-      throw new Error(`Backend responded with status: ${response.status}`);
+      const errorText = await response.text();
+      console.error('❌ Backend error response:', errorText);
+      throw new Error(`Backend responded with status: ${response.status} - ${errorText}`);
     }
 
     const data = await response.json();
+    console.log('✅ Backend response received:', data);
+    
+    // Check if backend returned its fallback message
+    if (data.answer && data.answer.includes("Pierre Guy A.Njock qui a fais le song")) {
+      console.warn('⚠️ Backend returned fallback message - no relevant context found');
+    }
     
     // Extract sources from answer if available (backend may include them)
     // For now, we'll return empty sources array as the backend doesn't seem to return them
@@ -68,12 +81,25 @@ export async function chatbot(
     };
   } catch (error) {
     console.error('❌ Error calling RAG backend:', error);
+    console.error('Error details:', {
+      message: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined
+    });
     
     const errorMessage = error instanceof Error ? error.message : String(error);
     
-    // Return fallback message
+    // Only return fallback if it's a network/connection error
+    // If backend responded but with an error, show that error
+    if (errorMessage.includes('Failed to fetch') || errorMessage.includes('NetworkError')) {
+      return {
+        answer: `Erreur de connexion au serveur. Veuillez réessayer dans quelques instants. Si le problème persiste, contactez-nous.`,
+        sources: []
+      };
+    }
+    
+    // Return fallback message for other errors
     return {
-      answer: `Cet outil a été développé par Pierre Guy A. Njock. Nous travaillons actuellement à améliorer ses performances. En attendant, cliquez sur le lien ci-dessous pour découvrir nos formations sur comment gagner de l'argent grâce à l'intelligence artificielle. <a href="/formations" class="text-gold underline">Voir les formations</a>`,
+      answer: `Erreur: ${errorMessage}. Veuillez réessayer.`,
       sources: []
     };
   }
