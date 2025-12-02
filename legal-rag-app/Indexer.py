@@ -2,20 +2,23 @@
 
 import os
 import re
-import pickle
 import fitz  # PyMuPDF
+import pickle
 import faiss
 import numpy as np
 from tqdm import tqdm
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_openai import OpenAIEmbeddings # CHANGED
 from rank_bm25 import BM25Okapi
-# from langchain.schema import Document
 from langchain_core.documents import Document
 
 # --- Configuration ---
+# Make sure you set your OPENAI_API_KEY in your terminal before running
+# export OPENAI_API_KEY="sk-..." (Mac/Linux) or set OPENAI_API_KEY="sk-..." (Win)
+
 LAW_FOLDER = "LOIS CAMEROUN"
 INDEX_FOLDER = "law_index"
-EMBEDDING_MODEL_NAME = "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
+# OpenAI's cheap, fast, high-quality model
+EMBEDDING_MODEL_NAME = "text-embedding-3-small"
 
 # Ensure output directory exists
 os.makedirs(INDEX_FOLDER, exist_ok=True)
@@ -24,7 +27,7 @@ os.makedirs(INDEX_FOLDER, exist_ok=True)
 class LegalDocProcessor:
     def __init__(self):
         print(f"Loading Embedding Model: {EMBEDDING_MODEL_NAME}...")
-        self.embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL_NAME)
+        self.embeddings = OpenAIEmbeddings(model=EMBEDDING_MODEL_NAME)
 
     def extract_text_from_pdf(self, pdf_path):
         """Extracts text from PDF with basic cleaning."""
@@ -128,9 +131,16 @@ class LegalDocProcessor:
         # 1. Create Dense Index (FAISS)
         print("Generating Embeddings (this may take time)...")
         texts = [d.page_content for d in all_docs]
-        embeddings_vectors = self.embeddings.embed_documents(texts)
 
-        embedding_dim = len(embeddings_vectors[0])
+        # Batching to avoid API timeouts
+        embeddings_vectors = []
+        batch_size = 100
+        for i in range(0, len(texts), batch_size):
+            batch = texts[i:i + batch_size]
+            batch_embeddings = self.embeddings.embed_documents(batch)
+            embeddings_vectors.extend(batch_embeddings)
+
+        embedding_dim = len(embeddings_vectors[0])  # 1536 for text-embedding-3-small
         index = faiss.IndexFlatL2(embedding_dim)
         index.add(np.array(embeddings_vectors).astype('float32'))
 

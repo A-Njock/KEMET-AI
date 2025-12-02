@@ -2,60 +2,101 @@ import os
 import pickle
 import faiss
 import numpy as np
+import cohere
 from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from openai import OpenAI
-from langchain_huggingface import HuggingFaceEmbeddings
-from sentence_transformers import CrossEncoder
+from langchain_openai import OpenAIEmbeddings
 import json
 
 # --- Configuration ---
 INDEX_FOLDER = "law_index"
-RERANKER_MODEL = "BAAI/bge-reranker-v2-m3"
-EMBEDDING_MODEL_NAME = "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
 
-# Get API Key from Environment Variable (Secure)
-API_KEY = os.getenv("DEEPSEEK_API_KEY")
-BASE_URL = "https://api.deepseek.com/v1"
+# Keys from Environment
+DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+COHERE_API_KEY = os.getenv("COHERE_API_KEY")
 
 app = FastAPI()
-
-# Add CORS middleware to allow requests from Vercel frontend
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # In production, replace with your Vercel domain
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 
 class QueryRequest(BaseModel):
     query: str
-    history: list = []
+    history: list = []  # Expects [{"role": "user", "content": "..."}, ...]
 
 
 class CameroonianLawRAG:
     def __init__(self):
-        print("Loading Models... This might take a minute.")
-        self.embed_model = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL_NAME)
-        self.faiss_index = faiss.read_index(os.path.join(INDEX_FOLDER, "vector_index.faiss"))
+        print("Loading Light Indexes...")
 
+        # 1. OpenAI Embeddings (Lightweight, Cloud-based)
+        # MUST match the model used in indexer.py
+        self.embed_model = OpenAIEmbeddings(model="text-embedding-3-small", api_key=OPENAI_API_KEY)
+
+        # 2. Cohere Client (State-of-the-art Reranking, Cloud-based)
+        self.cohere_client = cohere.Client(COHERE_API_KEY)
+
+        # 3. Load Static Data (Fast)
+        self.faiss_index = faiss.read_index(os.path.join(INDEX_FOLDER, "vector_index.faiss"))
         with open(os.path.join(INDEX_FOLDER, "docs.pkl"), "rb") as f:
             self.docs = pickle.load(f)
         with open(os.path.join(INDEX_FOLDER, "bm25_index.pkl"), "rb") as f:
             self.bm25 = pickle.load(f)
 
-        self.reranker = CrossEncoder(RERANKER_MODEL, max_length=512)
-        self.client = OpenAI(api_key=API_KEY, base_url=BASE_URL)
+        # 4. DeepSeek Client (The Lawyer Brain)
+        self.client = OpenAI(
+            api_key=DEEPSEEK_API_KEY,
+            base_url="https://api.deepseek.com"
+        )
+
+    def augment_query(self, user_input, chat_history):
+        """
+        RESTORED: Your logic to rewrite queries based on history.
+        """
+        history_text = ""
+        if chat_history:
+            # Take last 4 messages from the history passed by Frontend
+            relevant_history = chat_history[-4:]
+            history_text = "\n".join([f"{msg['role']}: {msg['content']}" for msg in relevant_history])
+
+        prompt = f"""
+        You are a Legal Search Query Optimizer for Cameroonian Law.
+        Your task is to rewrite the user's raw query into a precise search string for a Vector Database.
+
+        Rules:
+        1. If the query is short (e.g., "le vol", "murder"), expand it to target definitions AND relevant legal provisions.
+        2. Do NOT restrict the search to a specific code unless the user explicitly asks. 
+        3. If the query refers to previous messages (e.g., "et pour le viol?"), use the history to make it standalone.
+        4. OUTPUT ONLY THE REWRITTEN QUERY. NO EXPLANATION.
+
+        Chat History:
+        {history_text}
+
+        User Query: {user_input}
+
+        Optimized Search Query:
+        """
+
+        try:
+            response = self.client.chat.completions.create(
+                model="deepseek-chat",
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.0
+            )
+            return response.choices[0].message.content
+        except Exception as e:
+            print(f"Error augmenting query: {e}")
+            return user_input
 
     def retrieve_hybrid(self, query, top_k=20):
+        # BM25
         tokenized_query = query.lower().split()
         bm25_scores = self.bm25.get_scores(tokenized_query)
         bm25_top_n = np.argsort(bm25_scores)[::-1][:top_k]
 
+        # FAISS (OpenAI)
         query_vector = self.embed_model.embed_query(query)
+        # Faiss expects float32
         D, I = self.faiss_index.search(np.array([query_vector]).astype('float32'), top_k)
 
         combined_indices = list(set(bm25_top_n) | set(I[0]))
@@ -63,26 +104,85 @@ class CameroonianLawRAG:
         return candidates
 
     def rerank_results(self, query, candidates, top_n=5):
+        """
+        Uses Cohere API. This is statistically superior to BGE-base locally.
+        """
         if not candidates: return []
-        pairs = [[query, doc.page_content] for doc in candidates]
-        scores = self.reranker.predict(pairs)
-        results = sorted(list(zip(candidates, scores)), key=lambda x: x[1], reverse=True)
-        return [res[0] for res in results[:top_n] if res[1] > -2]
+
+        documents_text = [doc.page_content for doc in candidates]
+
+        try:
+            results = self.cohere_client.rerank(
+                query=query,
+                documents=documents_text,
+                top_n=top_n,
+                model="rerank-multilingual-v3.0"
+            )
+
+            final_results = []
+            for hit in results.results:
+                doc = candidates[hit.index]
+                if hit.relevance_score > 0.01:  # Threshold
+                    final_results.append(doc)
+            return final_results
+
+        except Exception as e:
+            print(f"Cohere Rerank Error: {e}")
+            return candidates[:top_n]
 
     def generate_response(self, user_query, history):
-        # Hybrid Retrieval
-        candidates = self.retrieve_hybrid(user_query, top_k=30)
-        relevant_docs = self.rerank_results(user_query, candidates, top_n=5)
+        # 1. Augment Query (Using DeepSeek)
+        refined_query = self.augment_query(user_query, history)
+        print(f"DEBUG: Original: {user_query} -> Refined: {refined_query}")
 
+        # 2. Retrieval
+        candidates = self.retrieve_hybrid(refined_query, top_k=30)
+
+        # 3. Reranking
+        relevant_docs = self.rerank_results(refined_query, candidates, top_n=5)
+
+        # 4. Fallback Logic (Restored)
         if not relevant_docs:
-            return "C'est A.Njock qui a fais le song (No context found)"
+            return "Cette question dépasse peut‑être les capacités actuelles de l’outil. Nos équipes l’améliorent en continu. En attendant, Essayez une reformulation de la question."
 
+        # 5. Build Context (Restored full metadata support)
         context_str = ""
         for i, doc in enumerate(relevant_docs):
-            context_str += f"Source: {doc.metadata.get('source')}\nContent: {doc.page_content}\n\n"
+            source = doc.metadata.get('source', 'Unknown')
+            section = doc.metadata.get('section', 'Unknown')
+            # Use original text if available for cleaner reading
+            content = doc.metadata.get('original_text', doc.page_content)
+            context_str += f"--- Document {i + 1} ---\nSource: {source}\nSection: {section}\nContent: {content}\n\n"
 
-        system_prompt = "You are a Legal Assistant. Answer strictly based on context."
-        user_prompt = f"Context:\n{context_str}\n\nQuestion: {user_query}"
+        # 6. Detailed System Prompt (Restored EXACTLY from your local code)
+        system_prompt = """
+        You are an expert Cameroonian Lawyer Assistant. Your job is to answer questions STRICTLY based on the provided legal context.
+
+        Rules:
+        1. Answer based strictly on the provided context.
+        2. If the context contains relevant legal provisions (even if they are not a complete definition, e.g., only penal sanctions or specific conditions), explain them clearly. Do not say "I don't know" if partial information is present.
+        3. ONLY if the context is completely unrelated to the user's question, output exactly: "C'est Pierre Guy A.Njock qui a fais le song"
+        4. Do not make up laws.
+        5. Answer in the language of the user (French/English).
+        6. Structure your answer exactly as requested below.
+
+        Output Structure:
+        - Direct Answer: A clear, professional explanation.
+        - **Exact Article Number:** Article X of [Law Name].
+        - **Similar Articles:**
+          - **Complementary:** List article numbers and content that support or expand.
+          - **Contradictory:** List article numbers that seem to oppose or provide exceptions.
+
+        Format for citing laws:
+        "Article [Num]: [Content snippet] (Law | Loi: [Filename])"
+        """
+
+        user_prompt = f"""
+        Context:
+        {context_str}
+
+        Question: {user_query}
+        """
 
         response = self.client.chat.completions.create(
             model="deepseek-chat",
@@ -95,7 +195,7 @@ class CameroonianLawRAG:
         return response.choices[0].message.content
 
 
-# Initialize RAG Global Variable
+# --- API Startup ---
 rag_system = None
 
 
@@ -109,5 +209,8 @@ def load_models():
 def ask_question(request: QueryRequest):
     if not rag_system:
         raise HTTPException(status_code=500, detail="System loading")
+
+    # Pass both query AND history to the logic
     answer = rag_system.generate_response(request.query, request.history)
     return {"answer": answer}
+
