@@ -4,6 +4,7 @@ import faiss
 import numpy as np
 import cohere
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from openai import OpenAI
 from langchain_openai import OpenAIEmbeddings
@@ -18,6 +19,23 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 COHERE_API_KEY = os.getenv("COHERE_API_KEY")
 
 app = FastAPI()
+
+# Add CORS middleware to allow requests from Vercel frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "*",  # Allow all origins
+        "https://kemet-ai-237.vercel.app",
+        "https://kemet.ai",
+        "https://kemetai.cm",
+        "http://localhost:5173",  # For local development
+        "http://localhost:3000",
+    ],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["*"],
+    expose_headers=["*"],
+)
 
 
 class QueryRequest(BaseModel):
