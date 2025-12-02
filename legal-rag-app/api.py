@@ -72,6 +72,10 @@ class CameroonianLawRAG:
         """
         RESTORED: Your logic to rewrite queries based on history.
         """
+        if not DEEPSEEK_API_KEY:
+            print("WARNING: DEEPSEEK_API_KEY not set, skipping query augmentation")
+            return user_input
+            
         history_text = ""
         if chat_history:
             # Take last 4 messages from the history passed by Frontend
@@ -102,25 +106,40 @@ class CameroonianLawRAG:
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.0
             )
-            return response.choices[0].message.content.strip()
+            refined = response.choices[0].message.content.strip()
+            print(f"DEBUG: Query augmentation successful: '{refined}'")
+            return refined
         except Exception as e:
-            print(f"Error augmenting query: {e}")
+            print(f"ERROR: Query augmentation failed: {e}")
+            print(f"Falling back to original query: '{user_input}'")
             return user_input
 
     def retrieve_hybrid(self, query, top_k=20):
-        # BM25
-        tokenized_query = query.lower().split()
-        bm25_scores = self.bm25.get_scores(tokenized_query)
-        bm25_top_n = np.argsort(bm25_scores)[::-1][:top_k]
+        try:
+            # BM25
+            tokenized_query = query.lower().split()
+            bm25_scores = self.bm25.get_scores(tokenized_query)
+            bm25_top_n = np.argsort(bm25_scores)[::-1][:top_k]
+            print(f"DEBUG: BM25 found {len(bm25_top_n)} candidates")
 
-        # FAISS (OpenAI)
-        query_vector = self.embed_model.embed_query(query)
-        # Faiss expects float32
-        D, I = self.faiss_index.search(np.array([query_vector]).astype('float32'), top_k)
+            # FAISS (OpenAI)
+            if not OPENAI_API_KEY:
+                print("WARNING: OPENAI_API_KEY not set, skipping FAISS search")
+                candidates = [self.docs[idx] for idx in bm25_top_n if idx < len(self.docs)]
+                return candidates
+                
+            query_vector = self.embed_model.embed_query(query)
+            # Faiss expects float32
+            D, I = self.faiss_index.search(np.array([query_vector]).astype('float32'), top_k)
+            print(f"DEBUG: FAISS found {len(I[0])} candidates")
 
-        combined_indices = list(set(bm25_top_n) | set(I[0]))
-        candidates = [self.docs[idx] for idx in combined_indices if idx < len(self.docs)]
-        return candidates
+            combined_indices = list(set(bm25_top_n) | set(I[0]))
+            candidates = [self.docs[idx] for idx in combined_indices if idx < len(self.docs)]
+            print(f"DEBUG: Combined {len(candidates)} unique candidates")
+            return candidates
+        except Exception as e:
+            print(f"ERROR in retrieve_hybrid: {e}")
+            return []
 
     def rerank_results(self, query, candidates, top_n=5):
         """
@@ -239,7 +258,20 @@ def root():
 
 @app.get("/health")
 def health():
-    return {"status": "healthy", "rag_loaded": rag_system is not None}
+    return {
+        "status": "healthy", 
+        "rag_loaded": rag_system is not None,
+        "api_keys_set": {
+            "DEEPSEEK": bool(DEEPSEEK_API_KEY),
+            "OPENAI": bool(OPENAI_API_KEY),
+            "COHERE": bool(COHERE_API_KEY)
+        },
+        "indexes_loaded": {
+            "faiss": rag_system.faiss_index is not None if rag_system else False,
+            "docs": len(rag_system.docs) if rag_system else 0,
+            "bm25": rag_system.bm25 is not None if rag_system else False
+        } if rag_system else {}
+    }
 
 
 @app.post("/ask")
