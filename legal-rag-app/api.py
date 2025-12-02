@@ -205,6 +205,14 @@ def load_models():
     rag_system = CameroonianLawRAG()
 
 
+@app.get("/")
+def root():
+    return {"status": "ok", "message": "Kemet AI RAG Backend is running"}
+
+@app.get("/health")
+def health():
+    return {"status": "healthy", "rag_loaded": rag_system is not None}
+
 @app.post("/ask")
 def ask_question(request: QueryRequest):
     if not rag_system:
