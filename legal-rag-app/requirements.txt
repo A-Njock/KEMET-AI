@@ -4,8 +4,7 @@ python-multipart
 faiss-cpu
 numpy
 openai
+cohere
 langchain
-langchain-huggingface
-sentence-transformers
+langchain-openai
 rank-bm25
-# PyMuPDF is not needed for inference, only indexing
