@@ -279,6 +279,16 @@ def ask_question(request: QueryRequest):
     if not rag_system:
         raise HTTPException(status_code=500, detail="System loading")
 
-    # Pass both query AND history to the logic
-    answer = rag_system.generate_response(request.query, request.history)
-    return {"answer": answer}
+    try:
+        # Pass both query AND history to the logic
+        print(f"=== NEW REQUEST ===")
+        print(f"Query: {request.query}")
+        print(f"History length: {len(request.history)}")
+        answer = rag_system.generate_response(request.query, request.history)
+        print(f"=== RESPONSE GENERATED ===")
+        return {"answer": answer}
+    except Exception as e:
+        print(f"ERROR in /ask endpoint: {e}")
+        import traceback
+        print(traceback.format_exc())
+        raise HTTPException(status_code=500, detail=f"Error processing request: {str(e)}")
