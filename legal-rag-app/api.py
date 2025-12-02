@@ -148,7 +148,7 @@ class CameroonianLawRAG:
             print(f"Cohere Rerank Error: {e}")
             return candidates[:top_n]
 
-    def generate_response(self, user_query, history):
+    def generate_response(self, user_query, history=[]):
         # 1. Augment Query (Using DeepSeek)
         refined_query = self.augment_query(user_query, history)
         print(f"DEBUG: Original: {user_query} -> Refined: {refined_query}")
@@ -201,16 +201,19 @@ class CameroonianLawRAG:
 
         Question: {user_query}
         """
-
-        response = self.client.chat.completions.create(
-            model="deepseek-chat",
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt}
-            ],
-            temperature=0.1
-        )
-        return response.choices[0].message.content
+	try:
+            response = self.client.chat.completions.create(
+                model="deepseek-chat",
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt}
+                ],
+                temperature=0.1
+            )
+            return response.choices[0].message.content
+        except Exception as e:
+            print(f"DeepSeek Error: {e}")
+            return "Erreur temporaire du service. Réessayez dans quelques instants."
 
 
 # --- API Startup ---
