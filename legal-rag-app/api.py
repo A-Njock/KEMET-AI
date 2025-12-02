@@ -226,6 +226,10 @@ class CameroonianLawRAG:
         Question: {user_query}
         """
 
+        print(f"DEBUG: Context length: {len(context_str)} characters")
+        print(f"DEBUG: Context preview: {context_str[:500]}...")
+        print(f"DEBUG: Calling DeepSeek API...")
+        
         try:
             response = self.client.chat.completions.create(
                 model="deepseek-chat",
@@ -235,9 +239,14 @@ class CameroonianLawRAG:
                 ],
                 temperature=0.1
             )
-            return response.choices[0].message.content
+            answer = response.choices[0].message.content
+            print(f"DEBUG: DeepSeek response received, length: {len(answer)} characters")
+            print(f"DEBUG: Response preview: {answer[:200]}...")
+            return answer
         except Exception as e:
-            print(f"DeepSeek Error: {e}")
+            print(f"ERROR: DeepSeek API call failed: {e}")
+            import traceback
+            print(traceback.format_exc())
             return "Erreur temporaire du service. Réessayez dans quelques instants."
 
 
