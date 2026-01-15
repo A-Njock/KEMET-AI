@@ -6,8 +6,7 @@ import cohere
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from openai import OpenAI
-from langchain_openai import OpenAIEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 import json
 
 # --- Configuration ---
@@ -47,9 +46,8 @@ class CameroonianLawRAG:
     def __init__(self):
         print("Loading Light Indexes...")
 
-        # 1. OpenAI Embeddings (Lightweight, Cloud-based)
-        # MUST match the model used in indexer.py
-        self.embed_model = OpenAIEmbeddings(model="text-embedding-3-small", api_key=OPENAI_API_KEY)
+        # 1. Local HuggingFace Embeddings (No API Key Required)
+        self.embed_model = HuggingFaceEmbeddings(model_name="paraphrase-multilingual-MiniLM-L12-v2")
 
         # 2. Cohere Client (State-of-the-art Reranking, Cloud-based)
         self.cohere_client = cohere.Client(COHERE_API_KEY)
@@ -61,7 +59,8 @@ class CameroonianLawRAG:
         with open(os.path.join(INDEX_FOLDER, "bm25_index.pkl"), "rb") as f:
             self.bm25 = pickle.load(f)
 
-        # 4. DeepSeek Client (The Lawyer Brain)
+        # 4. DeepSeek Client (The Lawyer Brain) - Requires DEEPSEEK_API_KEY
+        from openai import OpenAI # Lazy import to avoid top-level dependency if possible
         self.client = OpenAI(
             api_key=DEEPSEEK_API_KEY,
             base_url="https://api.deepseek.com"
@@ -122,11 +121,7 @@ class CameroonianLawRAG:
             bm25_top_n = np.argsort(bm25_scores)[::-1][:top_k]
             print(f"DEBUG: BM25 found {len(bm25_top_n)} candidates")
 
-            # FAISS (OpenAI)
-            if not OPENAI_API_KEY:
-                print("WARNING: OPENAI_API_KEY not set, skipping FAISS search")
-                candidates = [self.docs[idx] for idx in bm25_top_n if idx < len(self.docs)]
-                return candidates
+            # Vectors are now local (HuggingFace)
                 
             query_vector = self.embed_model.embed_query(query)
             # Faiss expects float32

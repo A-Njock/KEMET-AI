@@ -7,7 +7,7 @@ import pickle
 import faiss
 import numpy as np
 from tqdm import tqdm
-from langchain_openai import OpenAIEmbeddings # CHANGED
+from langchain_huggingface import HuggingFaceEmbeddings
 from rank_bm25 import BM25Okapi
 from langchain_core.documents import Document
 
@@ -15,10 +15,10 @@ from langchain_core.documents import Document
 # Make sure you set your OPENAI_API_KEY in your terminal before running
 # export OPENAI_API_KEY="sk-..." (Mac/Linux) or set OPENAI_API_KEY="sk-..." (Win)
 
-LAW_FOLDER = "LOIS CAMEROUN"
+LAW_FOLDER = "../../LOIS CAMEROUN"
 INDEX_FOLDER = "law_index"
-# OpenAI's cheap, fast, high-quality model
-EMBEDDING_MODEL_NAME = "text-embedding-3-small"
+# Local multilingual model
+EMBEDDING_MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
 
 # Ensure output directory exists
 os.makedirs(INDEX_FOLDER, exist_ok=True)
@@ -27,7 +27,7 @@ os.makedirs(INDEX_FOLDER, exist_ok=True)
 class LegalDocProcessor:
     def __init__(self):
         print(f"Loading Embedding Model: {EMBEDDING_MODEL_NAME}...")
-        self.embeddings = OpenAIEmbeddings(model=EMBEDDING_MODEL_NAME)
+        self.embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL_NAME)
 
     def extract_text_from_pdf(self, pdf_path):
         """Extracts text from PDF with basic cleaning."""
@@ -140,7 +140,7 @@ class LegalDocProcessor:
             batch_embeddings = self.embeddings.embed_documents(batch)
             embeddings_vectors.extend(batch_embeddings)
 
-        embedding_dim = len(embeddings_vectors[0])  # 1536 for text-embedding-3-small
+        embedding_dim = index.d if hasattr(index, 'd') else len(embeddings_vectors[0])
         index = faiss.IndexFlatL2(embedding_dim)
         index.add(np.array(embeddings_vectors).astype('float32'))
 

@@ -6,5 +6,6 @@ numpy
 openai
 cohere
 langchain
-langchain-openai
+langchain-huggingface
+sentence-transformers
 rank-bm25
