@@ -24,8 +24,8 @@ services:
         - VITE_RAG_BACKEND_URL=
     container_name: kemet_frontend
     restart: always
-    ports:
-      - "80:80"
+    expose:
+      - "80"
     depends_on:
       - backend
     networks:
