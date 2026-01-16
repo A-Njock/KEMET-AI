@@ -100,20 +100,20 @@ export default function Chatbot() {
         <div className="flex-1 overflow-y-auto px-4 py-6 pb-24 scrollbar-thin scrollbar-thumb-gold/20 scrollbar-track-transparent">
           {messages.length === 0 && (
             <div className="text-center py-20 animate-fade-in-up">
-              <div className="w-24 h-24 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg shadow-purple-500/30 animate-pulse-slow p-1">
-                <div className="w-full h-full bg-[#1a1b26] rounded-xl flex items-center justify-center">
-                  <svg className="w-12 h-12 text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-pink-400" fill="none" stroke="url(#gradient)" viewBox="0 0 24 24">
+              <div className="w-24 h-24 bg-gradient-to-br from-gold via-orange-400 to-amber-500 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg shadow-gold/30 animate-pulse-slow p-1">
+                <div className="w-full h-full bg-white rounded-xl flex items-center justify-center">
+                  <svg className="w-12 h-12 text-transparent bg-clip-text bg-gradient-to-r from-gold to-orange-500" fill="none" stroke="url(#gradient)" viewBox="0 0 24 24">
                     <defs>
                       <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#818cf8" />
-                        <stop offset="100%" stopColor="#f472b6" />
+                        <stop offset="0%" stopColor="#d4af37" />
+                        <stop offset="100%" stopColor="#f59e0b" />
                       </linearGradient>
                     </defs>
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                   </svg>
                 </div>
               </div>
-              <h2 className="text-4xl font-heading font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300 mb-4">{t('chatbot_title')}</h2>
+              <h2 className="text-4xl font-heading font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold via-orange-500 to-amber-600 mb-4">{t('chatbot_title')}</h2>
               <p className="text-gray-300 max-w-md mx-auto text-lg">{t('chatbot_start')}</p>
             </div>
           )}
@@ -125,7 +125,7 @@ export default function Chatbot() {
                 className={`flex gap-4 ${msg.role === 'user' ? 'justify-end' : 'justify-start items-start'} animate-slide-up`}
               >
                 {msg.role === 'assistant' && (
-                  <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center text-white shadow-lg shadow-purple-500/20">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-gold via-orange-400 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-gold/20">
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
