@@ -70,19 +70,19 @@ export default function Chatbot() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#1E1E2E] via-[#1a1b26] to-[#0D0D15] font-sans flex flex-col relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-[#2e1065] via-[#1e1b4b] to-[#172554] font-sans flex flex-col relative overflow-hidden">
       {/* Background Particles & Blobs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Colorful Blobs - Enhanced Opacity */}
-        <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-purple-600/20 rounded-full blur-[100px] animate-float" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-blue-600/20 rounded-full blur-[100px] animate-float" style={{ animationDelay: '2s' }} />
-        <div className="absolute top-[40%] left-[30%] w-[400px] h-[400px] bg-pink-500/10 rounded-full blur-[90px] animate-pulse-slow" />
-        <div className="absolute bottom-[20%] left-[10%] w-[300px] h-[300px] bg-indigo-500/15 rounded-full blur-[80px]" />
+        {/* Colorful Blobs - Enhanced Opacity & Brightness */}
+        <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-purple-500/30 rounded-full blur-[100px] animate-float" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-blue-500/30 rounded-full blur-[100px] animate-float" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-[40%] left-[30%] w-[400px] h-[400px] bg-pink-500/20 rounded-full blur-[90px] animate-pulse-slow" />
+        <div className="absolute bottom-[20%] left-[10%] w-[300px] h-[300px] bg-indigo-500/25 rounded-full blur-[80px]" />
 
         {[...Array(15)].map((_, i) => (
           <div
             key={i}
-            className="particle absolute bg-gold/30 rounded-full"
+            className="particle absolute bg-gold/40 rounded-full"
             style={{
               width: Math.random() * 4 + 1 + 'px',
               height: Math.random() * 4 + 1 + 'px',
@@ -135,8 +135,8 @@ export default function Chatbot() {
                 <div className={`max-w-[85%] lg:max-w-[75%]`}>
                   <div
                     className={`rounded-2xl p-5 shadow-lg backdrop-blur-md border ${msg.role === 'user'
-                        ? 'bg-gradient-to-br from-gold/30 to-orange-500/20 border-gold/40 text-white ml-auto rounded-tr-sm'
-                        : 'bg-gradient-to-br from-[#2d2d44]/80 to-[#1e1e2e]/90 border-white/10 text-gray-100 rounded-tl-sm hover:border-purple-500/40 transition-colors duration-300'
+                      ? 'bg-gradient-to-br from-gold/30 to-orange-500/20 border-gold/40 text-white ml-auto rounded-tr-sm'
+                      : 'bg-gradient-to-br from-[#2d2d44]/80 to-[#1e1e2e]/90 border-white/10 text-gray-100 rounded-tl-sm hover:border-purple-500/40 transition-colors duration-300'
                       }`}
                   >
                     <div

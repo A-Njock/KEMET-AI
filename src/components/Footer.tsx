@@ -10,8 +10,10 @@ export default function Footer() {
       {/* Handle / Always Visible Strip */}
       <div className="h-12 flex items-center justify-center cursor-pointer group-hover:bg-white/5 transition-colors">
         <div className="flex items-center gap-2">
-          <div className="w-12 h-1 bg-gold/50 rounded-full group-hover:w-16 transition-all duration-300"></div>
-          <span className="text-xs text-gold/60 uppercase tracking-widest font-heading group-hover:opacity-0 transition-opacity absolute">Kemet AI</span>
+          <span className="text-xs text-gold/60 uppercase tracking-widest font-heading group-hover:text-gold transition-colors">Kemet AI</span>
+          <svg className="w-4 h-4 text-gold/30 group-hover:text-gold transition-colors transform group-hover:rotate-180 duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+          </svg>
         </div>
       </div>
 
