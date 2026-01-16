@@ -72,7 +72,13 @@ export default function Chatbot() {
   return (
     <div className="min-h-screen bg-[#151520] font-sans flex flex-col relative overflow-hidden">
       {/* Background Particles */}
-      <div className="absolute inset-0 pointer-events-none">
+      {/* Background Particles & Blobs */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Colorful Blobs */}
+        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[100px] animate-float" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[100px] animate-float" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-[40%] left-[30%] w-[300px] h-[300px] bg-gold/5 rounded-full blur-[80px] animate-pulse-slow" />
+
         {[...Array(15)].map((_, i) => (
           <div
             key={i}
@@ -91,7 +97,7 @@ export default function Chatbot() {
       <Header />
 
       <main className="flex-1 flex flex-col max-w-4xl w-full mx-auto relative z-10">
-        <div className="flex-1 overflow-y-auto px-4 py-6 scrollbar-thin scrollbar-thumb-gold/20 scrollbar-track-transparent">
+        <div className="flex-1 overflow-y-auto px-4 py-6 pt-32 scrollbar-thin scrollbar-thumb-gold/20 scrollbar-track-transparent">
           {messages.length === 0 && (
             <div className="text-center py-20 animate-fade-in-up">
               <div className="w-20 h-20 bg-gradient-to-br from-gold to-gold-dark rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg shadow-gold/20 animate-pulse-slow">
@@ -111,7 +117,7 @@ export default function Chatbot() {
                 className={`flex gap-4 ${msg.role === 'user' ? 'justify-end' : 'justify-start items-start'} animate-slide-up`}
               >
                 {msg.role === 'assistant' && (
-                  <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-gold to-gold-dark flex items-center justify-center text-black shadow-lg shadow-gold/10">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-purple-500/20">
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
@@ -121,8 +127,8 @@ export default function Chatbot() {
                 <div className={`max-w-[85%] lg:max-w-[75%]`}>
                   <div
                     className={`rounded-2xl p-5 shadow-lg backdrop-blur-sm border ${msg.role === 'user'
-                        ? 'bg-gradient-to-br from-gold/20 to-gold/5 border-gold/30 text-white ml-auto rounded-tr-sm'
-                        : 'bg-white/5 border-white/10 text-gray-100 rounded-tl-sm'
+                      ? 'bg-gradient-to-br from-gold/20 to-gold/5 border-gold/30 text-white ml-auto rounded-tr-sm'
+                      : 'bg-white/5 border-white/10 text-gray-100 rounded-tl-sm hover:border-purple-500/30 transition-colors duration-300'
                       }`}
                   >
                     <div
