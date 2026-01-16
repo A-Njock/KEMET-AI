@@ -25,7 +25,7 @@ export default function Header({ theme = 'dark' }: HeaderProps) {
   return (
     <header
       className={`fixed w-full py-5 px-6 lg:px-8 z-50 transition-all duration-500 ${isScrolled
-        ? 'bg-rich-black/90 backdrop-blur-lg border-b border-gold/10'
+        ? (theme === 'light' ? 'bg-white/90 backdrop-blur-lg border-b border-gray-200 shadow-sm' : 'bg-rich-black/90 backdrop-blur-lg border-b border-gold/10')
         : 'bg-transparent'
         }`}
     >
