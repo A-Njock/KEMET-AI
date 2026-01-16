@@ -96,8 +96,8 @@ export default function Chatbot() {
 
       <Header />
 
-      <main className="flex-1 flex flex-col max-w-4xl w-full mx-auto relative z-10">
-        <div className="flex-1 overflow-y-auto px-4 py-6 pt-32 scrollbar-thin scrollbar-thumb-gold/20 scrollbar-track-transparent">
+      <main className="flex-1 flex flex-col max-w-4xl w-full mx-auto relative z-10 pt-24">
+        <div className="flex-1 overflow-y-auto px-4 py-6 scrollbar-thin scrollbar-thumb-gold/20 scrollbar-track-transparent">
           {messages.length === 0 && (
             <div className="text-center py-20 animate-fade-in-up">
               <div className="w-20 h-20 bg-gradient-to-br from-gold to-gold-dark rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg shadow-gold/20 animate-pulse-slow">
@@ -128,7 +128,7 @@ export default function Chatbot() {
                   <div
                     className={`rounded-2xl p-5 shadow-lg backdrop-blur-sm border ${msg.role === 'user'
                       ? 'bg-gradient-to-br from-gold/20 to-gold/5 border-gold/30 text-white ml-auto rounded-tr-sm'
-                      : 'bg-white/5 border-white/10 text-gray-100 rounded-tl-sm hover:border-purple-500/30 transition-colors duration-300'
+                      : 'bg-gradient-to-br from-gray-900 to-[#1a1a2e] border-white/10 text-gray-100 rounded-tl-sm hover:border-purple-500/30 transition-colors duration-300'
                       }`}
                   >
                     <div
