@@ -6,8 +6,16 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-rich-black border-t border-gold/10">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
+    <footer className="fixed bottom-0 left-0 right-0 z-50 bg-[#0f0f14]/95 backdrop-blur-xl border-t border-gold/10 transition-transform duration-500 ease-in-out transform translate-y-[calc(100%-48px)] hover:translate-y-0 group shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+      {/* Handle / Always Visible Strip */}
+      <div className="h-12 flex items-center justify-center cursor-pointer group-hover:bg-white/5 transition-colors">
+        <div className="flex items-center gap-2">
+          <div className="w-12 h-1 bg-gold/50 rounded-full group-hover:w-16 transition-all duration-300"></div>
+          <span className="text-xs text-gold/60 uppercase tracking-widest font-heading group-hover:opacity-0 transition-opacity absolute">Kemet AI</span>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8 pb-12">
         {/* Top Section */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Brand Column */}
@@ -72,14 +80,14 @@ export default function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-gold/10 pt-8">
+        <div className="border-t border-gold/10 pt-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             {/* Copyright */}
             <p className="text-gray-500 text-sm">
               © {currentYear} Kemet AI. {i18n.language.startsWith('fr') ? 'Tous droits réservés.' : 'All rights reserved.'}
             </p>
 
-            {/* Social Links (placeholder) */}
+            {/* Social Links */}
             <div className="flex items-center gap-4">
               <a href="#" className="text-gray-500 hover:text-gold transition-colors">
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
