@@ -70,14 +70,14 @@ export default function Chatbot() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2e1065] via-[#1e1b4b] to-[#172554] font-sans flex flex-col relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-[#020617] via-[#1e3a8a] to-[#0f172a] font-sans flex flex-col relative overflow-hidden">
       {/* Background Particles & Blobs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Colorful Blobs - Enhanced Opacity & Brightness */}
-        <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-purple-500/30 rounded-full blur-[100px] animate-float" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-blue-500/30 rounded-full blur-[100px] animate-float" style={{ animationDelay: '2s' }} />
-        <div className="absolute top-[40%] left-[30%] w-[400px] h-[400px] bg-pink-500/20 rounded-full blur-[90px] animate-pulse-slow" />
-        <div className="absolute bottom-[20%] left-[10%] w-[300px] h-[300px] bg-indigo-500/25 rounded-full blur-[80px]" />
+        {/* Colorful Blobs - Royal Blue / Gold Theme */}
+        <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-blue-600/30 rounded-full blur-[100px] animate-float" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-cyan-500/20 rounded-full blur-[100px] animate-float" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-[40%] left-[30%] w-[400px] h-[400px] bg-blue-500/20 rounded-full blur-[90px] animate-pulse-slow" />
+        <div className="absolute bottom-[20%] left-[10%] w-[300px] h-[300px] bg-indigo-900/40 rounded-full blur-[80px]" />
 
         {[...Array(15)].map((_, i) => (
           <div
@@ -192,7 +192,7 @@ export default function Chatbot() {
         </div>
 
         {/* Input Area */}
-        <div className="p-4 mb-4">
+        <div className="p-4 mb-24">
           <div className="max-w-3xl mx-auto">
             {/* Disclaimers */}
             <p className="text-[10px] text-center text-white/30 mb-2">
