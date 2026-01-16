@@ -70,7 +70,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-rich-black font-sans overflow-x-hidden">
+    <div className="min-h-screen bg-[#0f0f14] font-sans overflow-x-hidden">
       <Header />
 
       {/* ===== HERO SECTION ===== */}
@@ -111,15 +111,15 @@ export default function Home() {
           <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-[1.1] tracking-tight">
             {i18n.language.startsWith('fr') ? (
               <>
-                <span className="gradient-text">Intelligence Artificielle</span>
+                <span className="gradient-text">Intelligence Artificielle.</span>
                 <br />
-                <span className="text-white/90">Conçue pour l'Afrique</span>
+                <span className="text-white/90">Bâtir la Confiance.</span>
               </>
             ) : (
               <>
-                <span className="gradient-text">Artificial Intelligence</span>
+                <span className="gradient-text">Artificial Intelligence.</span>
                 <br />
-                <span className="text-white/90">Built for Africa</span>
+                <span className="text-white/90">Building Trust.</span>
               </>
             )}
           </h1>
