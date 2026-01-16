@@ -37,12 +37,11 @@ export default function Chatbot() {
     setLoading(true);
 
     try {
-      // Build conversation history for context
       const conversationHistory = newMessages.map(msg => ({
         role: msg.role,
         content: msg.content
       }));
-      
+
       const result = await chatbot(input.trim(), conversationHistory);
       const assistantMessage: Message = {
         role: 'assistant',
@@ -54,7 +53,7 @@ export default function Chatbot() {
       console.error('Error:', error);
       const errorMessage: Message = {
         role: 'assistant',
-        content: 'Erreur lors de la recherche. Veuillez réessayer.'
+        content: t('error_generic') || 'Erreur lors de la recherche.'
       };
       setMessages([...newMessages, errorMessage]);
     } finally {
@@ -71,121 +70,168 @@ export default function Chatbot() {
   };
 
   return (
-    <div className="min-h-screen bg-[#343541] font-sans flex flex-col">
+    <div className="min-h-screen bg-[#151520] font-sans flex flex-col relative overflow-hidden">
+      {/* Background Particles */}
+      <div className="absolute inset-0 pointer-events-none">
+        {[...Array(15)].map((_, i) => (
+          <div
+            key={i}
+            className="particle absolute bg-gold/20 rounded-full"
+            style={{
+              width: Math.random() * 4 + 1 + 'px',
+              height: Math.random() * 4 + 1 + 'px',
+              left: Math.random() * 100 + '%',
+              top: Math.random() * 100 + '%',
+              animation: `float ${Math.random() * 10 + 10}s linear infinite`,
+            }}
+          />
+        ))}
+      </div>
+
       <Header />
-      <main className="flex-1 flex flex-col max-w-3xl w-full mx-auto">
-        <div className="flex-1 overflow-y-auto px-4 py-6">
+
+      <main className="flex-1 flex flex-col max-w-4xl w-full mx-auto relative z-10">
+        <div className="flex-1 overflow-y-auto px-4 py-6 scrollbar-thin scrollbar-thumb-gold/20 scrollbar-track-transparent">
           {messages.length === 0 && (
-            <div className="text-center text-gray-400 py-20">
-              <h2 className="text-2xl font-semibold text-white mb-2">{t('chatbot_title')}</h2>
-              <p className="text-sm">{t('chatbot_start')}</p>
+            <div className="text-center py-20 animate-fade-in-up">
+              <div className="w-20 h-20 bg-gradient-to-br from-gold to-gold-dark rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg shadow-gold/20 animate-pulse-slow">
+                <svg className="w-10 h-10 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                </svg>
+              </div>
+              <h2 className="text-3xl font-heading font-bold text-white mb-3">{t('chatbot_title')}</h2>
+              <p className="text-white/60 max-w-md mx-auto">{t('chatbot_start')}</p>
             </div>
           )}
-          
-          <div className="space-y-6">
+
+          <div className="space-y-8">
             {messages.map((msg, idx) => (
               <div
                 key={idx}
-                className={`flex gap-4 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                className={`flex gap-4 ${msg.role === 'user' ? 'justify-end' : 'justify-start items-start'} animate-slide-up`}
               >
                 {msg.role === 'assistant' && (
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gold flex items-center justify-center text-black font-bold text-sm">
-                    AI
+                  <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-gold to-gold-dark flex items-center justify-center text-black shadow-lg shadow-gold/10">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
                   </div>
                 )}
-                <div className={`flex-1 ${msg.role === 'user' ? 'max-w-[85%]' : 'max-w-[90%]'}`}>
+
+                <div className={`max-w-[85%] lg:max-w-[75%]`}>
                   <div
-                    className={`rounded-lg p-4 ${
-                      msg.role === 'user'
-                        ? 'bg-[#10a37f] text-white ml-auto'
-                        : 'bg-[#444654] text-gray-100'
-                    }`}
+                    className={`rounded-2xl p-5 shadow-lg backdrop-blur-sm border ${msg.role === 'user'
+                        ? 'bg-gradient-to-br from-gold/20 to-gold/5 border-gold/30 text-white ml-auto rounded-tr-sm'
+                        : 'bg-white/5 border-white/10 text-gray-100 rounded-tl-sm'
+                      }`}
                   >
                     <div
-                      className="prose prose-invert max-w-none text-sm leading-relaxed"
+                      className="prose prose-invert max-w-none text-base leading-relaxed"
                       dangerouslySetInnerHTML={{ __html: msg.content }}
                     />
                     {msg.sources && msg.sources.length > 0 && (
-                      <div className="mt-3 pt-3 border-t border-gray-600">
-                        <p className="text-xs text-gray-400 font-medium mb-2">Sources:</p>
-                        <ul className="list-disc list-inside text-xs text-gray-400 space-y-1">
+                      <div className="mt-4 pt-3 border-t border-white/10">
+                        <p className="text-xs text-gold/80 font-medium mb-2 uppercase tracking-wide">Sources Verified:</p>
+                        <ul className="space-y-1">
                           {msg.sources.map((source, i) => (
-                            <li key={i}>{source}</li>
+                            <li key={i} className="flex items-center gap-2 text-xs text-white/50 bg-black/20 rounded px-2 py-1">
+                              <span className="w-1 h-1 bg-gold rounded-full"></span>
+                              {source}
+                            </li>
                           ))}
                         </ul>
                       </div>
                     )}
                   </div>
                 </div>
+
                 {msg.role === 'user' && (
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#10a37f] flex items-center justify-center text-white font-bold text-sm">
-                    U
+                  <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-white">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
                   </div>
                 )}
               </div>
             ))}
-            
+
             {loading && (
-              <div className="flex gap-4 justify-start">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gold flex items-center justify-center text-black font-bold text-sm">
-                  AI
+              <div className="flex gap-4 justify-start animate-fade-in">
+                <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-gold to-gold-dark flex items-center justify-center text-black shadow-lg shadow-gold/10">
+                  <svg className="w-6 h-6 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
                 </div>
-                <div className="flex-1 max-w-[90%]">
-                  <div className="bg-[#444654] rounded-lg p-4">
-                    <div className="flex gap-1">
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
-                    </div>
+                <div className="bg-white/5 border border-white/10 rounded-2xl rounded-tl-sm p-4 flex items-center gap-2">
+                  <div className="flex space-x-1">
+                    <div className="w-2 h-2 bg-gold rounded-full animate-bounce" style={{ animationDelay: '0s' }} />
+                    <div className="w-2 h-2 bg-gold rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+                    <div className="w-2 h-2 bg-gold rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
                   </div>
+                  <span className="text-xs text-gold/70 font-medium ml-2 uppercase tracking-wider">Analyzing & Thinking</span>
                 </div>
               </div>
             )}
+
+            <div ref={messagesEndRef} />
           </div>
-          
-          <div ref={messagesEndRef} />
         </div>
 
-        {/* Disclaimers above the input */}
-        <div className="px-4 pb-2">
-          <p className="text-[11px] italic text-gray-400">
-            {t('disclaimer_text')}
-          </p>
-        </div>
+        {/* Input Area */}
+        <div className="p-4 mb-4">
+          <div className="max-w-3xl mx-auto">
+            {/* Disclaimers */}
+            <p className="text-[10px] text-center text-white/30 mb-2">
+              {t('disclaimer_text')}
+            </p>
 
-        <div className="border-t border-gray-700 bg-[#343541] px-4 py-3">
-          <form onSubmit={handleSubmit} className="flex gap-2 items-end">
-            <div className="flex-1 relative">
-              <textarea
-                ref={inputRef}
-                value={input}
-                onChange={(e) => {
-                  setInput(e.target.value);
-                  e.target.style.height = 'auto';
-                  e.target.style.height = Math.min(e.target.scrollHeight, 200) + 'px';
-                }}
-                onKeyDown={handleKeyDown}
-                placeholder={t('chatbot_placeholder')}
-                rows={1}
-                className="w-full px-4 py-3 bg-[#40414f] text-white rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-gold/50 max-h-[200px] overflow-y-auto"
-                disabled={loading}
-                style={{ minHeight: '48px' }}
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={loading || !input.trim()}
-              className="bg-[#10a37f] hover:bg-[#0d8f6e] text-white font-medium px-4 py-3 rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-              </svg>
-            </button>
-          </form>
+            <form onSubmit={handleSubmit} className="relative group">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-gold/30 to-gold-dark/30 rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-500"></div>
+              <div className="relative bg-[#1a1a25] rounded-2xl border border-white/10 flex items-end p-2 shadow-2xl">
+                <textarea
+                  ref={inputRef}
+                  value={input}
+                  onChange={(e) => {
+                    setInput(e.target.value);
+                    e.target.style.height = 'auto';
+                    e.target.style.height = Math.min(e.target.scrollHeight, 150) + 'px';
+                  }}
+                  onKeyDown={handleKeyDown}
+                  placeholder={t('chatbot_placeholder')}
+                  rows={1}
+                  className="flex-1 bg-transparent text-white px-4 py-3 max-h-[150px] resize-none focus:outline-none placeholder-white/30 text-base"
+                  disabled={loading}
+                  style={{ minHeight: '52px' }}
+                />
+
+                <button
+                  type="submit"
+                  disabled={loading || !input.trim()}
+                  className={`
+                    flex-shrink-0 mb-1 mr-1 p-3 rounded-xl transition-all duration-300
+                    ${loading || !input.trim()
+                      ? 'bg-white/5 text-white/20 cursor-not-allowed'
+                      : 'bg-gradient-to-br from-gold to-gold-dark text-black hover:scale-105 hover:shadow-lg hover:shadow-gold/20'
+                    }
+                  `}
+                >
+                  {loading ? (
+                    <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                  ) : (
+                    <svg className="w-5 h-5 transform rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </main>
       <Footer />
     </div>
   );
 }
-

@@ -7,9 +7,9 @@ export default function Footer() {
 
   return (
     <footer className="bg-rich-black border-t border-gold/10">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
         {/* Top Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Brand Column */}
           <div className="md:col-span-2">
             <Link to="/" className="inline-flex items-center gap-2 mb-4">
