@@ -70,7 +70,7 @@ export default function Chatbot() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0f0f14] via-[#1a1a25] to-[#14141c] font-sans flex flex-col relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-[#1c1917] via-[#292524] to-[#1c1917] font-sans flex flex-col relative overflow-hidden">
       {/* Background Particles & Blobs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Colorful Blobs - Dark Gold / Amber Theme */}
@@ -134,7 +134,7 @@ export default function Chatbot() {
 
                 <div
                   className={`max-w-xl p-4 rounded-2xl text-sm ${msg.role === 'assistant'
-                    ? 'bg-white/5 text-gray-200 border border-white/10 shadow-sm backdrop-blur-md'
+                    ? 'bg-white/10 text-gray-100 border border-white/10 shadow-sm backdrop-blur-md'
                     : 'bg-gold text-black border border-gold/40 shadow-sm'
                     }`}
                 >
@@ -198,7 +198,7 @@ export default function Chatbot() {
 
             <form onSubmit={handleSubmit} className="relative group">
               <div className="absolute -inset-0.5 bg-gradient-to-r from-gold/30 to-gold-dark/30 rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-500"></div>
-              <div className="relative bg-[#1a1a25] rounded-2xl border border-white/10 flex items-end p-2 shadow-xl">
+              <div className="relative bg-[#292524] rounded-2xl border border-white/10 flex items-end p-2 shadow-xl">
                 <textarea
                   ref={inputRef}
                   value={input}
