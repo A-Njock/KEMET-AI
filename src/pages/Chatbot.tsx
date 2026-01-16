@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 import { useTranslation } from 'react-i18next';
 import { chatbot } from '../lib/api';
 
@@ -241,6 +242,7 @@ export default function Chatbot() {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }
