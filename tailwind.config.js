@@ -7,7 +7,7 @@ export default {
   theme: {
     fontFamily: {
       sans: ['Outfit', 'system-ui', 'sans-serif'],
-      heading: ['Playfair Display', 'Georgia', 'serif'],
+      heading: ['Outfit', 'system-ui', 'sans-serif'],
       display: ['Outfit', 'system-ui', 'sans-serif'],
     },
     extend: {
