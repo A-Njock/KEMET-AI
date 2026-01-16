@@ -70,14 +70,14 @@ export default function Chatbot() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#FFF2E5] via-[#FDFBF7] to-[#F8F9FA] font-sans flex flex-col relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-[#0f0f14] via-[#1a1a25] to-[#14141c] font-sans flex flex-col relative overflow-hidden">
       {/* Background Particles & Blobs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Colorful Blobs - Light Amber/Gold Theme */}
-        <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-yellow-400/20 rounded-full blur-[100px] animate-float" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-orange-300/20 rounded-full blur-[100px] animate-float" style={{ animationDelay: '2s' }} />
-        <div className="absolute top-[40%] left-[30%] w-[400px] h-[400px] bg-amber-200/30 rounded-full blur-[90px] animate-pulse-slow" />
-        <div className="absolute bottom-[20%] left-[10%] w-[300px] h-[300px] bg-gold/10 rounded-full blur-[80px]" />
+        {/* Colorful Blobs - Dark Gold / Amber Theme */}
+        <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-gold/10 rounded-full blur-[100px] animate-float" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-amber-600/10 rounded-full blur-[100px] animate-float" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-[40%] left-[30%] w-[400px] h-[400px] bg-gold/10 rounded-full blur-[90px] animate-pulse-slow" />
+        <div className="absolute bottom-[20%] left-[10%] w-[300px] h-[300px] bg-amber-500/5 rounded-full blur-[80px]" />
 
         {[...Array(15)].map((_, i) => (
           <div
@@ -94,7 +94,7 @@ export default function Chatbot() {
         ))}
       </div>
 
-      <Header theme="light" />
+      <Header theme="dark" />
 
       <main className="flex-1 flex flex-col max-w-4xl w-full mx-auto relative z-10 pt-24">
         <div className="flex-1 overflow-y-auto px-4 py-6 pb-24 scrollbar-thin scrollbar-thumb-gold/20 scrollbar-track-transparent">
@@ -134,17 +134,17 @@ export default function Chatbot() {
 
                 <div
                   className={`max-w-xl p-4 rounded-2xl text-sm ${msg.role === 'assistant'
-                    ? 'bg-white text-gray-800 border border-gray-200 shadow-sm'
-                    : 'bg-gold text-white border border-gold/40 shadow-sm'
+                    ? 'bg-white/5 text-gray-200 border border-white/10 shadow-sm backdrop-blur-md'
+                    : 'bg-gold text-black border border-gold/40 shadow-sm'
                     }`}
                 >
                   {msg.content}
                   {msg.sources && (
-                    <div className="mt-3 pt-3 border-t border-gray-100">
-                      <p className="text-xs font-semibold text-indigo-600 mb-2">Sources:</p>
+                    <div className="mt-3 pt-3 border-t border-white/10">
+                      <p className="text-xs font-semibold text-gold mb-2">Sources:</p>
                       <ul className="space-y-1">
                         {msg.sources.map((source, i) => (
-                          <li key={i} className="flex items-center gap-2 text-xs text-gray-500 bg-gray-50 rounded px-2 py-1">
+                          <li key={i} className="flex items-center gap-2 text-xs text-gray-400 bg-black/30 rounded px-2 py-1">
                             <span className="w-1 h-1 bg-gold rounded-full"></span>
                             {source}
                           </li>
@@ -156,7 +156,7 @@ export default function Chatbot() {
 
                 {
                   msg.role === 'user' && (
-                    <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gold flex items-center justify-center text-white shadow-sm">
+                    <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gold flex items-center justify-center text-black shadow-sm">
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                       </svg>
@@ -192,13 +192,13 @@ export default function Chatbot() {
         <div className="p-4 mb-24">
           <div className="max-w-3xl mx-auto">
             {/* Disclaimers */}
-            <p className="text-[10px] text-center text-gray-400 mb-2">
+            <p className="text-[10px] text-center text-gray-500 mb-2">
               {t('disclaimer_text')}
             </p>
 
             <form onSubmit={handleSubmit} className="relative group">
               <div className="absolute -inset-0.5 bg-gradient-to-r from-gold/30 to-gold-dark/30 rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-500"></div>
-              <div className="relative bg-white rounded-2xl border border-gray-200 flex items-end p-2 shadow-xl">
+              <div className="relative bg-[#1a1a25] rounded-2xl border border-white/10 flex items-end p-2 shadow-xl">
                 <textarea
                   ref={inputRef}
                   value={input}
@@ -210,7 +210,7 @@ export default function Chatbot() {
                   onKeyDown={handleKeyDown}
                   placeholder={t('chatbot_placeholder')}
                   rows={1}
-                  className="flex-1 bg-transparent text-gray-900 px-4 py-3 max-h-[150px] resize-none focus:outline-none placeholder-gray-400 text-base"
+                  className="flex-1 bg-transparent text-gray-200 px-4 py-3 max-h-[150px] resize-none focus:outline-none placeholder-gray-500 text-base"
                   disabled={loading}
                   style={{ minHeight: '52px' }}
                 />
@@ -221,7 +221,7 @@ export default function Chatbot() {
                   className={`
                     flex-shrink-0 mb-1 mr-1 p-3 rounded-xl transition-all duration-300
                     ${loading || !input.trim()
-                      ? 'bg-gray-100 text-gray-300 cursor-not-allowed'
+                      ? 'bg-white/5 text-gray-500 cursor-not-allowed'
                       : 'bg-gradient-to-br from-gold to-gold-dark text-black hover:scale-105 hover:shadow-lg hover:shadow-gold/20'
                     }
                   `}

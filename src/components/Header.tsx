@@ -9,6 +9,7 @@ interface HeaderProps {
 export default function Header({ theme = 'dark' }: HeaderProps) {
   const { t, i18n } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Track scroll for header background
   if (typeof window !== 'undefined') {
@@ -43,7 +44,7 @@ export default function Header({ theme = 'dark' }: HeaderProps) {
           </span>
         </Link>
 
-        {/* Navigation */}
+        {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8">
           <Link
             to="/solutions"
@@ -69,22 +70,71 @@ export default function Header({ theme = 'dark' }: HeaderProps) {
           >
             {t('nav_about')}
           </Link>
+        </nav>
 
-          {/* Language Toggle */}
+        {/* Mobile Actions (Lang + Menu) */}
+        <div className="flex items-center gap-4">
+          {/* Language Toggle - Always Visible */}
           <button
             onClick={toggleLanguage}
-            className="ml-4 px-3 py-1.5 border border-gold/30 rounded-full text-xs text-gold hover:bg-gold/10 transition-all duration-300"
+            className={`px-3 py-1.5 border rounded-full text-xs transition-all duration-300 font-medium tracking-wide ${theme === 'light'
+              ? 'border-gray-200 text-gray-700 hover:bg-gray-100'
+              : 'border-gold/30 text-gold hover:bg-gold/10'
+              }`}
           >
             {i18n.language.startsWith('fr') ? 'EN' : 'FR'}
           </button>
-        </nav>
 
-        {/* Mobile Menu Button */}
-        <button className="md:hidden text-gold">
-          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
+          {/* Mobile Menu Button */}
+          <button
+            className={`md:hidden p-2 transition-colors ${theme === 'light' ? 'text-gray-900' : 'text-gold'}`}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              {isMobileMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
+        </div>
+
+        {/* Mobile Menu Overlay */}
+        {isMobileMenuOpen && (
+          <div className="absolute top-full left-0 w-full bg-[#0a0a0f] border-b border-gold/10 shadow-xl md:hidden animate-fade-in-down">
+            <div className="flex flex-col p-6 space-y-6">
+              <Link
+                to="/solutions"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-gray-300 hover:text-gold transition-colors text-lg font-medium"
+              >
+                {t('nav_solutions')}
+              </Link>
+              <Link
+                to="/outils"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-gray-300 hover:text-gold transition-colors text-lg font-medium"
+              >
+                {t('nav_tools')}
+              </Link>
+              <Link
+                to="/formations"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-gray-300 hover:text-gold transition-colors text-lg font-medium"
+              >
+                {t('nav_trainings')}
+              </Link>
+              <Link
+                to="/about"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-gray-300 hover:text-gold transition-colors text-lg font-medium"
+              >
+                {t('nav_about')}
+              </Link>
+            </div>
+          </div>
+        )}
       </div>
     </header>
   );
