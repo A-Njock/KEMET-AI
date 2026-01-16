@@ -18,8 +18,8 @@ export default function Footer() {
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed max-w-md">
               {i18n.language.startsWith('fr')
-                ? "Intelligence Artificielle conçue pour l'Afrique, pensée par les Africains. Solutions innovantes pour les entreprises camerounaises."
-                : "Artificial Intelligence built for Africa, innovated by Africans. Innovative solutions for Cameroonian businesses."
+                ? "Intelligence Artificielle de confiance. Solutions innovantes, formations d'élite, et transfert de compétences technologiques."
+                : "Artificial Intelligence you can trust. Innovative solutions, elite training, and real transfer of technological skills."
               }
             </p>
           </div>

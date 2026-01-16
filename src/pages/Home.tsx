@@ -86,15 +86,16 @@ export default function Home() {
         </div>
 
         {/* Floating particles */}
-        <div className="absolute inset-0 z-10 pointer-events-none">
-          {[...Array(6)].map((_, i) => (
+        <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
+          {[...Array(20)].map((_, i) => (
             <div
               key={i}
               className="particle"
               style={{
-                left: `${15 + i * 15}%`,
-                top: `${30 + (i % 3) * 20}%`,
-                animationDelay: `${i * 1.5}s`,
+                left: `${5 + (i * 5) % 90}%`,
+                top: `${10 + (i * 7) % 80}%`,
+                animationDelay: `${i * 0.8}s`,
+                animationDuration: `${4 + (i % 3)}s`,
               }}
             />
           ))}
@@ -140,10 +141,12 @@ export default function Home() {
           </div>
 
           {/* Scroll indicator */}
-          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
-            <svg className="w-6 h-6 text-gold/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-            </svg>
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
+            <div className="animate-bounce p-2">
+              <svg className="w-8 h-8 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
           </div>
         </div>
       </section>

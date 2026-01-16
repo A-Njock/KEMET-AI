@@ -168,8 +168,8 @@ const serviceCategories: ServiceCategory[] = [
         id: 'translation',
         title: { en: 'Smart Translation', fr: 'Traduction Intelligente' },
         bullets: {
-          en: ['Context-aware translations for business documents', 'Support for local African languages'],
-          fr: ['Traductions contextuelles pour documents business', 'Support des langues africaines locales']
+          en: ['Context-aware translations for business documents', 'Multilingual support for global and local markets'],
+          fr: ['Traductions contextuelles pour documents business', 'Support multilingue pour les marchés locaux et internationaux']
         },
         icon: '🌍'
       },
