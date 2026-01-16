@@ -113,13 +113,13 @@ export default function Home() {
               <>
                 <span className="gradient-text">Intelligence Artificielle</span>
                 <br />
-                <span className="text-white/90">Bâtir la Confiance</span>
+                <span className="text-white/90">De Confiance</span>
               </>
             ) : (
               <>
                 <span className="gradient-text">Artificial Intelligence</span>
                 <br />
-                <span className="text-white/90">Building Trust</span>
+                <span className="text-white/90">You Can Trust</span>
               </>
             )}
           </h1>
