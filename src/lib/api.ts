@@ -32,19 +32,27 @@ export async function fetchTrainings(): Promise<any[]> {
 
 // Chatbot API - calls the new Python backend
 export async function chatbot(
-  query: string, 
-  conversationHistory: Array<{role: string, content: string}> = []
+  query: string,
+  conversationHistory: Array<{ role: string, content: string }> = []
 ): Promise<{ answer: string; sources: string[] }> {
   try {
-    // Get backend URL from environment variable or use Render default
-    const backendUrl = import.meta.env.VITE_RAG_BACKEND_URL || 'https://kemet-ai-4.onrender.com';
-    
-    console.log('📡 Calling RAG backend at:', backendUrl);
-    
-    console.log('📤 Sending request to:', `${backendUrl}/ask`);
+    // Get backend URL from environment variable
+    // If empty or 'proxy', use relative URL (nginx will proxy to backend)
+    // Otherwise use the full URL provided
+    const envBackendUrl = import.meta.env.VITE_RAG_BACKEND_URL;
+    const backendUrl = (!envBackendUrl || envBackendUrl === 'proxy' || envBackendUrl === '')
+      ? '' // Use relative URL - nginx will proxy /ask to backend
+      : envBackendUrl;
+
+    const askUrl = backendUrl ? `${backendUrl}/ask` : '/ask';
+
+    console.log('📡 Calling RAG backend at:', askUrl);
+
+    console.log('📤 Sending request to:', askUrl);
     console.log('📤 Request payload:', { query, historyLength: conversationHistory.length });
-    
-    const response = await fetch(`${backendUrl}/ask`, {
+
+    const response = await fetch(askUrl, {
+
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -65,16 +73,16 @@ export async function chatbot(
 
     const data = await response.json();
     console.log('✅ Backend response received:', data);
-    
+
     // Check if backend returned its fallback message
     if (data.answer && data.answer.includes("Pierre Guy A.Njock qui a fais le song")) {
       console.warn('⚠️ Backend returned fallback message - no relevant context found');
     }
-    
+
     // Extract sources from answer if available (backend may include them)
     // For now, we'll return empty sources array as the backend doesn't seem to return them
     const sources: string[] = [];
-    
+
     return {
       answer: data.answer || 'Erreur: aucune réponse du serveur.',
       sources: sources
@@ -85,9 +93,9 @@ export async function chatbot(
       message: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined
     });
-    
+
     const errorMessage = error instanceof Error ? error.message : String(error);
-    
+
     // Only return fallback if it's a network/connection error
     // If backend responded but with an error, show that error
     if (errorMessage.includes('Failed to fetch') || errorMessage.includes('NetworkError')) {
@@ -96,7 +104,7 @@ export async function chatbot(
         sources: []
       };
     }
-    
+
     // Return fallback message for other errors
     return {
       answer: `Erreur: ${errorMessage}. Veuillez réessayer.`,
