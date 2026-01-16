@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
 import Header from '../components/Header';
-import Footer from '../components/Footer';
 import { useTranslation } from 'react-i18next';
 import { chatbot } from '../lib/api';
 
@@ -94,7 +93,7 @@ export default function Chatbot() {
         ))}
       </div>
 
-      <Header theme="dark" />
+      <Header theme="dark" simple={true} />
 
       <main className="flex-1 flex flex-col max-w-4xl w-full mx-auto relative z-10 pt-24">
         <div className="flex-1 overflow-y-auto px-4 py-6 pb-24 scrollbar-thin scrollbar-thumb-gold/20 scrollbar-track-transparent">
@@ -242,7 +241,6 @@ export default function Chatbot() {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

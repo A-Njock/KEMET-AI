@@ -4,9 +4,10 @@ import { useState } from 'react';
 
 interface HeaderProps {
   theme?: 'light' | 'dark';
+  simple?: boolean;
 }
 
-export default function Header({ theme = 'dark' }: HeaderProps) {
+export default function Header({ theme = 'dark', simple = false }: HeaderProps) {
   const { t, i18n } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -45,32 +46,34 @@ export default function Header({ theme = 'dark' }: HeaderProps) {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-8">
-          <Link
-            to="/solutions"
-            className={`${theme === 'light' ? 'text-gray-600 hover:text-gold' : 'text-gray-300 hover:text-gold'} transition-colors duration-300 text-sm font-medium tracking-wide`}
-          >
-            {t('nav_solutions')}
-          </Link>
-          <Link
-            to="/outils"
-            className={`${theme === 'light' ? 'text-gray-600 hover:text-gold' : 'text-gray-300 hover:text-gold'} transition-colors duration-300 text-sm font-medium tracking-wide`}
-          >
-            {t('nav_tools')}
-          </Link>
-          <Link
-            to="/formations"
-            className={`${theme === 'light' ? 'text-gray-600 hover:text-gold' : 'text-gray-300 hover:text-gold'} transition-colors duration-300 text-sm font-medium tracking-wide`}
-          >
-            {t('nav_trainings')}
-          </Link>
-          <Link
-            to="/about"
-            className={`${theme === 'light' ? 'text-gray-600 hover:text-gold' : 'text-gray-300 hover:text-gold'} transition-colors duration-300 text-sm font-medium tracking-wide`}
-          >
-            {t('nav_about')}
-          </Link>
-        </nav>
+        {!simple && (
+          <nav className="hidden md:flex items-center gap-8">
+            <Link
+              to="/solutions"
+              className={`${theme === 'light' ? 'text-gray-600 hover:text-gold' : 'text-gray-300 hover:text-gold'} transition-colors duration-300 text-sm font-medium tracking-wide`}
+            >
+              {t('nav_solutions')}
+            </Link>
+            <Link
+              to="/outils"
+              className={`${theme === 'light' ? 'text-gray-600 hover:text-gold' : 'text-gray-300 hover:text-gold'} transition-colors duration-300 text-sm font-medium tracking-wide`}
+            >
+              {t('nav_tools')}
+            </Link>
+            <Link
+              to="/formations"
+              className={`${theme === 'light' ? 'text-gray-600 hover:text-gold' : 'text-gray-300 hover:text-gold'} transition-colors duration-300 text-sm font-medium tracking-wide`}
+            >
+              {t('nav_trainings')}
+            </Link>
+            <Link
+              to="/about"
+              className={`${theme === 'light' ? 'text-gray-600 hover:text-gold' : 'text-gray-300 hover:text-gold'} transition-colors duration-300 text-sm font-medium tracking-wide`}
+            >
+              {t('nav_about')}
+            </Link>
+          </nav>
+        )}
 
         {/* Mobile Actions (Lang + Menu) */}
         <div className="flex items-center gap-4">
@@ -86,18 +89,20 @@ export default function Header({ theme = 'dark' }: HeaderProps) {
           </button>
 
           {/* Mobile Menu Button */}
-          <button
-            className={`md:hidden p-2 transition-colors ${theme === 'light' ? 'text-gray-900' : 'text-gold'}`}
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              {isMobileMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
+          {!simple && (
+            <button
+              className={`md:hidden p-2 transition-colors ${theme === 'light' ? 'text-gray-900' : 'text-gold'}`}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                {isMobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
+          )}
         </div>
 
         {/* Mobile Menu Overlay */}
