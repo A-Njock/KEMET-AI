@@ -70,14 +70,14 @@ export default function Chatbot() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#020617] via-[#1e3a8a] to-[#0f172a] font-sans flex flex-col relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-[#FFF2E5] via-[#FDFBF7] to-[#F8F9FA] font-sans flex flex-col relative overflow-hidden">
       {/* Background Particles & Blobs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Colorful Blobs - Royal Blue / Gold Theme */}
-        <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-blue-600/30 rounded-full blur-[100px] animate-float" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-cyan-500/20 rounded-full blur-[100px] animate-float" style={{ animationDelay: '2s' }} />
-        <div className="absolute top-[40%] left-[30%] w-[400px] h-[400px] bg-blue-500/20 rounded-full blur-[90px] animate-pulse-slow" />
-        <div className="absolute bottom-[20%] left-[10%] w-[300px] h-[300px] bg-indigo-900/40 rounded-full blur-[80px]" />
+        {/* Colorful Blobs - Light Amber/Gold Theme */}
+        <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-yellow-400/20 rounded-full blur-[100px] animate-float" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-orange-300/20 rounded-full blur-[100px] animate-float" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-[40%] left-[30%] w-[400px] h-[400px] bg-amber-200/30 rounded-full blur-[90px] animate-pulse-slow" />
+        <div className="absolute bottom-[20%] left-[10%] w-[300px] h-[300px] bg-gold/10 rounded-full blur-[80px]" />
 
         {[...Array(15)].map((_, i) => (
           <div
@@ -94,7 +94,7 @@ export default function Chatbot() {
         ))}
       </div>
 
-      <Header />
+      <Header theme="light" />
 
       <main className="flex-1 flex flex-col max-w-4xl w-full mx-auto relative z-10 pt-24">
         <div className="flex-1 overflow-y-auto px-4 py-6 pb-24 scrollbar-thin scrollbar-thumb-gold/20 scrollbar-track-transparent">
@@ -132,40 +132,37 @@ export default function Chatbot() {
                   </div>
                 )}
 
-                <div className={`max-w-[85%] lg:max-w-[75%]`}>
-                  <div
-                    className={`rounded-2xl p-5 shadow-lg backdrop-blur-md border ${msg.role === 'user'
-                      ? 'bg-gradient-to-br from-gold/30 to-orange-500/20 border-gold/40 text-white ml-auto rounded-tr-sm'
-                      : 'bg-gradient-to-br from-[#2d2d44]/80 to-[#1e1e2e]/90 border-white/10 text-gray-100 rounded-tl-sm hover:border-purple-500/40 transition-colors duration-300'
-                      }`}
-                  >
-                    <div
-                      className="prose prose-invert max-w-none text-base leading-relaxed"
-                      dangerouslySetInnerHTML={{ __html: msg.content }}
-                    />
-                    {msg.sources && msg.sources.length > 0 && (
-                      <div className="mt-4 pt-3 border-t border-white/10">
-                        <p className="text-xs text-gold/80 font-medium mb-2 uppercase tracking-wide">Sources Verified:</p>
-                        <ul className="space-y-1">
-                          {msg.sources.map((source, i) => (
-                            <li key={i} className="flex items-center gap-2 text-xs text-white/50 bg-black/20 rounded px-2 py-1">
-                              <span className="w-1 h-1 bg-gold rounded-full"></span>
-                              {source}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
+                <div
+                  className={`max-w-xl p-4 rounded-2xl text-sm ${msg.role === 'assistant'
+                    ? 'bg-white text-gray-800 border border-gray-200 shadow-sm'
+                    : 'bg-gold text-white border border-gold/40 shadow-sm'
+                    }`}
+                >
+                  {msg.content}
+                  {msg.sources && (
+                    <div className="mt-3 pt-3 border-t border-gray-100">
+                      <p className="text-xs font-semibold text-indigo-600 mb-2">Sources:</p>
+                      <ul className="space-y-1">
+                        {msg.sources.map((source, i) => (
+                          <li key={i} className="flex items-center gap-2 text-xs text-gray-500 bg-gray-50 rounded px-2 py-1">
+                            <span className="w-1 h-1 bg-gold rounded-full"></span>
+                            {source}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
 
-                {msg.role === 'user' && (
-                  <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-white">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                  </div>
-                )}
+                {
+                  msg.role === 'user' && (
+                    <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gold flex items-center justify-center text-white shadow-sm">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                    </div>
+                  )
+                }
               </div>
             ))}
 
@@ -195,13 +192,13 @@ export default function Chatbot() {
         <div className="p-4 mb-24">
           <div className="max-w-3xl mx-auto">
             {/* Disclaimers */}
-            <p className="text-[10px] text-center text-white/30 mb-2">
+            <p className="text-[10px] text-center text-gray-400 mb-2">
               {t('disclaimer_text')}
             </p>
 
             <form onSubmit={handleSubmit} className="relative group">
               <div className="absolute -inset-0.5 bg-gradient-to-r from-gold/30 to-gold-dark/30 rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-500"></div>
-              <div className="relative bg-[#1a1a25] rounded-2xl border border-white/10 flex items-end p-2 shadow-2xl">
+              <div className="relative bg-white rounded-2xl border border-gray-200 flex items-end p-2 shadow-xl">
                 <textarea
                   ref={inputRef}
                   value={input}
@@ -213,7 +210,7 @@ export default function Chatbot() {
                   onKeyDown={handleKeyDown}
                   placeholder={t('chatbot_placeholder')}
                   rows={1}
-                  className="flex-1 bg-transparent text-white px-4 py-3 max-h-[150px] resize-none focus:outline-none placeholder-white/30 text-base"
+                  className="flex-1 bg-transparent text-gray-900 px-4 py-3 max-h-[150px] resize-none focus:outline-none placeholder-gray-400 text-base"
                   disabled={loading}
                   style={{ minHeight: '52px' }}
                 />
@@ -224,7 +221,7 @@ export default function Chatbot() {
                   className={`
                     flex-shrink-0 mb-1 mr-1 p-3 rounded-xl transition-all duration-300
                     ${loading || !input.trim()
-                      ? 'bg-white/5 text-white/20 cursor-not-allowed'
+                      ? 'bg-gray-100 text-gray-300 cursor-not-allowed'
                       : 'bg-gradient-to-br from-gold to-gold-dark text-black hover:scale-105 hover:shadow-lg hover:shadow-gold/20'
                     }
                   `}

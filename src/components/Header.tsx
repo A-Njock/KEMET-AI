@@ -2,7 +2,11 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 
-export default function Header() {
+interface HeaderProps {
+  theme?: 'light' | 'dark';
+}
+
+export default function Header({ theme = 'dark' }: HeaderProps) {
   const { t, i18n } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -21,8 +25,8 @@ export default function Header() {
   return (
     <header
       className={`fixed w-full py-5 px-6 lg:px-8 z-50 transition-all duration-500 ${isScrolled
-          ? 'bg-rich-black/90 backdrop-blur-lg border-b border-gold/10'
-          : 'bg-transparent'
+        ? 'bg-rich-black/90 backdrop-blur-lg border-b border-gold/10'
+        : 'bg-transparent'
         }`}
     >
       <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -34,7 +38,7 @@ export default function Header() {
           <span className="font-heading text-2xl font-bold text-gold group-hover:text-gold-light transition-colors duration-300">
             Kemet
           </span>
-          <span className="font-display text-2xl font-light text-white group-hover:text-gray-200 transition-colors duration-300">
+          <span className={`font-display text-2xl font-light transition-colors duration-300 ${theme === 'light' ? 'text-gray-900 group-hover:text-black' : 'text-white group-hover:text-gray-200'}`}>
             AI
           </span>
         </Link>
@@ -43,25 +47,25 @@ export default function Header() {
         <nav className="hidden md:flex items-center gap-8">
           <Link
             to="/solutions"
-            className="text-gray-300 hover:text-gold transition-colors duration-300 text-sm font-medium tracking-wide"
+            className={`${theme === 'light' ? 'text-gray-600 hover:text-gold' : 'text-gray-300 hover:text-gold'} transition-colors duration-300 text-sm font-medium tracking-wide`}
           >
             {t('nav_solutions')}
           </Link>
           <Link
             to="/outils"
-            className="text-gray-300 hover:text-gold transition-colors duration-300 text-sm font-medium tracking-wide"
+            className={`${theme === 'light' ? 'text-gray-600 hover:text-gold' : 'text-gray-300 hover:text-gold'} transition-colors duration-300 text-sm font-medium tracking-wide`}
           >
             {t('nav_tools')}
           </Link>
           <Link
             to="/formations"
-            className="text-gray-300 hover:text-gold transition-colors duration-300 text-sm font-medium tracking-wide"
+            className={`${theme === 'light' ? 'text-gray-600 hover:text-gold' : 'text-gray-300 hover:text-gold'} transition-colors duration-300 text-sm font-medium tracking-wide`}
           >
             {t('nav_trainings')}
           </Link>
           <Link
             to="/about"
-            className="text-gray-300 hover:text-gold transition-colors duration-300 text-sm font-medium tracking-wide"
+            className={`${theme === 'light' ? 'text-gray-600 hover:text-gold' : 'text-gray-300 hover:text-gold'} transition-colors duration-300 text-sm font-medium tracking-wide`}
           >
             {t('nav_about')}
           </Link>
