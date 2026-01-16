@@ -18,7 +18,7 @@ export default function Outils() {
   ];
 
   return (
-    <div className="min-h-screen bg-black font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-[#1c1917] via-[#292524] to-[#1c1917] font-sans">
       <Header />
       <main className="max-w-6xl mx-auto px-4 py-16 md:py-24">
         {/* Page Header */}

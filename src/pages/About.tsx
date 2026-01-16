@@ -10,12 +10,12 @@ export default function About() {
   const paragraphs = content.split('\n\n').filter(p => p.trim());
 
   return (
-    <div className="min-h-screen bg-black font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-[#1c1917] via-[#292524] to-[#1c1917] font-sans">
       <Header />
       <main className="max-w-3xl mx-auto px-4 py-16 md:py-24">
         {/* Content */}
         <div className="space-y-8">
-          <div 
+          <div
             className="text-gray-300 leading-relaxed text-base md:text-lg space-y-6 italic"
             style={{ fontFamily: 'Sora, sans-serif' }}
           >

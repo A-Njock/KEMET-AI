@@ -149,7 +149,7 @@ export default function Formations() {
   const closeModal = () => setSelectedTraining(null);
 
   return (
-    <div className="min-h-screen bg-[#151520] font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-[#1c1917] via-[#292524] to-[#1c1917] font-sans">
       <Header />
 
       <main className="max-w-6xl mx-auto px-4 py-16">
@@ -172,8 +172,8 @@ export default function Formations() {
             <div
               key={training.id}
               className={`rounded-2xl p-8 border backdrop-blur-sm transition-all duration-300 hover:scale-[1.01] ${training.status === 'upcoming'
-                  ? 'bg-gradient-to-br from-gold/10 to-transparent border-gold/40 hover:border-gold'
-                  : 'bg-white/5 border-white/20 hover:border-white/40'
+                ? 'bg-gradient-to-br from-gold/10 to-transparent border-gold/40 hover:border-gold'
+                : 'bg-white/5 border-white/20 hover:border-white/40'
                 }`}
             >
               {/* Status Badge */}
