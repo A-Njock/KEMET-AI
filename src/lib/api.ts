@@ -44,7 +44,9 @@ export async function chatbot(
     // Use /query endpoint which is the new standard
     const queryUrl = backendUrl ? `${backendUrl}/query` : '/query';
 
-    console.log('📡 Calling Kemet RAG backend at:', queryUrl);
+    console.log('🔍 [DEBUG] Env Backend URL:', envBackendUrl);
+    console.log('🔍 [DEBUG] Computed Backend URL:', backendUrl);
+    console.log('📡 [DEBUG] Final Query URL:', queryUrl);
 
     const response = await fetch(queryUrl, {
       method: 'POST',
