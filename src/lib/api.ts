@@ -34,81 +34,57 @@ export async function fetchTrainings(): Promise<any[]> {
 export async function chatbot(
   query: string,
   conversationHistory: Array<{ role: string, content: string }> = []
-): Promise<{ answer: string; sources: string[] }> {
+): Promise<{ answer: string; sources: any[] }> {
   try {
-    // Get backend URL from environment variable
-    // If empty or 'proxy', use relative URL (nginx will proxy to backend)
-    // Otherwise use the full URL provided
     const envBackendUrl = import.meta.env.VITE_RAG_BACKEND_URL;
     const backendUrl = (!envBackendUrl || envBackendUrl === 'proxy' || envBackendUrl === '')
-      ? '' // Use relative URL - nginx will proxy /ask to backend
+      ? ''
       : envBackendUrl;
 
-    const askUrl = backendUrl ? `${backendUrl}/ask` : '/ask';
+    // Use /query endpoint which is the new standard
+    const queryUrl = backendUrl ? `${backendUrl}/query` : '/query';
 
-    console.log('📡 Calling RAG backend at:', askUrl);
+    console.log('📡 Calling Kemet RAG backend at:', queryUrl);
 
-    console.log('📤 Sending request to:', askUrl);
-    console.log('📤 Request payload:', { query, historyLength: conversationHistory.length });
-
-    const response = await fetch(askUrl, {
-
+    const response = await fetch(queryUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        query: query,
-        history: conversationHistory
+        question: query,         // New standard
+        history: conversationHistory, // Pass history for future context usage
+        top_k: 5
       }),
     });
 
-    console.log('📥 Response status:', response.status, response.statusText);
-
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('❌ Backend error response:', errorText);
-      throw new Error(`Backend responded with status: ${response.status} - ${errorText}`);
+      throw new Error(`Backend error: ${response.status} - ${errorText}`);
     }
 
     const data = await response.json();
     console.log('✅ Backend response received:', data);
 
-    // Check if backend returned its fallback message
-    if (data.answer && data.answer.includes("Pierre Guy A.Njock qui a fais le song")) {
-      console.warn('⚠️ Backend returned fallback message - no relevant context found');
-    }
-
-    // Extract sources from answer if available (backend may include them)
-    // For now, we'll return empty sources array as the backend doesn't seem to return them
-    const sources: string[] = [];
-
     return {
       answer: data.answer || 'Erreur: aucune réponse du serveur.',
-      sources: sources
+      sources: data.sources || []
     };
   } catch (error) {
     console.error('❌ Error calling RAG backend:', error);
-    console.error('Error details:', {
-      message: error instanceof Error ? error.message : String(error),
-      stack: error instanceof Error ? error.stack : undefined
-    });
-
     const errorMessage = error instanceof Error ? error.message : String(error);
 
-    // Only return fallback if it's a network/connection error
-    // If backend responded but with an error, show that error
     if (errorMessage.includes('Failed to fetch') || errorMessage.includes('NetworkError')) {
       return {
-        answer: `Erreur de connexion au serveur. Veuillez réessayer dans quelques instants. Si le problème persiste, contactez-nous.`,
+        answer: `Erreur de connexion au serveur backend (${import.meta.env.VITE_RAG_BACKEND_URL}). Veuillez vérifier que le serveur est en ligne.`,
         sources: []
       };
     }
 
-    // Return fallback message for other errors
     return {
-      answer: `Erreur: ${errorMessage}. Veuillez réessayer.`,
+      answer: `Erreur: ${errorMessage}`,
       sources: []
     };
   }
 }
+

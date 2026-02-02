@@ -4,10 +4,16 @@ import Footer from '../components/Footer';
 import { useTranslation } from 'react-i18next';
 import { chatbot } from '../lib/api';
 
+interface Source {
+  article: string;
+  law: string;
+  citation: string;
+}
+
 interface Message {
   role: 'user' | 'assistant';
   content: string;
-  sources?: string[];
+  sources?: Source[];
 }
 
 export default function Chatbot() {
@@ -138,18 +144,36 @@ export default function Chatbot() {
                     : 'bg-gold text-black border border-gold/40 shadow-sm'
                     }`}
                 >
-                  {msg.content}
-                  {msg.sources && (
-                    <div className="mt-3 pt-3 border-t border-white/10">
-                      <p className="text-xs font-semibold text-gold mb-2">Sources:</p>
-                      <ul className="space-y-1">
+                  <div className="prose prose-invert prose-sm max-w-none">
+                    {msg.content.split('\n').map((line, i) => (
+                      <p key={i} className="mb-2 last:mb-0">
+                        {line}
+                      </p>
+                    ))}
+                  </div>
+                  {msg.sources && msg.sources.length > 0 && (
+                    <div className="mt-4 pt-4 border-t border-white/10">
+                      <p className="text-[10px] font-bold text-gold uppercase tracking-widest mb-3 opacity-80 flex items-center gap-2">
+                        <span className="w-4 h-[1px] bg-gold opacity-50"></span>
+                        {t('sources_title') || 'SOURCES JURIDIQUES'}
+                      </p>
+                      <div className="grid grid-cols-1 gap-2">
                         {msg.sources.map((source, i) => (
-                          <li key={i} className="flex items-center gap-2 text-xs text-gray-400 bg-black/30 rounded px-2 py-1">
-                            <span className="w-1 h-1 bg-gold rounded-full"></span>
-                            {source}
-                          </li>
+                          <div key={i} className="group flex flex-col p-2.5 bg-black/40 rounded-xl border border-white/5 hover:border-gold/30 transition-all duration-300">
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="flex-shrink-0 w-4 h-4 rounded-full bg-gold/20 flex items-center justify-center text-[8px] font-bold text-gold border border-gold/30">
+                                {i + 1}
+                              </span>
+                              <span className="text-[11px] font-semibold text-gray-200">
+                                {source.article}
+                              </span>
+                            </div>
+                            <span className="text-[10px] text-gray-400 italic pl-6 truncate group-hover:text-gray-300 transition-colors">
+                              {source.law}
+                            </span>
+                          </div>
                         ))}
-                      </ul>
+                      </div>
                     </div>
                   )}
                 </div>
