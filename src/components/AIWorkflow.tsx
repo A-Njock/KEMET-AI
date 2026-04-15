@@ -90,7 +90,7 @@ export default function AIWorkflow({ lang }: AIWorkflowProps) {
   ];
 
   return (
-    <div ref={ref} className="mt-20">
+    <div ref={ref} className="mt-8">
       {/* Steps */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-0 relative">
 
