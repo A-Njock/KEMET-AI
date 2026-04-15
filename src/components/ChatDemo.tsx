@@ -57,7 +57,7 @@ export default function ChatDemo() {
       transition={{ duration: 0.7, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
       style={{ width: 340, flexShrink: 0 }}
     >
-      <div className="bg-white/45 backdrop-blur-sm rounded-2xl border border-[#E2D9C8]/60 shadow-[0_8px_40px_rgba(12,27,74,0.06)] overflow-hidden">
+      <div className="bg-white/25 backdrop-blur-sm rounded-2xl border border-[#E2D9C8]/40 shadow-[0_8px_40px_rgba(12,27,74,0.04)] overflow-hidden">
 
         {/* Window chrome */}
         <div className="px-5 py-3 border-b border-[#E2D9C8] flex items-center gap-3 bg-ivory">
