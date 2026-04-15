@@ -1,0 +1,23 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <defs>
+    <linearGradient id="shipGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A8FA8;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#8B6BAE;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#C85E7D;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Ship cabin/bridge top -->
+  <rect x="78" y="42" width="44" height="28" rx="5" stroke="url(#shipGrad)" stroke-width="9" stroke-linejoin="round"/>
+  <!-- Cabin window/opening -->
+  <rect x="88" y="52" width="24" height="10" rx="2" stroke="url(#shipGrad)" stroke-width="7"/>
+  <!-- Ship hull main body -->
+  <rect x="36" y="74" width="128" height="72" rx="4" stroke="url(#shipGrad)" stroke-width="9" stroke-linejoin="round"/>
+  <!-- Container grid lines horizontal -->
+  <line x1="36" y1="98" x2="164" y2="98" stroke="url(#shipGrad)" stroke-width="8"/>
+  <line x1="36" y1="122" x2="164" y2="122" stroke="url(#shipGrad)" stroke-width="8"/>
+  <!-- Container grid lines vertical -->
+  <line x1="79" y1="74" x2="79" y2="146" stroke="url(#shipGrad)" stroke-width="8"/>
+  <line x1="122" y1="74" x2="122" y2="146" stroke="url(#shipGrad)" stroke-width="8"/>
+  <!-- Hull bottom taper (bow shape) -->
+  <path d="M36 146 L28 162 L172 162 L164 146" stroke="url(#shipGrad)" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

@@ -15,43 +15,34 @@ export default function Card({ title, desc, to, icon }: CardProps) {
 
   return (
     <div
-      className="glass-card group cursor-pointer rounded-2xl p-8 overflow-hidden"
+      className="luxury-card group cursor-pointer p-8 overflow-hidden relative"
       onClick={() => navigate(to)}
     >
-      <div className="relative z-10">
-        {/* Icon */}
-        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-gold/20 to-gold/5 flex items-center justify-center mb-6 group-hover:from-gold/30 group-hover:to-gold/10 transition-all duration-300 text-gold">
-          {icon || (
-            <div className="w-6 h-6 rounded bg-gold/40 group-hover:bg-gold/60 transition-colors" />
-          )}
-        </div>
-
-        {/* Title */}
-        <h3 className="font-heading text-2xl font-bold text-white mb-4 group-hover:text-gold transition-colors duration-300">
-          {title}
-        </h3>
-
-        {/* Description */}
-        <p className="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors mb-6">
-          {desc}
-        </p>
-
-        {/* CTA Link */}
-        <div className="flex items-center text-gold text-sm font-medium opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-          {i18n.language.startsWith('fr') ? 'En savoir plus' : 'Learn more'}
-          <svg
-            className="w-4 h-4 ml-2 transform group-hover:translate-x-2 transition-transform duration-300"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </div>
+      {/* Icon */}
+      <div className="w-12 h-12 rounded-xl bg-royal-pale border border-royal/15 flex items-center justify-center mb-6 group-hover:bg-royal group-hover:border-royal transition-all duration-300 text-royal group-hover:text-white">
+        {icon || <div className="w-5 h-5 rounded bg-royal/30" />}
       </div>
 
-      {/* Hover glow effect */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gold/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+      {/* Title */}
+      <h3 className="font-display text-2xl font-semibold text-navy mb-3 group-hover:text-royal transition-colors duration-300">
+        {title}
+      </h3>
+
+      {/* Description */}
+      <p className="text-slate text-sm leading-relaxed mb-6">
+        {desc}
+      </p>
+
+      {/* CTA */}
+      <div className="flex items-center text-royal text-sm font-semibold gap-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
+        {i18n.language.startsWith('fr') ? 'En savoir plus' : 'Learn more'}
+        <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </div>
+
+      {/* Subtle corner accent */}
+      <div className="absolute bottom-0 right-0 w-20 h-20 bg-royal-pale rounded-tl-3xl opacity-0 group-hover:opacity-60 transition-opacity duration-300 pointer-events-none" />
     </div>
   );
 }
