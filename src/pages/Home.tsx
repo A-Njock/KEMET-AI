@@ -152,11 +152,11 @@ export default function Home() {
           <motion.div
             className="absolute right-8 lg:right-20 top-1/2 -translate-y-1/2 hidden lg:block pointer-events-none"
             initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 0.08, x: 0 }}
+            animate={{ opacity: 0.12, x: 0 }}
             transition={{ duration: 1.2, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
             <motion.img
-              src="/ganp-logo.svg"
+              src="/ganp-logo.png"
               alt=""
               className="w-80 h-80"
               animate={{ y: [0, -12, 0] }}

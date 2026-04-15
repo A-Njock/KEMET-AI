@@ -36,7 +36,7 @@ export default function Header({ simple = false }: HeaderProps) {
         {/* Logo */}
         <Link to="/" className="group flex items-center gap-3">
           <div className="w-9 h-9 flex-shrink-0">
-            <img src="/ganp-logo.svg" alt="GANP" className="w-full h-full" />
+            <img src="/ganp-logo.png" alt="GANP" className="w-full h-full object-contain" />
           </div>
           <span className="font-display text-2xl font-semibold text-navy tracking-tight">GANP</span>
         </Link>
