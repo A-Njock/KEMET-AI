@@ -1,32 +1,26 @@
+import { motion, type Variants } from 'framer-motion';
 import Card from '../components/Card';
 import Header from '../components/Header';
 import Gallery from '../components/Gallery';
 import Footer from '../components/Footer';
+import AnimateIn from '../components/AnimateIn';
+import Counter from '../components/Counter';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
+
+const stagger: Variants = {
+  visible: { transition: { staggerChildren: 0.12 } },
+  hidden: {},
+};
+
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 28 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } },
+};
 
 export default function Home() {
   const { t, i18n } = useTranslation();
   const isFr = i18n.language.startsWith('fr');
-  const revealRefs = useRef<(HTMLElement | null)[]>([]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) entry.target.classList.add('visible');
-        });
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
-    );
-    revealRefs.current.forEach((ref) => { if (ref) observer.observe(ref); });
-    return () => observer.disconnect();
-  }, []);
-
-  const addToRefs = (el: HTMLElement | null, index: number) => {
-    revealRefs.current[index] = el;
-  };
 
   const cards = [
     {
@@ -68,59 +62,61 @@ export default function Home() {
 
       {/* ===== HERO ===== */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
-
-        {/* Background: grid pattern + gradient orbs */}
         <div className="absolute inset-0 hero-grid-pattern" />
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-radial from-royal-pale via-transparent to-transparent opacity-70 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-radial from-[#EEF2FF] via-transparent to-transparent opacity-50 pointer-events-none" />
+        {/* Gradient orbs */}
+        <motion.div
+          className="absolute top-0 right-0 w-[700px] h-[700px] rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(238,242,255,0.8) 0%, transparent 70%)' }}
+          animate={{ scale: [1, 1.05, 1], opacity: [0.7, 0.9, 0.7] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        <motion.div
+          className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(238,242,255,0.5) 0%, transparent 70%)' }}
+          animate={{ scale: [1, 1.08, 1], opacity: [0.5, 0.7, 0.5] }}
+          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+        />
 
-        {/* Content */}
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pt-28 pb-20 w-full">
-          <div className="max-w-3xl">
-
+          <motion.div
+            className="max-w-3xl"
+            variants={stagger}
+            initial="hidden"
+            animate="visible"
+          >
             {/* Eyebrow */}
-            <div className="flex items-center gap-3 mb-8 animate-fade-in-up" style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
+            <motion.div variants={fadeUp} className="flex items-center gap-3 mb-8">
               <div className="flex items-center gap-2 px-3 py-1.5 bg-royal-pale border border-royal/20 rounded-full">
-                <div className="w-1.5 h-1.5 bg-royal rounded-full animate-pulse" />
+                <motion.div
+                  className="w-1.5 h-1.5 bg-royal rounded-full"
+                  animate={{ opacity: [1, 0.3, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
                 <span className="text-royal text-xs font-semibold tracking-widest uppercase">
-                  {isFr ? 'Generative AI for Next-gen Productivity' : 'Generative AI for Next-gen Productivity'}
+                  Generative AI for Next-gen Productivity
                 </span>
               </div>
-            </div>
+            </motion.div>
 
-            {/* Main headline */}
-            <h1
-              className="font-display text-6xl md:text-7xl lg:text-8xl font-semibold leading-[1.05] text-navy mb-6 animate-fade-in-up"
-              style={{ animationDelay: '0.2s', animationFillMode: 'both' }}
+            {/* Headline */}
+            <motion.h1
+              variants={fadeUp}
+              className="font-display text-6xl md:text-7xl lg:text-8xl font-semibold leading-[1.05] text-navy mb-6"
             >
               {isFr ? (
-                <>
-                  L'Intelligence<br />
-                  <span className="italic text-royal">Artificielle</span><br />
-                  De Confiance
-                </>
+                <>L'Intelligence<br /><span className="italic text-royal">Artificielle</span><br />De Confiance</>
               ) : (
-                <>
-                  Artificial<br />
-                  <span className="italic text-royal">Intelligence</span><br />
-                  You Can Trust
-                </>
+                <>Artificial<br /><span className="italic text-royal">Intelligence</span><br />You Can Trust</>
               )}
-            </h1>
+            </motion.h1>
 
             {/* Subheadline */}
-            <p
-              className="text-lg md:text-xl text-slate max-w-xl leading-relaxed mb-10 animate-fade-in-up"
-              style={{ animationDelay: '0.35s', animationFillMode: 'both' }}
-            >
+            <motion.p variants={fadeUp} className="text-lg md:text-xl text-slate max-w-xl leading-relaxed mb-10">
               {t('hero_tagline')}
-            </p>
+            </motion.p>
 
             {/* CTAs */}
-            <div
-              className="flex flex-col sm:flex-row items-start sm:items-center gap-4 animate-fade-in-up"
-              style={{ animationDelay: '0.5s', animationFillMode: 'both' }}
-            >
+            <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <Link to="/solutions" className="btn-primary">
                 {isFr ? 'Découvrir nos Solutions' : 'Explore Solutions'}
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -130,79 +126,102 @@ export default function Home() {
               <Link to="/chatbot" className="btn-secondary">
                 {isFr ? 'Essayer GANP-chat' : 'Try GANP-chat'}
               </Link>
-            </div>
-          </div>
+            </motion.div>
 
-          {/* Stats strip */}
-          <div
-            className="mt-20 pt-10 border-t border-[#DDE2EE] grid grid-cols-3 gap-8 max-w-lg animate-fade-in-up"
-            style={{ animationDelay: '0.65s', animationFillMode: 'both' }}
+            {/* Stats */}
+            <motion.div
+              variants={fadeUp}
+              className="mt-20 pt-10 border-t border-[#DDE2EE] grid grid-cols-3 gap-8 max-w-lg"
+            >
+              {[
+                { to: 3, suffix: '+', label: isFr ? "Années d'expertise" : 'Years of expertise' },
+                { to: 50, suffix: '+', label: isFr ? 'Entreprises servies' : 'Businesses served' },
+                { to: 2, suffix: '', label: isFr ? 'Langues' : 'Languages' },
+              ].map(({ to, suffix, label }) => (
+                <div key={label}>
+                  <p className="font-display text-4xl font-semibold text-navy">
+                    <Counter to={to} suffix={suffix} duration={1.6} />
+                  </p>
+                  <p className="text-slate text-sm mt-1">{label}</p>
+                </div>
+              ))}
+            </motion.div>
+          </motion.div>
+
+          {/* Floating logo */}
+          <motion.div
+            className="absolute right-8 lg:right-20 top-1/2 -translate-y-1/2 hidden lg:block pointer-events-none"
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 0.08, x: 0 }}
+            transition={{ duration: 1.2, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
-            {[
-              { value: '3+', label: isFr ? 'Années d\'expertise' : 'Years of expertise' },
-              { value: '50+', label: isFr ? 'Entreprises servies' : 'Businesses served' },
-              { value: '2', label: isFr ? 'Langues' : 'Languages' },
-            ].map(({ value, label }) => (
-              <div key={label}>
-                <p className="font-display text-4xl font-semibold text-navy">{value}</p>
-                <p className="text-slate text-sm mt-1">{label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Floating logo — decorative right side */}
-        <div
-          className="absolute right-8 lg:right-20 top-1/2 -translate-y-1/2 hidden lg:block opacity-10 float pointer-events-none"
-          style={{ animationDelay: '1s' }}
-        >
-          <img src="/ganp-logo.svg" alt="" className="w-72 h-72" />
+            <motion.img
+              src="/ganp-logo.svg"
+              alt=""
+              className="w-80 h-80"
+              animate={{ y: [0, -12, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+            />
+          </motion.div>
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-          <svg className="w-6 h-6 text-slate/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
-          </svg>
-        </div>
+        <motion.div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5, duration: 0.6 }}
+        >
+          <motion.div
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <svg className="w-6 h-6 text-slate/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
+            </svg>
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* ===== SERVICES ===== */}
       <main className="max-w-7xl mx-auto px-6 lg:px-8 py-28">
 
-        {/* Section header */}
-        <section ref={(el) => addToRefs(el, 0)} className="reveal mb-16">
+        <AnimateIn className="mb-16">
           <p className="text-royal text-xs font-semibold tracking-[0.25em] uppercase mb-4">
             {isFr ? 'Ce que nous offrons' : 'What We Offer'}
           </p>
           <h2 className="font-display text-4xl md:text-5xl font-semibold text-navy">
             {isFr ? 'Solutions IA sur mesure' : 'Tailored AI Solutions'}
           </h2>
-        </section>
+        </AnimateIn>
 
-        {/* Cards */}
-        <section ref={(el) => addToRefs(el, 1)} className="reveal grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
+        {/* Cards with stagger */}
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20"
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-80px' }}
+        >
           {cards.map((props, idx) => (
-            <Card key={idx} {...props} />
+            <motion.div key={idx} variants={fadeUp}>
+              <Card {...props} />
+            </motion.div>
           ))}
-        </section>
+        </motion.div>
 
         {/* Secondary links */}
-        <section ref={(el) => addToRefs(el, 2)} className="reveal mb-20 flex items-center gap-2 text-sm text-slate">
+        <AnimateIn className="mb-20 flex items-center gap-2 text-sm text-slate">
           <span className="font-medium">{t('plus_label')}</span>
-          <Link className="text-royal hover:underline font-medium" to="/immobilier">
-            {t('plus_immobilier')}
-          </Link>
+          <Link className="text-royal hover:underline font-medium" to="/immobilier">{t('plus_immobilier')}</Link>
           <span className="text-[#DDE2EE]">•</span>
-          <Link className="text-royal hover:underline font-medium" to="/achat-vente">
-            {t('plus_achat_vente')}
-          </Link>
-        </section>
+          <Link className="text-royal hover:underline font-medium" to="/achat-vente">{t('plus_achat_vente')}</Link>
+        </AnimateIn>
 
         {/* Gallery */}
-        <section ref={(el) => addToRefs(el, 3)} className="reveal">
+        <AnimateIn>
           <Gallery />
-        </section>
+        </AnimateIn>
       </main>
 
       <Footer />

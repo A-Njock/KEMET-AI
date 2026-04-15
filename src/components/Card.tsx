@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 
 interface CardProps {
   title: string;
@@ -14,14 +15,21 @@ export default function Card({ title, desc, to, icon }: CardProps) {
   const { i18n } = useTranslation();
 
   return (
-    <div
-      className="luxury-card group cursor-pointer p-8 overflow-hidden relative"
+    <motion.div
+      className="bg-white border border-[#DDE2EE] rounded-2xl p-8 cursor-pointer overflow-hidden relative group"
       onClick={() => navigate(to)}
+      whileHover={{ y: -6, boxShadow: '0 20px 40px rgba(12,27,74,0.10)' }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 25 }}
     >
       {/* Icon */}
-      <div className="w-12 h-12 rounded-xl bg-royal-pale border border-royal/15 flex items-center justify-center mb-6 group-hover:bg-royal group-hover:border-royal transition-all duration-300 text-royal group-hover:text-white">
+      <motion.div
+        className="w-12 h-12 rounded-xl bg-royal-pale border border-royal/15 flex items-center justify-center mb-6 text-royal"
+        whileHover={{ backgroundColor: 'rgb(36 81 183)', color: 'white' }}
+        transition={{ duration: 0.2 }}
+      >
         {icon || <div className="w-5 h-5 rounded bg-royal/30" />}
-      </div>
+      </motion.div>
 
       {/* Title */}
       <h3 className="font-display text-2xl font-semibold text-navy mb-3 group-hover:text-royal transition-colors duration-300">
@@ -29,20 +37,35 @@ export default function Card({ title, desc, to, icon }: CardProps) {
       </h3>
 
       {/* Description */}
-      <p className="text-slate text-sm leading-relaxed mb-6">
-        {desc}
-      </p>
+      <p className="text-slate text-sm leading-relaxed mb-6">{desc}</p>
 
       {/* CTA */}
-      <div className="flex items-center text-royal text-sm font-semibold gap-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
+      <motion.div
+        className="flex items-center text-royal text-sm font-semibold gap-1.5"
+        initial={{ opacity: 0, x: -4 }}
+        whileHover={{ opacity: 1, x: 0 }}
+        animate={{ opacity: 0 }}
+      >
         {i18n.language.startsWith('fr') ? 'En savoir plus' : 'Learn more'}
-        <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <motion.svg
+          className="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          whileHover={{ x: 4 }}
+          transition={{ type: 'spring', stiffness: 400 }}
+        >
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-        </svg>
-      </div>
+        </motion.svg>
+      </motion.div>
 
-      {/* Subtle corner accent */}
-      <div className="absolute bottom-0 right-0 w-20 h-20 bg-royal-pale rounded-tl-3xl opacity-0 group-hover:opacity-60 transition-opacity duration-300 pointer-events-none" />
-    </div>
+      {/* Corner accent */}
+      <motion.div
+        className="absolute bottom-0 right-0 w-20 h-20 bg-royal-pale rounded-tl-3xl pointer-events-none"
+        initial={{ opacity: 0 }}
+        whileHover={{ opacity: 0.6 }}
+        transition={{ duration: 0.3 }}
+      />
+    </motion.div>
   );
 }

@@ -1,6 +1,9 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import AnimateIn from '../components/AnimateIn';
+import AIWorkflow from '../components/AIWorkflow';
 import { useTranslation } from 'react-i18next';
 
 interface Service {
@@ -205,16 +208,36 @@ export default function Solutions() {
 
       {/* Page header */}
       <div className="pt-32 pb-16 px-6 max-w-7xl mx-auto">
-        <p className="text-royal text-xs font-semibold tracking-[0.25em] uppercase mb-4">
+        <motion.p
+          className="text-royal text-xs font-semibold tracking-[0.25em] uppercase mb-4"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        >
           {isFr ? 'Ce que nous faisons' : 'What We Do'}
-        </p>
-        <h1 className="font-display text-5xl md:text-6xl font-semibold text-navy mb-5 leading-tight">
+        </motion.p>
+        <motion.h1
+          className="font-display text-5xl md:text-6xl font-semibold text-navy mb-5 leading-tight"
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+        >
           {t('solutions_title')}
-        </h1>
-        <p className="text-slate text-lg max-w-2xl leading-relaxed mb-8">
+        </motion.h1>
+        <motion.p
+          className="text-slate text-lg max-w-2xl leading-relaxed mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        >
           {t('solutions_text')}
-        </p>
-        <div className="inline-flex items-center gap-3 px-5 py-3 bg-royal-pale border border-royal/20 rounded-xl">
+        </motion.p>
+        <motion.div
+          className="inline-flex items-center gap-3 px-5 py-3 bg-royal-pale border border-royal/20 rounded-xl"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        >
           <svg className="w-5 h-5 text-royal flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
             <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
           </svg>
@@ -224,15 +247,19 @@ export default function Solutions() {
               : 'Every business is unique. We build custom solutions tailored to your specific needs.'
             }
           </p>
-        </div>
+        </motion.div>
       </div>
 
       <main className="max-w-7xl mx-auto px-6 pb-24">
-        <hr className="rule mb-20" />
+        {/* Workflow diagram */}
+        <AIWorkflow lang={i18n.language.startsWith('fr') ? 'fr' : 'en'} />
+
+        <hr className="rule my-20" />
 
         {/* Service categories */}
         <div className="space-y-20">
-          {serviceCategories.map((category) => (
+          {serviceCategories.map((category, catIdx) => (
+            <AnimateIn key={category.id} delay={catIdx * 0.05}>
             <section key={category.id}>
               <div className="mb-8">
                 <h2 className="font-display text-3xl md:text-4xl font-semibold text-navy mb-2">
@@ -268,6 +295,7 @@ export default function Solutions() {
                 {isFr ? '…et bien plus encore' : '…and much more'}
               </p>
             </section>
+            </AnimateIn>
           ))}
         </div>
 
