@@ -16,7 +16,7 @@ export default function Card({ title, desc, to, icon }: CardProps) {
 
   return (
     <motion.div
-      className="bg-white border border-[#DDE2EE] rounded-2xl p-8 cursor-pointer overflow-hidden relative group"
+      className="bg-white border border-[#DDE2EE] rounded-2xl p-8 cursor-pointer overflow-hidden relative group h-full flex flex-col"
       onClick={() => navigate(to)}
       whileHover={{ y: -6, boxShadow: '0 20px 40px rgba(12,27,74,0.10)' }}
       whileTap={{ scale: 0.98 }}
@@ -37,7 +37,7 @@ export default function Card({ title, desc, to, icon }: CardProps) {
       </h3>
 
       {/* Description */}
-      <p className="text-slate text-sm leading-relaxed mb-6">{desc}</p>
+      <p className="text-slate text-sm leading-relaxed mb-6 flex-1">{desc}</p>
 
       {/* CTA */}
       <motion.div

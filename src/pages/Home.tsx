@@ -5,6 +5,7 @@ import Gallery from '../components/Gallery';
 import Footer from '../components/Footer';
 import AnimateIn from '../components/AnimateIn';
 import Counter from '../components/Counter';
+import ChatDemo from '../components/ChatDemo';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
@@ -77,92 +78,87 @@ export default function Home() {
           transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
         />
 
+        {/* Centered background logo */}
+        <motion.div
+          className="absolute inset-0 flex items-center justify-center pointer-events-none"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.07 }}
+          transition={{ duration: 1.5, delay: 0.4 }}
+        >
+          <motion.img
+            src="/ganp-logo.png"
+            alt=""
+            className="w-[480px] h-[480px] object-contain"
+            animate={{ y: [0, -10, 0] }}
+            transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+          />
+        </motion.div>
+
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pt-28 pb-20 w-full">
-          <motion.div
-            className="max-w-3xl"
-            variants={stagger}
-            initial="hidden"
-            animate="visible"
-          >
-            {/* Eyebrow */}
-            <motion.div variants={fadeUp} className="flex items-center gap-3 mb-8">
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-royal-pale border border-royal/20 rounded-full">
-                <motion.div
-                  className="w-1.5 h-1.5 bg-royal rounded-full"
-                  animate={{ opacity: [1, 0.3, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                />
-                <span className="text-royal text-xs font-semibold tracking-widest uppercase">
-                  Generative AI for Next-gen Productivity
-                </span>
-              </div>
-            </motion.div>
+          <div className="flex flex-col lg:flex-row lg:items-center gap-12 lg:gap-16">
 
-            {/* Headline */}
-            <motion.h1
-              variants={fadeUp}
-              className="font-display text-6xl md:text-7xl lg:text-8xl font-semibold leading-[1.05] text-navy mb-6"
-            >
-              {isFr ? (
-                <>L'Intelligence<br /><span className="italic text-royal">Artificielle</span><br />De Confiance</>
-              ) : (
-                <>Artificial<br /><span className="italic text-royal">Intelligence</span><br />You Can Trust</>
-              )}
-            </motion.h1>
-
-            {/* Subheadline */}
-            <motion.p variants={fadeUp} className="text-lg md:text-xl text-slate max-w-xl leading-relaxed mb-10">
-              {t('hero_tagline')}
-            </motion.p>
-
-            {/* CTAs */}
-            <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <Link to="/solutions" className="btn-primary">
-                {isFr ? 'Découvrir nos Solutions' : 'Explore Solutions'}
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </Link>
-              <Link to="/chatbot" className="btn-secondary">
-                {isFr ? 'Essayer GANP-chat' : 'Try GANP-chat'}
-              </Link>
-            </motion.div>
-
-            {/* Stats */}
+            {/* Left: text content */}
             <motion.div
-              variants={fadeUp}
-              className="mt-20 pt-10 border-t border-[#DDE2EE] grid grid-cols-3 gap-8 max-w-lg"
+              className="flex-1 max-w-xl"
+              variants={stagger}
+              initial="hidden"
+              animate="visible"
             >
-              {[
-                { to: 3, suffix: '+', label: isFr ? "Années d'expertise" : 'Years of expertise' },
-                { to: 50, suffix: '+', label: isFr ? 'Entreprises servies' : 'Businesses served' },
-                { to: 2, suffix: '', label: isFr ? 'Langues' : 'Languages' },
-              ].map(({ to, suffix, label }) => (
-                <div key={label}>
-                  <p className="font-display text-4xl font-semibold text-navy">
-                    <Counter to={to} suffix={suffix} duration={1.6} />
-                  </p>
-                  <p className="text-slate text-sm mt-1">{label}</p>
-                </div>
-              ))}
-            </motion.div>
-          </motion.div>
+              {/* Headline */}
+              <motion.h1
+                variants={fadeUp}
+                className="font-display text-6xl md:text-7xl lg:text-8xl font-semibold leading-[1.05] text-navy mb-6"
+              >
+                {isFr ? (
+                  <>L'Intelligence<br /><span className="italic text-royal">Artificielle</span><br />De Confiance</>
+                ) : (
+                  <>Artificial<br /><span className="italic text-royal">Intelligence</span><br />You Can Trust</>
+                )}
+              </motion.h1>
 
-          {/* Floating logo */}
-          <motion.div
-            className="absolute right-8 lg:right-20 top-1/2 -translate-y-1/2 hidden lg:block pointer-events-none"
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 0.12, x: 0 }}
-            transition={{ duration: 1.2, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <motion.img
-              src="/ganp-logo.png"
-              alt=""
-              className="w-80 h-80"
-              animate={{ y: [0, -12, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-            />
-          </motion.div>
+              {/* Subheadline */}
+              <motion.p variants={fadeUp} className="text-lg md:text-xl text-slate max-w-xl leading-relaxed mb-10">
+                {t('hero_tagline')}
+              </motion.p>
+
+              {/* CTAs */}
+              <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <Link to="/solutions" className="btn-primary">
+                  {isFr ? 'Découvrir nos Solutions' : 'Explore Solutions'}
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </Link>
+                <Link to="/chatbot" className="btn-secondary">
+                  {isFr ? 'Essayer Ganp-Chat' : 'Try Ganp-Chat'}
+                </Link>
+              </motion.div>
+
+              {/* Stats */}
+              <motion.div
+                variants={fadeUp}
+                className="mt-16 pt-10 border-t border-[#DDE2EE] grid grid-cols-2 gap-8 max-w-xs"
+              >
+                {[
+                  { to: 3, suffix: '+', label: isFr ? "Années d'expertise" : 'Years of expertise' },
+                  { to: 50, suffix: '+', label: isFr ? 'Entreprises servies' : 'Businesses served' },
+                ].map(({ to, suffix, label }) => (
+                  <div key={label}>
+                    <p className="font-display text-4xl font-semibold text-navy">
+                      <Counter to={to} suffix={suffix} duration={1.6} />
+                    </p>
+                    <p className="text-slate text-sm mt-1">{label}</p>
+                  </div>
+                ))}
+              </motion.div>
+            </motion.div>
+
+            {/* Right: chat demo */}
+            <div className="flex-1 max-w-md w-full hidden lg:block">
+              <ChatDemo />
+            </div>
+
+          </div>
         </div>
 
         {/* Scroll indicator */}
@@ -204,7 +200,7 @@ export default function Home() {
           viewport={{ once: true, margin: '-80px' }}
         >
           {cards.map((props, idx) => (
-            <motion.div key={idx} variants={fadeUp}>
+            <motion.div key={idx} variants={fadeUp} className="h-full">
               <Card {...props} />
             </motion.div>
           ))}

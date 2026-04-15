@@ -15,7 +15,7 @@ export default function Footer() {
           <div className="md:col-span-2">
             <Link to="/" className="inline-flex items-center gap-3 mb-5 group">
               <div className="w-8 h-8 opacity-90 group-hover:opacity-100 transition-opacity">
-                <img src="/ganp-logo.svg" alt="GANP" className="w-full h-full" />
+                <img src="/ganp-logo.png" alt="GANP" className="w-full h-full" />
               </div>
               <span className="font-display text-2xl font-semibold text-white">GANP</span>
             </Link>

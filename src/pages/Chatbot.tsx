@@ -68,7 +68,7 @@ export default function Chatbot() {
           {messages.length === 0 && (
             <div className="text-center py-16 animate-fade-in-up">
               <div className="w-20 h-20 mx-auto mb-6 bg-royal-pale border border-royal/20 rounded-2xl flex items-center justify-center">
-                <img src="/ganp-logo.svg" alt="GANP" className="w-12 h-12" />
+                <img src="/ganp-logo.png" alt="GANP" className="w-12 h-12" />
               </div>
               <h2 className="font-display text-4xl font-semibold text-navy mb-3">{t('chatbot_title')}</h2>
               <p className="text-slate max-w-sm mx-auto">{t('chatbot_start')}</p>
@@ -99,7 +99,7 @@ export default function Chatbot() {
               >
                 {msg.role === 'assistant' && (
                   <div className="flex-shrink-0 w-9 h-9 rounded-xl bg-royal flex items-center justify-center">
-                    <img src="/ganp-logo.svg" alt="GANP" className="w-5 h-5 invert brightness-0" />
+                    <img src="/ganp-logo.png" alt="GANP" className="w-5 h-5 invert brightness-0" />
                   </div>
                 )}
 
@@ -151,7 +151,7 @@ export default function Chatbot() {
             {loading && (
               <div className="flex gap-3 justify-start animate-fade-in">
                 <div className="flex-shrink-0 w-9 h-9 rounded-xl bg-royal flex items-center justify-center">
-                  <img src="/ganp-logo.svg" alt="GANP" className="w-5 h-5 invert brightness-0 animate-pulse" />
+                  <img src="/ganp-logo.png" alt="GANP" className="w-5 h-5 invert brightness-0 animate-pulse" />
                 </div>
                 <div className="bg-white border border-[#DDE2EE] rounded-2xl px-5 py-4 shadow-card flex items-center gap-2">
                   <div className="flex space-x-1">

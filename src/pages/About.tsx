@@ -66,7 +66,7 @@ export default function About() {
             <AnimateIn direction="right" delay={0.2}>
               <div className="luxury-card p-8 sticky top-28">
                 <div className="mb-6 flex justify-center">
-                  <img src="/ganp-logo.svg" alt="GANP" className="w-20 h-20 opacity-70" />
+                  <img src="/ganp-logo.png" alt="GANP" className="w-20 h-20 opacity-70" />
                 </div>
                 <h3 className="font-display text-2xl font-semibold text-navy text-center mb-1">GANP</h3>
                 <p className="text-slate text-xs text-center tracking-widest uppercase mb-8">
