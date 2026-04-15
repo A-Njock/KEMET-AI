@@ -55,9 +55,9 @@ export default function ChatDemo() {
       initial={{ opacity: 0, y: 32 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      style={{ width: 340, flexShrink: 0 }}
+      style={{ width: 340, height: 420, flexShrink: 0 }}
     >
-      <div className="bg-white/25 backdrop-blur-sm rounded-2xl border border-[#E2D9C8]/40 shadow-[0_8px_40px_rgba(12,27,74,0.04)] overflow-hidden">
+      <div className="bg-white/25 backdrop-blur-sm rounded-2xl border border-[#E2D9C8]/40 shadow-[0_8px_40px_rgba(12,27,74,0.04)] overflow-hidden h-full flex flex-col">
 
         {/* Window chrome */}
         <div className="px-5 py-3 border-b border-[#E2D9C8] flex items-center gap-3 bg-ivory">
@@ -74,7 +74,7 @@ export default function ChatDemo() {
         </div>
 
         {/* Messages */}
-        <div className="p-5 space-y-4 min-h-[260px] flex flex-col justify-end">
+        <div className="p-5 space-y-4 flex-1 flex flex-col justify-end overflow-hidden">
 
           {/* User bubble */}
           <AnimatePresence mode="wait">
