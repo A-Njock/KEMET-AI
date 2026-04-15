@@ -140,29 +140,6 @@ export default function AIWorkflow({ lang }: AIWorkflowProps) {
         ))}
       </div>
 
-      {/* Floating particles around the AI step */}
-      <div className="relative h-0">
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1.5 h-1.5 bg-royal rounded-full"
-            style={{
-              left: `calc(50% + ${(i % 2 === 0 ? -1 : 1) * (20 + i * 12)}px)`,
-              top: `-${80 + (i % 3) * 20}px`,
-            }}
-            animate={isInView ? {
-              y: [0, -10, 0],
-              opacity: [0.2, 0.6, 0.2],
-            } : { opacity: 0 }}
-            transition={{
-              duration: 2 + i * 0.4,
-              delay: 0.8 + i * 0.15,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-          />
-        ))}
-      </div>
     </div>
   );
 }

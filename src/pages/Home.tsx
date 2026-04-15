@@ -14,8 +14,8 @@ const stagger: Variants = {
 };
 
 const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } },
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } },
 };
 
 export default function Home() {
@@ -210,12 +210,25 @@ export default function Home() {
           ))}
         </motion.div>
 
-        {/* Secondary links */}
-        <AnimateIn className="mb-20 flex items-center gap-2 text-sm text-slate">
-          <span className="font-medium">{t('plus_label')}</span>
-          <Link className="text-royal hover:underline font-medium" to="/immobilier">{t('plus_immobilier')}</Link>
-          <span className="text-[#DDE2EE]">•</span>
-          <Link className="text-royal hover:underline font-medium" to="/achat-vente">{t('plus_achat_vente')}</Link>
+        {/* Specialty areas */}
+        <AnimateIn className="mb-20">
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="text-slate text-xs font-semibold tracking-widest uppercase">{t('plus_label')}</span>
+            <Link
+              to="/immobilier"
+              className="inline-flex items-center gap-2 px-4 py-2 border border-[#DDE2EE] rounded-full text-sm font-medium text-navy hover:border-royal hover:text-royal transition-all duration-200"
+            >
+              {t('plus_immobilier')}
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+            </Link>
+            <Link
+              to="/achat-vente"
+              className="inline-flex items-center gap-2 px-4 py-2 border border-[#DDE2EE] rounded-full text-sm font-medium text-navy hover:border-royal hover:text-royal transition-all duration-200"
+            >
+              {t('plus_achat_vente')}
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+            </Link>
+          </div>
         </AnimateIn>
 
         {/* Gallery */}

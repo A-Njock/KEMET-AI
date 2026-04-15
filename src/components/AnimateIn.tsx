@@ -23,7 +23,7 @@ export default function AnimateIn({ children, delay = 0, className = '', directi
       ref={ref}
       initial={initial}
       animate={isInView ? { opacity: 1, y: 0, x: 0 } : initial}
-      transition={{ duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.55, delay, ease: [0.16, 1, 0.3, 1] }}
       className={className}
     >
       {children}

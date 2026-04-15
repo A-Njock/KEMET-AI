@@ -38,10 +38,7 @@ export default function Header({ simple = false }: HeaderProps) {
           <div className="w-9 h-9 flex-shrink-0">
             <img src="/ganp-logo.svg" alt="GANP" className="w-full h-full" />
           </div>
-          <div className="flex items-baseline gap-1">
-            <span className="font-display text-2xl font-semibold text-navy tracking-tight">GANP</span>
-            <span className="text-xs font-medium text-slate tracking-widest uppercase hidden sm:block ml-1 mt-0.5">AI</span>
-          </div>
+          <span className="font-display text-2xl font-semibold text-navy tracking-tight">GANP</span>
         </Link>
 
         {/* Desktop Navigation */}
