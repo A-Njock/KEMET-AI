@@ -154,8 +154,12 @@ export default function Home() {
             </motion.div>
 
             {/* Right: chat demo */}
-            <div className="flex-1 max-w-md w-full hidden lg:block">
-              <ChatDemo />
+            <div className="flex-1 max-w-md w-full hidden lg:block lg:ml-8 xl:ml-16">
+              <Link to="/chatbot" className="block cursor-pointer group">
+                <motion.div whileHover={{ scale: 1.02 }} transition={{ type: 'spring', stiffness: 300, damping: 20 }}>
+                  <ChatDemo />
+                </motion.div>
+              </Link>
             </div>
 
           </div>
