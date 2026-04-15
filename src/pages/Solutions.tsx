@@ -233,22 +233,6 @@ export default function Solutions() {
         >
           {t('solutions_text')}
         </motion.p>
-        <motion.div
-          className="inline-flex items-center gap-3 px-5 py-3 bg-royal-pale border border-royal/20 rounded-xl"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <svg className="w-5 h-5 text-royal flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
-          </svg>
-          <p className="text-royal text-sm font-medium">
-            {isFr
-              ? 'Chaque entreprise est unique. Nous créons des solutions sur mesure adaptées à vos besoins spécifiques.'
-              : 'Every business is unique. We build custom solutions tailored to your specific needs.'
-            }
-          </p>
-        </motion.div>
       </div>
 
       <main className="max-w-7xl mx-auto px-6 pb-24">

@@ -91,16 +91,6 @@ export default function AIWorkflow({ lang }: AIWorkflowProps) {
 
   return (
     <div ref={ref} className="mt-20">
-      {/* Section label */}
-      <motion.p
-        className="text-royal text-xs font-semibold tracking-[0.25em] uppercase mb-12 text-center"
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : {}}
-        transition={{ duration: 0.5 }}
-      >
-        {lang === 'fr' ? 'Comment ça fonctionne' : 'How It Works'}
-      </motion.p>
-
       {/* Steps */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-0 relative">
 
