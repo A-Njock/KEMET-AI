@@ -77,7 +77,6 @@ export default function About() {
                   {[
                     { value: '3+', label: isFr ? 'Années d\'expertise' : 'Years of expertise' },
                     { value: '50+', label: isFr ? 'Entreprises servies' : 'Businesses served' },
-                    { value: 'FR/EN', label: isFr ? 'Bilingue' : 'Bilingual' },
                   ].map(({ value, label }) => (
                     <div key={label} className="flex justify-between items-center">
                       <span className="text-slate text-sm">{label}</span>
