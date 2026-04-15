@@ -7,100 +7,160 @@ interface AIWorkflowProps {
 
 export default function AIWorkflow({ lang }: AIWorkflowProps) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-80px' });
+  const isInView = useInView(ref, { once: true, margin: '-60px' });
 
   const steps = lang === 'fr' ? [
     {
+      number: '01',
+      label: 'Vos Données',
+      sublabel: 'Documents, bases de données, contexte métier — tout ce que vous possédez déjà.',
       icon: (
-        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+        <svg viewBox="0 0 40 40" fill="none" className="w-10 h-10">
+          <rect x="8" y="4" width="18" height="24" rx="2" stroke="currentColor" strokeWidth="1.5"/>
+          <path d="M8 28h18M14 10h6M14 14h6M14 18h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+          <circle cx="29" cy="29" r="8" fill="currentColor" fillOpacity="0.08" stroke="currentColor" strokeWidth="1.5"/>
+          <path d="M26 29h6M29 26v6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
         </svg>
       ),
-      label: 'Vos données',
-      sublabel: 'Documents, données, contexte',
     },
     {
-      icon: (
-        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
-        </svg>
-      ),
+      number: '02',
       label: 'IA GANP',
-      sublabel: 'Analyse & traitement intelligent',
-    },
-    {
+      sublabel: "Notre moteur d'IA analyse, comprend et transforme vos données en intelligence actionnable.",
       icon: (
-        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+        <svg viewBox="0 0 40 40" fill="none" className="w-10 h-10">
+          <circle cx="20" cy="20" r="12" stroke="currentColor" strokeWidth="1.5"/>
+          <path d="M20 8v4M20 28v4M8 20h4M28 20h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+          <path d="M15 20l3 3 7-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <circle cx="20" cy="20" r="4" fill="currentColor" fillOpacity="0.12"/>
         </svg>
       ),
+    },
+    {
+      number: '03',
       label: 'Résultats',
-      sublabel: 'Insights, automatisation, décisions',
+      sublabel: 'Insights clairs, automatisation fluide, décisions éclairées — une valeur immédiate.',
+      icon: (
+        <svg viewBox="0 0 40 40" fill="none" className="w-10 h-10">
+          <path d="M8 32l8-10 6 6 10-16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <circle cx="32" cy="12" r="4" fill="currentColor" fillOpacity="0.12" stroke="currentColor" strokeWidth="1.5"/>
+          <path d="M30.5 12h3M32 10.5v3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+        </svg>
+      ),
     },
   ] : [
     {
-      icon: (
-        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-        </svg>
-      ),
+      number: '01',
       label: 'Your Data',
-      sublabel: 'Documents, data, context',
-    },
-    {
+      sublabel: 'Documents, databases, business context — everything you already own.',
       icon: (
-        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
+        <svg viewBox="0 0 40 40" fill="none" className="w-10 h-10">
+          <rect x="8" y="4" width="18" height="24" rx="2" stroke="currentColor" strokeWidth="1.5"/>
+          <path d="M8 28h18M14 10h6M14 14h6M14 18h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+          <circle cx="29" cy="29" r="8" fill="currentColor" fillOpacity="0.08" stroke="currentColor" strokeWidth="1.5"/>
+          <path d="M26 29h6M29 26v6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
         </svg>
       ),
+    },
+    {
+      number: '02',
       label: 'GANP AI',
-      sublabel: 'Intelligent analysis & processing',
-    },
-    {
+      sublabel: 'Our AI engine reads, understands and transforms your data into actionable intelligence.',
       icon: (
-        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+        <svg viewBox="0 0 40 40" fill="none" className="w-10 h-10">
+          <circle cx="20" cy="20" r="12" stroke="currentColor" strokeWidth="1.5"/>
+          <path d="M20 8v4M20 28v4M8 20h4M28 20h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+          <path d="M15 20l3 3 7-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <circle cx="20" cy="20" r="4" fill="currentColor" fillOpacity="0.12"/>
         </svg>
       ),
+    },
+    {
+      number: '03',
       label: 'Results',
-      sublabel: 'Insights, automation, decisions',
+      sublabel: 'Clear insights, seamless automation, confident decisions — immediate business value.',
+      icon: (
+        <svg viewBox="0 0 40 40" fill="none" className="w-10 h-10">
+          <path d="M8 32l8-10 6 6 10-16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <circle cx="32" cy="12" r="4" fill="currentColor" fillOpacity="0.12" stroke="currentColor" strokeWidth="1.5"/>
+          <path d="M30.5 12h3M32 10.5v3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+        </svg>
+      ),
     },
   ];
 
   return (
-    <div ref={ref} className="bg-white rounded-2xl border border-[#E2D9C8] p-10 mt-16">
-      <div className="flex flex-col md:flex-row items-center justify-center">
-        {steps.map((step, idx) => (
-          <div key={idx} className="flex flex-col md:flex-row items-center flex-1">
-            {/* Step */}
-            <motion.div
-              className="flex flex-col items-center text-center flex-shrink-0"
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: idx * 0.2, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <div className="w-16 h-16 rounded-2xl bg-royal-pale border border-royal/15 flex items-center justify-center mb-4 text-royal">
-                {step.icon}
-              </div>
-              <p className="font-semibold text-navy text-sm mb-1">{step.label}</p>
-              <p className="text-slate text-xs leading-relaxed max-w-[120px]">{step.sublabel}</p>
-            </motion.div>
+    <div ref={ref} className="mt-20">
+      {/* Section label */}
+      <motion.p
+        className="text-royal text-xs font-semibold tracking-[0.25em] uppercase mb-12 text-center"
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : {}}
+        transition={{ duration: 0.5 }}
+      >
+        {lang === 'fr' ? 'Comment ça fonctionne' : 'How It Works'}
+      </motion.p>
 
-            {/* Connector */}
-            {idx < steps.length - 1 && (
-              <motion.div
-                className="flex-1 flex items-center justify-center my-6 md:my-0 md:px-4"
-                initial={{ opacity: 0 }}
-                animate={isInView ? { opacity: 1 } : {}}
-                transition={{ duration: 0.4, delay: idx * 0.2 + 0.3 }}
+      {/* Steps */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-0 relative">
+
+        {/* Connecting line (desktop only) */}
+        <div className="hidden md:block absolute top-12 left-[calc(16.67%+24px)] right-[calc(16.67%+24px)] h-px">
+          <motion.div
+            className="h-full bg-gradient-to-r from-[#E2D9C8] via-royal/30 to-[#E2D9C8]"
+            initial={{ scaleX: 0 }}
+            animate={isInView ? { scaleX: 1 } : {}}
+            transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            style={{ transformOrigin: 'left' }}
+          />
+        </div>
+
+        {steps.map((step, idx) => (
+          <motion.div
+            key={idx}
+            className="relative flex flex-col items-center text-center px-8 pb-10"
+            initial={{ opacity: 0, y: 28 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: idx * 0.18, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {/* Step number + icon stacked */}
+            <div className="relative mb-6">
+              {/* Large ghost number */}
+              <span
+                className="font-display text-[80px] font-semibold leading-none select-none pointer-events-none"
+                style={{ color: 'rgba(184,137,42,0.07)' }}
               >
-                <div className="flex items-center gap-1">
-                  <div className="w-8 h-px bg-[#E2D9C8]" />
-                  <div className="w-2 h-2 rotate-45 border-t border-r border-[#B8892A] -ml-1" />
+                {step.number}
+              </span>
+
+              {/* Icon circle — centered over the number */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className={`w-[52px] h-[52px] rounded-2xl flex items-center justify-center text-royal
+                  ${idx === 1
+                    ? 'bg-navy text-white shadow-[0_8px_24px_rgba(12,27,74,0.20)]'
+                    : 'bg-white border border-[#E2D9C8] shadow-[0_4px_16px_rgba(12,27,74,0.06)]'
+                  }`}
+                >
+                  {step.icon}
                 </div>
-              </motion.div>
+              </div>
+            </div>
+
+            {/* Label */}
+            <h3 className={`font-display text-xl font-semibold mb-3 ${idx === 1 ? 'text-royal' : 'text-navy'}`}>
+              {step.label}
+            </h3>
+
+            {/* Description */}
+            <p className="text-slate text-sm leading-relaxed max-w-[220px]">
+              {step.sublabel}
+            </p>
+
+            {/* Mobile connector */}
+            {idx < steps.length - 1 && (
+              <div className="md:hidden w-px h-8 bg-[#E2D9C8] my-4" />
             )}
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>
