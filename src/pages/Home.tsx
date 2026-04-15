@@ -95,7 +95,7 @@ export default function Home() {
         </motion.div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pt-28 pb-20 w-full">
-          <div className="flex flex-col lg:flex-row lg:items-end gap-12 lg:gap-16">
+          <div className="flex flex-col lg:flex-row lg:items-center gap-12 lg:gap-16">
 
             {/* Left: text content */}
             <motion.div
@@ -154,7 +154,7 @@ export default function Home() {
             </motion.div>
 
             {/* Right: chat demo */}
-            <div className="flex-1 w-full hidden lg:flex lg:justify-end">
+            <div className="flex-1 max-w-md w-full hidden lg:block lg:ml-8 xl:ml-16">
               <Link to="/chatbot" className="block cursor-pointer group">
                 <motion.div whileHover={{ scale: 1.02 }} transition={{ type: 'spring', stiffness: 300, damping: 20 }}>
                   <ChatDemo />
