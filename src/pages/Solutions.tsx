@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import AnimatedBackground from '../components/AnimatedBackground';
 import { useTranslation } from 'react-i18next';
 
 interface Service {
@@ -89,7 +88,7 @@ const serviceCategories: ServiceCategory[] = [
           en: ['Eliminate manual data entry errors', 'Auto-sync data across your business systems'],
           fr: ['Éliminez les erreurs de saisie manuelle', 'Synchronisation automatique des données entre vos systèmes']
         },
-        icon: '📊'
+        icon: '📋'
       },
       {
         id: 'workflow-automation',
@@ -190,79 +189,73 @@ const serviceCategories: ServiceCategory[] = [
 export default function Solutions() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language.startsWith('fr') ? 'fr' : 'en';
+  const isFr = lang === 'fr';
 
-  const [formData, setFormData] = useState({
-    name: '',
-    company: '',
-    email: '',
-    message: ''
-  });
+  const [formData, setFormData] = useState({ name: '', company: '', email: '', message: '' });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    alert(lang === 'fr' ? 'Merci pour votre message! Nous vous contacterons bientôt.' : 'Thank you for your message! We will contact you soon.');
+    alert(isFr ? 'Merci pour votre message! Nous vous contacterons bientôt.' : 'Thank you for your message! We will contact you soon.');
     setFormData({ name: '', company: '', email: '', message: '' });
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2a2824] via-[#353330] to-[#2a2824] font-sans relative overflow-hidden">
-      <AnimatedBackground />
+    <div className="min-h-screen bg-ivory font-sans">
       <Header />
 
-      <main className="max-w-7xl mx-auto px-4 py-16">
-        {/* Page Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-gold mb-4">
-            {t('solutions_title')}
-          </h1>
-          <p className="text-white/70 text-lg max-w-3xl mx-auto mb-6">
-            {t('solutions_text')}
+      {/* Page header */}
+      <div className="pt-32 pb-16 px-6 max-w-7xl mx-auto">
+        <p className="text-royal text-xs font-semibold tracking-[0.25em] uppercase mb-4">
+          {isFr ? 'Ce que nous faisons' : 'What We Do'}
+        </p>
+        <h1 className="font-display text-5xl md:text-6xl font-semibold text-navy mb-5 leading-tight">
+          {t('solutions_title')}
+        </h1>
+        <p className="text-slate text-lg max-w-2xl leading-relaxed mb-8">
+          {t('solutions_text')}
+        </p>
+        <div className="inline-flex items-center gap-3 px-5 py-3 bg-royal-pale border border-royal/20 rounded-xl">
+          <svg className="w-5 h-5 text-royal flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
+          </svg>
+          <p className="text-royal text-sm font-medium">
+            {isFr
+              ? 'Chaque entreprise est unique. Nous créons des solutions sur mesure adaptées à vos besoins spécifiques.'
+              : 'Every business is unique. We build custom solutions tailored to your specific needs.'
+            }
           </p>
-
-          {/* Custom Solutions Emphasis */}
-          <div className="inline-block bg-gold/10 border border-gold/30 rounded-xl px-6 py-4 mt-4">
-            <p className="text-gold font-medium">
-              {lang === 'fr'
-                ? '✨ Chaque entreprise est unique. Nous créons des solutions sur mesure adaptées à vos besoins spécifiques.'
-                : '✨ Every business is unique. We build custom solutions tailored to your specific needs.'
-              }
-            </p>
-          </div>
         </div>
+      </div>
 
-        {/* Service Categories */}
-        <div className="space-y-16">
+      <main className="max-w-7xl mx-auto px-6 pb-24">
+        <hr className="rule mb-20" />
+
+        {/* Service categories */}
+        <div className="space-y-20">
           {serviceCategories.map((category) => (
-            <section key={category.id} className="scroll-mt-20">
-              {/* Category Header */}
+            <section key={category.id}>
               <div className="mb-8">
-                <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                <h2 className="font-display text-3xl md:text-4xl font-semibold text-navy mb-2">
                   {category.name[lang]}
                 </h2>
-                <p className="text-white/60">
-                  {category.description[lang]}
-                </p>
+                <p className="text-slate">{category.description[lang]}</p>
               </div>
 
-              {/* Services Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-4">
                 {category.services.map((service) => (
                   <div
                     key={service.id}
-                    className="bg-white/5 rounded-xl p-6 border border-white/10 hover:border-gold/40 transition-all duration-300 hover:bg-white/[0.08]"
+                    className="luxury-card p-6"
                   >
                     <div className="flex items-start gap-4">
-                      <span className="text-3xl">{service.icon}</span>
+                      <span className="text-2xl mt-0.5">{service.icon}</span>
                       <div className="flex-1">
-                        <h3 className="text-lg font-bold text-white mb-3">
-                          {service.title[lang]}
-                        </h3>
-                        <ul className="space-y-2">
+                        <h3 className="font-semibold text-navy mb-3">{service.title[lang]}</h3>
+                        <ul className="space-y-1.5">
                           {service.bullets[lang].map((bullet, idx) => (
-                            <li key={idx} className="flex items-start gap-2 text-white/70 text-sm">
-                              <span className="text-gold mt-1">•</span>
-                              <span>{bullet}</span>
+                            <li key={idx} className="flex items-start gap-2 text-slate text-sm">
+                              <div className="w-1 h-1 bg-royal rounded-full mt-2 flex-shrink-0" />
+                              {bullet}
                             </li>
                           ))}
                         </ul>
@@ -271,98 +264,77 @@ export default function Solutions() {
                   </div>
                 ))}
               </div>
-
-              {/* "And much more" tag */}
-              <p className="text-gold/80 text-sm italic">
-                {lang === 'fr' ? '...et bien plus encore' : '...and much more'}
+              <p className="text-slate text-sm italic">
+                {isFr ? '…et bien plus encore' : '…and much more'}
               </p>
             </section>
           ))}
         </div>
 
-        {/* Custom Solutions CTA */}
-        <div className="mt-20 bg-gradient-to-br from-gold/10 to-transparent rounded-2xl p-8 md:p-12 border border-gold/30 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
-            {lang === 'fr'
-              ? 'Vous ne trouvez pas ce que vous cherchez?'
-              : 'Don\'t See What You\'re Looking For?'
-            }
+        {/* CTA block */}
+        <div className="mt-24 bg-navy rounded-2xl p-10 md:p-14 text-center">
+          <h2 className="font-display text-3xl md:text-4xl font-semibold text-white mb-4">
+            {isFr ? 'Vous ne trouvez pas ce que vous cherchez?' : "Don't See What You're Looking For?"}
           </h2>
-          <p className="text-white/70 max-w-2xl mx-auto mb-8">
-            {lang === 'fr'
-              ? 'Ces solutions ne sont que quelques exemples de ce que nous pouvons faire. Notre expertise est de comprendre vos défis uniques et de créer des solutions IA personnalisées qui résolvent vos problèmes spécifiques.'
-              : 'These solutions are just a glimpse of what we can do. Our expertise lies in understanding your unique challenges and building custom AI solutions that solve your specific problems.'
+          <p className="text-white/60 max-w-2xl mx-auto mb-8">
+            {isFr
+              ? 'Notre expertise est de comprendre vos défis uniques et de créer des solutions IA personnalisées qui résolvent vos problèmes spécifiques.'
+              : 'Our expertise lies in understanding your unique challenges and building custom AI solutions that solve your specific problems.'
             }
           </p>
+          <a href="#contact" className="btn-primary inline-flex">
+            {isFr ? 'Parlons de votre projet' : 'Let\'s talk about your project'}
+          </a>
         </div>
 
-        {/* Contact Form */}
-        <div className="mt-16" id="contact">
-          <h2 className="text-2xl md:text-3xl font-bold text-gold text-center mb-8">
-            {lang === 'fr' ? 'Parlons de vos besoins' : 'Let\'s Discuss Your Needs'}
+        {/* Contact form */}
+        <div className="mt-20" id="contact">
+          <p className="text-royal text-xs font-semibold tracking-[0.25em] uppercase mb-4">Contact</p>
+          <h2 className="font-display text-3xl md:text-4xl font-semibold text-navy mb-10">
+            {isFr ? 'Parlons de vos besoins' : "Let's Discuss Your Needs"}
           </h2>
 
-          <div className="max-w-2xl mx-auto bg-white/5 rounded-xl p-8 border border-gold/20">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="max-w-2xl bg-white rounded-2xl border border-[#DDE2EE] p-8 shadow-card">
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                  <label className="block text-gold mb-2 font-medium">
-                    {t('contact_name')}
-                  </label>
+                  <label className="block text-navy text-sm font-semibold mb-2">{t('contact_name')}</label>
                   <input
-                    type="text"
-                    required
-                    value={formData.name}
+                    type="text" required value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-3 bg-black/50 border border-gold/30 rounded-lg text-white focus:outline-none focus:border-gold transition-colors"
+                    className="w-full px-4 py-3 bg-ivory border border-[#DDE2EE] rounded-lg text-navy placeholder-slate/50 focus:outline-none focus:border-royal transition-colors text-sm"
                   />
                 </div>
                 <div>
-                  <label className="block text-gold mb-2 font-medium">
-                    {t('contact_company')}
-                  </label>
+                  <label className="block text-navy text-sm font-semibold mb-2">{t('contact_company')}</label>
                   <input
-                    type="text"
-                    required
-                    value={formData.company}
+                    type="text" required value={formData.company}
                     onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                    className="w-full px-4 py-3 bg-black/50 border border-gold/30 rounded-lg text-white focus:outline-none focus:border-gold transition-colors"
+                    className="w-full px-4 py-3 bg-ivory border border-[#DDE2EE] rounded-lg text-navy placeholder-slate/50 focus:outline-none focus:border-royal transition-colors text-sm"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-gold mb-2 font-medium">
-                  {t('contact_email')}
-                </label>
+                <label className="block text-navy text-sm font-semibold mb-2">{t('contact_email')}</label>
                 <input
-                  type="email"
-                  required
-                  value={formData.email}
+                  type="email" required value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-3 bg-black/50 border border-gold/30 rounded-lg text-white focus:outline-none focus:border-gold transition-colors"
+                  className="w-full px-4 py-3 bg-ivory border border-[#DDE2EE] rounded-lg text-navy placeholder-slate/50 focus:outline-none focus:border-royal transition-colors text-sm"
                 />
               </div>
               <div>
-                <label className="block text-gold mb-2 font-medium">
-                  {lang === 'fr' ? 'Décrivez votre projet ou défi' : 'Describe your project or challenge'}
+                <label className="block text-navy text-sm font-semibold mb-2">
+                  {isFr ? 'Décrivez votre projet ou défi' : 'Describe your project or challenge'}
                 </label>
                 <textarea
-                  required
-                  rows={5}
-                  value={formData.message}
+                  required rows={5} value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  placeholder={lang === 'fr'
-                    ? 'Quel problème cherchez-vous à résoudre? Quels sont vos objectifs?'
-                    : 'What problem are you trying to solve? What are your goals?'
-                  }
-                  className="w-full px-4 py-3 bg-black/50 border border-gold/30 rounded-lg text-white focus:outline-none focus:border-gold resize-none transition-colors"
+                  placeholder={isFr ? 'Quel problème cherchez-vous à résoudre?' : 'What problem are you trying to solve?'}
+                  className="w-full px-4 py-3 bg-ivory border border-[#DDE2EE] rounded-lg text-navy placeholder-slate/50 focus:outline-none focus:border-royal resize-none transition-colors text-sm"
                 />
               </div>
-              <button
-                type="submit"
-                className="w-full bg-gold text-black font-bold py-4 rounded-lg hover:bg-gold/90 transition-all duration-200 text-lg"
-              >
-                {lang === 'fr' ? 'Demander une consultation gratuite' : 'Request Free Consultation'}
+              <button type="submit" className="btn-primary w-full justify-center">
+                {isFr ? 'Demander une consultation gratuite' : 'Request Free Consultation'}
               </button>
             </form>
           </div>

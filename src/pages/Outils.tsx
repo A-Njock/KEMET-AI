@@ -1,11 +1,11 @@
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import AnimatedBackground from '../components/AnimatedBackground';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 export default function Outils() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isFr = i18n.language.startsWith('fr');
 
   const tools = [
     {
@@ -14,67 +14,85 @@ export default function Outils() {
       details: t('kemet_chat_details'),
       link: '/chatbot',
       linkText: t('use_kemet_chat'),
+      badge: isFr ? 'Disponible' : 'Available',
+      icon: (
+        <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+        </svg>
+      )
     },
-    // More tools can be added here in the future
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2a2824] via-[#353330] to-[#2a2824] font-sans relative overflow-hidden">
-      <AnimatedBackground />
+    <div className="min-h-screen bg-ivory font-sans">
       <Header />
-      <main className="max-w-6xl mx-auto px-4 py-16 md:py-24">
-        {/* Page Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-gold mb-6">
-            {t('outils_title')}
-          </h1>
-          <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
-            {t('outils_sub')}
-          </p>
-        </div>
 
-        {/* Tools Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* Page header */}
+      <div className="pt-32 pb-12 px-6 max-w-7xl mx-auto">
+        <p className="text-royal text-xs font-semibold tracking-[0.25em] uppercase mb-4">
+          {isFr ? 'Nos Outils' : 'Our Tools'}
+        </p>
+        <h1 className="font-display text-5xl md:text-6xl font-semibold text-navy mb-4 leading-tight">
+          {t('outils_title')}
+        </h1>
+        <p className="text-slate text-lg max-w-xl leading-relaxed">
+          {t('outils_sub')}
+        </p>
+      </div>
+
+      <main className="max-w-7xl mx-auto px-6 pb-24">
+        <hr className="rule mb-16" />
+
+        {/* Tools */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {tools.map((tool, index) => (
-            <div
-              key={index}
-              className="group bg-gradient-to-br from-white/5 to-white/[0.02] rounded-2xl p-8 border border-gold/20 hover:border-gold/40 transition-all duration-300 hover:shadow-[0_0_30px_rgba(212,160,23,0.15)] hover:-translate-y-1"
-            >
-              {/* Tool Title */}
-              <h2 className="text-2xl md:text-3xl font-heading font-bold text-gold mb-4">
+            <div key={index} className="luxury-card p-8 group flex flex-col">
+              {/* Badge */}
+              <div className="flex items-center gap-2 mb-6">
+                <div className="w-1.5 h-1.5 bg-green-500 rounded-full" />
+                <span className="text-xs font-semibold text-green-600 tracking-widest uppercase">
+                  {tool.badge}
+                </span>
+              </div>
+
+              {/* Icon */}
+              <div className="w-14 h-14 bg-royal-pale border border-royal/15 rounded-xl flex items-center justify-center text-royal mb-6 group-hover:bg-royal group-hover:text-white transition-all duration-300">
+                {tool.icon}
+              </div>
+
+              <h2 className="font-display text-2xl font-semibold text-navy mb-3">
                 {tool.title}
               </h2>
 
-              {/* Tool Description */}
-              <p className="text-gray-300 mb-4 leading-relaxed">
+              <p className="text-slate text-sm leading-relaxed mb-3 flex-1">
                 {tool.description}
               </p>
 
-              {/* Tool Details */}
-              <p className="text-sm text-gray-400 mb-6 leading-relaxed">
+              <p className="text-slate/70 text-xs leading-relaxed mb-8">
                 {tool.details}
               </p>
 
-              {/* Access Link */}
-              <Link
-                to={tool.link}
-                className="inline-block w-full text-center bg-gold text-black font-bold py-3 px-6 rounded-lg hover:bg-gold/80 transition-all duration-200 hover:shadow-[0_0_15px_rgba(212,160,23,0.4)]"
-              >
+              <Link to={tool.link} className="btn-primary justify-center">
                 {tool.linkText}
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
               </Link>
             </div>
           ))}
-        </div>
 
-        {/* Coming Soon Message for Future Tools */}
-        {tools.length === 1 && (
-          <div className="mt-16 text-center">
-            <p className="text-gray-500 italic">
-              {t('more_tools_coming') || 'Plus d\'outils à venir...'}
-            </p>
+          {/* Coming soon placeholder */}
+          <div className="luxury-card p-8 opacity-60 flex flex-col items-center justify-center text-center min-h-[320px] border-dashed">
+            <div className="w-14 h-14 bg-[#DDE2EE] rounded-xl flex items-center justify-center mb-6">
+              <svg className="w-7 h-7 text-slate/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+            </div>
+            <p className="text-slate text-sm italic">{t('more_tools_coming')}</p>
           </div>
-        )}
+        </div>
       </main>
+
       <Footer />
     </div>
   );
