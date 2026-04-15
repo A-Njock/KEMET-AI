@@ -66,13 +66,13 @@ export default function Home() {
         {/* Gradient orbs */}
         <motion.div
           className="absolute top-0 right-0 w-[700px] h-[700px] rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(238,242,255,0.8) 0%, transparent 70%)' }}
+          style={{ background: 'radial-gradient(circle, rgba(250,244,230,0.7) 0%, transparent 70%)' }}
           animate={{ scale: [1, 1.05, 1], opacity: [0.7, 0.9, 0.7] }}
           transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
         />
         <motion.div
           className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(238,242,255,0.5) 0%, transparent 70%)' }}
+          style={{ background: 'radial-gradient(circle, rgba(250,244,230,0.5) 0%, transparent 70%)' }}
           animate={{ scale: [1, 1.08, 1], opacity: [0.5, 0.7, 0.5] }}
           transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
         />

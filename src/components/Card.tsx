@@ -25,7 +25,7 @@ export default function Card({ title, desc, to, icon }: CardProps) {
       {/* Icon */}
       <motion.div
         className="w-12 h-12 rounded-xl bg-royal-pale border border-royal/15 flex items-center justify-center mb-6 text-royal"
-        whileHover={{ backgroundColor: 'rgb(36 81 183)', color: 'white' }}
+        whileHover={{ backgroundColor: '#B8892A', color: 'white' }}
         transition={{ duration: 0.2 }}
       >
         {icon || <div className="w-5 h-5 rounded bg-royal/30" />}

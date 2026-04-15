@@ -25,7 +25,7 @@ export default function AIWorkflow({ lang }: AIWorkflowProps) {
       ),
       label: 'Vos données',
       sublabel: 'Documents, données, contexte',
-      color: '#EEF2FF',
+      color: '#FAF4E6',
     },
     {
       icon: (
@@ -35,7 +35,7 @@ export default function AIWorkflow({ lang }: AIWorkflowProps) {
       ),
       label: 'IA GANP',
       sublabel: 'Analyse & traitement intelligent',
-      color: '#2451B7',
+      color: '#0C1B4A',
     },
     {
       icon: (
@@ -45,7 +45,7 @@ export default function AIWorkflow({ lang }: AIWorkflowProps) {
       ),
       label: 'Résultats',
       sublabel: 'Insights, automatisation, décisions',
-      color: '#0C1B4A',
+      color: '#B8892A',
     },
   ] : [
     {
@@ -56,7 +56,7 @@ export default function AIWorkflow({ lang }: AIWorkflowProps) {
       ),
       label: 'Your Data',
       sublabel: 'Documents, data, context',
-      color: '#EEF2FF',
+      color: '#FAF4E6',
     },
     {
       icon: (
@@ -66,7 +66,7 @@ export default function AIWorkflow({ lang }: AIWorkflowProps) {
       ),
       label: 'GANP AI',
       sublabel: 'Intelligent analysis & processing',
-      color: '#2451B7',
+      color: '#0C1B4A',
     },
     {
       icon: (
@@ -76,7 +76,7 @@ export default function AIWorkflow({ lang }: AIWorkflowProps) {
       ),
       label: 'Results',
       sublabel: 'Insights, automation, decisions',
-      color: '#0C1B4A',
+      color: '#B8892A',
     },
   ];
 
@@ -97,11 +97,11 @@ export default function AIWorkflow({ lang }: AIWorkflowProps) {
                 className="w-20 h-20 rounded-2xl flex items-center justify-center mb-4 shadow-card"
                 style={{
                   backgroundColor: step.color,
-                  color: step.color === '#2451B7' || step.color === '#0C1B4A' ? 'white' : '#2451B7',
+                  color: step.color === '#0C1B4A' ? 'white' : step.color === '#B8892A' ? 'white' : '#B8892A',
                 }}
                 animate={isInView ? {
-                  boxShadow: step.color === '#2451B7'
-                    ? ['0 0 0 0px rgba(36,81,183,0)', '0 0 0 8px rgba(36,81,183,0.1)', '0 0 0 0px rgba(36,81,183,0)']
+                  boxShadow: step.color === '#0C1B4A'
+                    ? ['0 0 0 0px rgba(12,27,74,0)', '0 0 0 10px rgba(12,27,74,0.1)', '0 0 0 0px rgba(12,27,74,0)']
                     : 'none',
                 } : {}}
                 transition={{ duration: 2.5, delay: idx * 0.25 + 0.6, repeat: Infinity }}
@@ -118,7 +118,7 @@ export default function AIWorkflow({ lang }: AIWorkflowProps) {
               <div className="flex items-center justify-center my-4 md:my-0 md:mx-4 flex-shrink-0">
                 <div className="relative w-16 h-px">
                   <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-[#DDE2EE] to-royal h-px"
+                    className="absolute inset-0 bg-gradient-to-r from-[#E2D9C8] to-royal h-px"
                     initial={{ scaleX: 0, originX: 0 }}
                     animate={isInView ? { scaleX: 1 } : {}}
                     transition={{ duration: 0.5, delay: idx * 0.25 + 0.4, ease: 'easeOut' }}
