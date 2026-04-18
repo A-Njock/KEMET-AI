@@ -52,3 +52,5 @@ dist/
 embeddings_cache.npy
 index_file.*
 
+
+.vercel
