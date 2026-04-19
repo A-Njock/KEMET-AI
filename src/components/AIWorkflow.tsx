@@ -239,10 +239,10 @@ export default function AIWorkflow({ lang }: AIWorkflowProps) {
   const steps = [
     {
       number: '01',
-      label: isFr ? 'Vos Données' : 'Your Data',
+      label: isFr ? 'Votre Contexte' : 'Your Context',
       sublabel: isFr
-        ? 'Documents, bases de données, contexte métier — tout ce que vous possédez déjà.'
-        : 'Documents, databases, business context — everything you already own.',
+        ? 'Documents, bases de données, contexte métier. Tout ce que vous possédez déjà.'
+        : 'Documents, databases, business context. Everything you already own.',
       Illustration: DataIllustration,
     },
     {
@@ -258,8 +258,8 @@ export default function AIWorkflow({ lang }: AIWorkflowProps) {
       number: '03',
       label: isFr ? 'Résultats' : 'Results',
       sublabel: isFr
-        ? 'Insights clairs, automatisation fluide, décisions éclairées — valeur immédiate.'
-        : 'Clear insights, seamless automation, confident decisions — immediate value.',
+        ? 'Insights clairs, automatisation fluide, décisions éclairées. Valeur immédiate.'
+        : 'Clear insights, seamless automation, confident decisions. Immediate value.',
       Illustration: ResultsIllustration,
     },
   ];
