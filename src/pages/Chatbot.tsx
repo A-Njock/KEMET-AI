@@ -1,7 +1,7 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import Header from '../components/Header';
 import { useTranslation } from 'react-i18next';
-import { chatbot } from '../lib/api';
+import { chatbot, submitFeedback } from '../lib/api';
 
 interface Source {
   article: string;
@@ -13,11 +13,106 @@ interface Message {
   role: 'user' | 'assistant';
   content: string;
   sources?: Source[];
+  showRating?: boolean;   // whether to display the thumbs prompt
+  rated?: 'up' | 'down'; // locked once voted
+}
+
+// Simple markdown renderer: bold, bullet lists, numbered lists, line breaks
+function renderMarkdown(text: string) {
+  const lines = text.split('\n');
+  const elements: React.ReactNode[] = [];
+  let i = 0;
+
+  while (i < lines.length) {
+    const line = lines[i];
+
+    // Bullet list
+    if (/^[-*•]\s/.test(line)) {
+      const items: string[] = [];
+      while (i < lines.length && /^[-*•]\s/.test(lines[i])) {
+        items.push(lines[i].replace(/^[-*•]\s/, ''));
+        i++;
+      }
+      elements.push(
+        <ul key={i} className="list-disc list-inside space-y-1 my-2 pl-2">
+          {items.map((it, j) => <li key={j}>{inlineFormat(it)}</li>)}
+        </ul>
+      );
+      continue;
+    }
+
+    // Numbered list
+    if (/^\d+[.)]\s/.test(line)) {
+      const items: string[] = [];
+      while (i < lines.length && /^\d+[.)]\s/.test(lines[i])) {
+        items.push(lines[i].replace(/^\d+[.)]\s/, ''));
+        i++;
+      }
+      elements.push(
+        <ol key={i} className="list-decimal list-inside space-y-1 my-2 pl-2">
+          {items.map((it, j) => <li key={j}>{inlineFormat(it)}</li>)}
+        </ol>
+      );
+      continue;
+    }
+
+    // Horizontal rule
+    if (/^---+$/.test(line.trim())) {
+      elements.push(<hr key={i} className="border-[#DDE2EE] my-3" />);
+      i++;
+      continue;
+    }
+
+    // Heading (## or ###)
+    if (/^#{2,3}\s/.test(line)) {
+      elements.push(
+        <p key={i} className="font-semibold text-navy mt-3 mb-1">
+          {inlineFormat(line.replace(/^#{2,3}\s/, ''))}
+        </p>
+      );
+      i++;
+      continue;
+    }
+
+    // Empty line → spacing
+    if (!line.trim()) {
+      elements.push(<div key={i} className="h-2" />);
+      i++;
+      continue;
+    }
+
+    // Normal paragraph
+    elements.push(<p key={i} className="mb-1">{inlineFormat(line)}</p>);
+    i++;
+  }
+
+  return elements;
+}
+
+function inlineFormat(text: string): React.ReactNode {
+  // Bold **text** or __text__
+  const parts = text.split(/(\*\*[^*]+\*\*|__[^_]+__)/g);
+  return parts.map((part, i) => {
+    if (/^\*\*(.+)\*\*$/.test(part) || /^__(.+)__$/.test(part)) {
+      const inner = part.replace(/^\*\*|\*\*$|^__|__$/g, '');
+      return <strong key={i} className="font-semibold text-navy">{inner}</strong>;
+    }
+    return <span key={i}>{part}</span>;
+  });
+}
+
+// Show rating prompt on ~40% of responses, but never two in a row
+function shouldShowRating(messages: Message[]): boolean {
+  const lastRated = [...messages].reverse().findIndex(m => m.showRating);
+  if (lastRated !== -1 && lastRated < 2) return false; // cooldown
+  return Math.random() < 0.4;
 }
 
 export default function Chatbot() {
   const { t, i18n } = useTranslation();
   const isFr = i18n.language.startsWith('fr');
+  const language = isFr ? 'fr' : 'en';
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -39,16 +134,39 @@ export default function Chatbot() {
     setLoading(true);
 
     try {
-      const history = newMessages.map(msg => ({ role: msg.role, content: msg.content }));
-      const result = await chatbot(input.trim(), history);
-      setMessages([...newMessages, { role: 'assistant', content: result.answer, sources: result.sources }]);
+      const history = newMessages.map(m => ({ role: m.role, content: m.content }));
+      const result = await chatbot(input.trim(), history, language);
+      const showRating = shouldShowRating(newMessages);
+      setMessages([...newMessages, {
+        role: 'assistant',
+        content: result.answer,
+        sources: result.sources,
+        showRating,
+      }]);
     } catch {
-      setMessages([...newMessages, { role: 'assistant', content: t('error_generic') }]);
+      setMessages([...newMessages, {
+        role: 'assistant',
+        content: isFr ? 'Une erreur est survenue. Veuillez réessayer.' : 'An error occurred. Please try again.',
+      }]);
     } finally {
       setLoading(false);
       inputRef.current?.focus();
     }
   };
+
+  const handleRate = useCallback(async (msgIdx: number, rating: 'up' | 'down') => {
+    setMessages(prev => prev.map((m, i) =>
+      i === msgIdx ? { ...m, rated: rating } : m
+    ));
+    const msg = messages[msgIdx];
+    const userMsg = messages[msgIdx - 1];
+    await submitFeedback(
+      userMsg?.content ?? '',
+      msg.content,
+      rating,
+      language
+    );
+  }, [messages, language]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -56,6 +174,17 @@ export default function Chatbot() {
       handleSubmit(e as any);
     }
   };
+
+  const suggestedFr = [
+    'Quels sont mes droits en cas de licenciement?',
+    'Comment créer une SARL au Cameroun?',
+    "Qu'est-ce que le code pénal prévoit pour le vol?",
+  ];
+  const suggestedEn = [
+    'What are my rights if dismissed?',
+    'How to create a company in Cameroon?',
+    'What does the penal code say about theft?',
+  ];
 
   return (
     <div className="min-h-screen bg-ivory font-sans flex flex-col">
@@ -73,12 +202,8 @@ export default function Chatbot() {
               <h2 className="font-display text-4xl font-semibold text-navy mb-3">{t('chatbot_title')}</h2>
               <p className="text-slate max-w-sm mx-auto">{t('chatbot_start')}</p>
 
-              {/* Suggested questions */}
               <div className="mt-10 flex flex-wrap justify-center gap-3 max-w-lg mx-auto">
-                {(isFr
-                  ? ['Quels sont mes droits en cas de licenciement?', 'Comment créer une SARL au Cameroun?', 'Qu\'est-ce que le code du travail prévoit?']
-                  : ['What are my rights if dismissed?', 'How to create a company in Cameroon?', 'What does the labor code say?']
-                ).map((q) => (
+                {(isFr ? suggestedFr : suggestedEn).map((q) => (
                   <button
                     key={q}
                     onClick={() => setInput(q)}
@@ -103,37 +228,79 @@ export default function Chatbot() {
                   </div>
                 )}
 
-                <div
-                  className={`max-w-xl rounded-2xl px-5 py-4 text-sm leading-relaxed ${
-                    msg.role === 'assistant'
-                      ? 'bg-white border border-[#DDE2EE] text-navy shadow-card'
-                      : 'bg-royal text-white'
-                  }`}
-                >
-                  <div>
-                    {msg.content.split('\n').map((line, i) => (
-                      <p key={i} className="mb-1.5 last:mb-0">{line}</p>
-                    ))}
+                <div className="flex flex-col gap-2 max-w-xl">
+                  <div
+                    className={`rounded-2xl px-5 py-4 text-sm leading-relaxed ${
+                      msg.role === 'assistant'
+                        ? 'bg-white border border-[#DDE2EE] text-navy shadow-card'
+                        : 'bg-royal text-white'
+                    }`}
+                  >
+                    {/* Rendered content */}
+                    <div className="prose-sm">
+                      {msg.role === 'assistant'
+                        ? renderMarkdown(msg.content)
+                        : <p>{msg.content}</p>
+                      }
+                    </div>
+
+                    {/* Legal sources */}
+                    {msg.sources && msg.sources.length > 0 && (
+                      <div className="mt-4 pt-4 border-t border-[#DDE2EE]">
+                        <p className="text-[10px] font-bold text-royal uppercase tracking-widest mb-3">
+                          {isFr ? 'Sources juridiques' : 'Legal Sources'}
+                        </p>
+                        <div className="space-y-2">
+                          {msg.sources.map((source, i) => (
+                            <div key={i} className="flex flex-col px-3 py-2 bg-ivory rounded-lg border border-[#DDE2EE]">
+                              <div className="flex items-center gap-2 mb-0.5">
+                                <span className="w-4 h-4 rounded-full bg-royal-pale flex items-center justify-center text-[9px] font-bold text-royal border border-royal/20">
+                                  {i + 1}
+                                </span>
+                                <span className="text-xs font-semibold text-navy">{source.article}</span>
+                              </div>
+                              <span className="text-[10px] text-slate italic pl-6 truncate">{source.law}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
 
-                  {msg.sources && msg.sources.length > 0 && (
-                    <div className="mt-4 pt-4 border-t border-[#DDE2EE]">
-                      <p className="text-[10px] font-bold text-royal uppercase tracking-widest mb-3">
-                        {isFr ? 'Sources juridiques' : 'Legal Sources'}
-                      </p>
-                      <div className="space-y-2">
-                        {msg.sources.map((source, i) => (
-                          <div key={i} className="flex flex-col px-3 py-2 bg-ivory rounded-lg border border-[#DDE2EE]">
-                            <div className="flex items-center gap-2 mb-0.5">
-                              <span className="w-4 h-4 rounded-full bg-royal-pale flex items-center justify-center text-[9px] font-bold text-royal border border-royal/20">
-                                {i + 1}
-                              </span>
-                              <span className="text-xs font-semibold text-navy">{source.article}</span>
-                            </div>
-                            <span className="text-[10px] text-slate italic pl-6 truncate">{source.law}</span>
-                          </div>
-                        ))}
-                      </div>
+                  {/* Rating prompt — shown on selected assistant messages */}
+                  {msg.role === 'assistant' && msg.showRating && (
+                    <div className="flex items-center gap-2 pl-1">
+                      {msg.rated ? (
+                        <span className="text-[11px] text-slate/60 italic">
+                          {msg.rated === 'up'
+                            ? (isFr ? 'Merci pour votre retour !' : 'Thanks for your feedback!')
+                            : (isFr ? 'Noté — nous allons améliorer cela.' : 'Noted — we\'ll work on improving this.')}
+                        </span>
+                      ) : (
+                        <>
+                          <span className="text-[11px] text-slate/60">
+                            {isFr ? 'Cette réponse vous a-t-elle aidé ?' : 'Was this response helpful?'}
+                          </span>
+                          <button
+                            onClick={() => handleRate(idx, 'up')}
+                            className="p-1.5 rounded-lg hover:bg-green-50 hover:text-green-600 text-slate/40 transition-colors"
+                            title={isFr ? 'Utile' : 'Helpful'}
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
+                            </svg>
+                          </button>
+                          <button
+                            onClick={() => handleRate(idx, 'down')}
+                            className="p-1.5 rounded-lg hover:bg-red-50 hover:text-red-500 text-slate/40 transition-colors"
+                            title={isFr ? 'Pas utile' : 'Not helpful'}
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018c.163 0 .326.02.485.06L17 4m-7 10v2a2 2 0 002 2h.095c.5 0 .905-.405.905-.905 0-.714.211-1.412.608-2.006L17 13V4m-7 10h2m5-10h2a2 2 0 012 2v6a2 2 0 01-2 2h-2.5" />
+                            </svg>
+                          </button>
+                        </>
+                      )}
                     </div>
                   )}
                 </div>
