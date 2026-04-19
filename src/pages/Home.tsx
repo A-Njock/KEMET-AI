@@ -5,7 +5,6 @@ import Gallery from '../components/Gallery';
 import Footer from '../components/Footer';
 import AnimateIn from '../components/AnimateIn';
 import Counter from '../components/Counter';
-import ChatDemo from '../components/ChatDemo';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
@@ -78,9 +77,10 @@ export default function Home() {
           transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
         />
 
-        {/* Centered background logo */}
+        {/* Background logo — shifted right */}
         <motion.div
-          className="absolute inset-0 flex items-center justify-center pointer-events-none"
+          className="absolute inset-0 flex items-center pointer-events-none"
+          style={{ justifyContent: 'flex-end', paddingRight: '12%' }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.07 }}
           transition={{ duration: 1.5, delay: 0.4 }}
@@ -110,9 +110,9 @@ export default function Home() {
                 className="font-display text-6xl md:text-7xl lg:text-8xl font-semibold leading-[1.05] text-navy mb-6"
               >
                 {isFr ? (
-                  <>L'Intelligence<br /><span className="italic text-royal">Artificielle</span><br />De Confiance</>
+                  <>IA<br /><span className="italic text-royal">Générative</span><br />Nouvelle Génération</>
                 ) : (
-                  <>Artificial<br /><span className="italic text-royal">Intelligence</span><br />You Can Trust</>
+                  <>Generative AI<br />for <span className="italic text-royal">Next-gen</span><br />Productivity</>
                 )}
               </motion.h1>
 
@@ -152,15 +152,6 @@ export default function Home() {
                 ))}
               </motion.div>
             </motion.div>
-
-            {/* Right: chat demo */}
-            <div className="flex-none w-[340px] hidden lg:block lg:ml-auto -mt-28 -translate-x-4">
-              <Link to="/chatbot" className="block cursor-pointer group">
-                <motion.div whileHover={{ scale: 1.02 }} transition={{ type: 'spring', stiffness: 300, damping: 20 }}>
-                  <ChatDemo />
-                </motion.div>
-              </Link>
-            </div>
 
           </div>
         </div>
