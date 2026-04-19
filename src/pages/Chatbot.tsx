@@ -63,11 +63,11 @@ function renderMarkdown(text: string) {
       continue;
     }
 
-    // Heading (## or ###)
-    if (/^#{2,3}\s/.test(line)) {
+    // Heading (# through ####)
+    if (/^#{1,4}\s/.test(line)) {
       elements.push(
         <p key={i} className="font-semibold text-navy mt-3 mb-1">
-          {inlineFormat(line.replace(/^#{2,3}\s/, ''))}
+          {inlineFormat(line.replace(/^#{1,4}\s/, ''))}
         </p>
       );
       i++;
