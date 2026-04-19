@@ -40,7 +40,7 @@ export default function Header({ simple = false, chatMode = false }: HeaderProps
             <img src="/ganp-logo.png" alt="GANP" className="w-full h-full object-contain" />
           </div>
           <span className="font-display text-2xl font-semibold text-navy tracking-tight">
-            {chatMode ? 'GANP-CHAT' : 'GANP'}
+            {chatMode ? <>GANP<span className="font-sans">-</span>CHAT</> : 'GANP'}
           </span>
         </Link>
 
