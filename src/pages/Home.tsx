@@ -80,7 +80,7 @@ export default function Home() {
         {/* Background logo — shifted right */}
         <motion.div
           className="absolute inset-0 flex items-center pointer-events-none"
-          style={{ justifyContent: 'flex-end', paddingRight: '12%' }}
+          style={{ justifyContent: 'flex-end', paddingRight: '28%' }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.07 }}
           transition={{ duration: 1.5, delay: 0.4 }}
