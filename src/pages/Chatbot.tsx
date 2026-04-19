@@ -188,7 +188,7 @@ export default function Chatbot() {
 
   return (
     <div className="min-h-screen bg-ivory font-sans flex flex-col">
-      <Header simple={true} />
+      <Header simple={true} chatMode={true} />
 
       <main className="flex-1 flex flex-col max-w-4xl w-full mx-auto pt-20 pb-4 px-4">
 
@@ -196,9 +196,6 @@ export default function Chatbot() {
         <div className="flex-1 overflow-y-auto py-8">
           {messages.length === 0 && (
             <div className="text-center py-16 animate-fade-in-up">
-              <div className="w-20 h-20 mx-auto mb-6 bg-royal-pale border border-royal/20 rounded-2xl flex items-center justify-center">
-                <img src="/ganp-logo.png" alt="GANP" className="w-12 h-12" />
-              </div>
               <h2 className="font-display text-4xl font-semibold text-navy mb-3">{t('chatbot_title')}</h2>
               <p className="text-slate max-w-sm mx-auto">{t('chatbot_start')}</p>
 

@@ -5,9 +5,10 @@ import { useState, useEffect } from 'react';
 interface HeaderProps {
   theme?: 'light' | 'dark';
   simple?: boolean;
+  chatMode?: boolean;
 }
 
-export default function Header({ simple = false }: HeaderProps) {
+export default function Header({ simple = false, chatMode = false }: HeaderProps) {
   const { t, i18n } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -38,7 +39,9 @@ export default function Header({ simple = false }: HeaderProps) {
           <div className="w-9 h-9 flex-shrink-0">
             <img src="/ganp-logo.png" alt="GANP" className="w-full h-full object-contain" />
           </div>
-          <span className="font-display text-2xl font-semibold text-navy tracking-tight">GANP</span>
+          <span className="font-display text-2xl font-semibold text-navy tracking-tight">
+            {chatMode ? 'GANP-CHAT' : 'GANP'}
+          </span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -74,6 +77,16 @@ export default function Header({ simple = false }: HeaderProps) {
                 <path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
               Ganp-Chat
+            </Link>
+          )}
+
+          {/* Main Menu button — chatMode only */}
+          {chatMode && (
+            <Link
+              to="/"
+              className="px-3 py-1.5 border border-[#DDE2EE] rounded-full text-xs font-semibold text-slate hover:border-royal hover:text-royal transition-all duration-200 tracking-wide"
+            >
+              {i18n.language.startsWith('fr') ? 'Menu Principal' : 'Main Menu'}
             </Link>
           )}
 
