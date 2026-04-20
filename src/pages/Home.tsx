@@ -99,7 +99,7 @@ export default function Home() {
 
             {/* Left: text content */}
             <motion.div
-              className="flex-1 max-w-xl"
+              className="flex-1"
               variants={stagger}
               initial="hidden"
               animate="visible"
@@ -110,7 +110,17 @@ export default function Home() {
                 className="font-display text-6xl md:text-7xl lg:text-8xl font-semibold leading-[1.05] text-navy mb-6"
               >
                 {isFr ? (
-                  <>IA <span className="italic text-royal">Générative</span><br /><span className="text-[0.48em] font-medium tracking-widest">pour une</span> Productivité<br /><span className="text-[0.48em] font-medium tracking-widest">de Niveau</span> Supérieur</>
+                  <>
+                    <span className="block">IA <span className="italic text-royal">Générative</span></span>
+                    <span className="flex items-baseline gap-3 flex-nowrap">
+                      <span className="text-[0.48em] font-medium tracking-widest shrink-0">pour une</span>
+                      <span className="shrink-0">Productivité</span>
+                    </span>
+                    <span className="flex items-baseline gap-3 flex-nowrap">
+                      <span className="text-[0.48em] font-medium tracking-widest shrink-0">de Niveau</span>
+                      <span className="shrink-0">Supérieur</span>
+                    </span>
+                  </>
                 ) : (
                   <>Generative AI<br />for <span className="italic text-royal">Next-gen</span><br />Productivity</>
                 )}
