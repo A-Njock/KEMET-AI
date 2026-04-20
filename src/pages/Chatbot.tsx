@@ -179,6 +179,7 @@ export default function Chatbot() {
     'Quels sont mes droits en cas de licenciement?',
     'Comment créer une SARL au Cameroun?',
     "Qu'est-ce que le code pénal prévoit pour le vol?",
+    "C'est quoi le mandat impératif?",
   ];
   const suggestedEn = [
     'What are my rights if dismissed?',
