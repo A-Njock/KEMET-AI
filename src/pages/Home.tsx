@@ -110,7 +110,7 @@ export default function Home() {
                 className="font-display text-6xl md:text-7xl lg:text-8xl font-semibold leading-[1.05] text-navy mb-6"
               >
                 {isFr ? (
-                  <>IA <span className="italic text-royal">Générative</span><br /><span className="text-[0.48em] font-medium tracking-widest">pour une</span> PRODUCTIVITÉ<br /><span className="text-[0.48em] font-medium tracking-widest">de NIVEAU</span> SUPÉRIEUR</>
+                  <>IA <span className="italic text-royal">Générative</span><br /><span className="text-[0.48em] font-medium tracking-widest">pour une</span> Productivité<br /><span className="text-[0.48em] font-medium tracking-widest">de Niveau</span> Supérieur</>
                 ) : (
                   <>Generative AI<br />for <span className="italic text-royal">Next-gen</span><br />Productivity</>
                 )}
