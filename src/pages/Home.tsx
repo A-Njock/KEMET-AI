@@ -122,7 +122,7 @@ export default function Home() {
                     </span>
                   </>
                 ) : (
-                  <>Generative AI<br />for <span className="italic text-royal">Next<span className="font-sans not-italic">-</span>gen</span><br />Productivity</>
+                  <>Generative AI<br />for <span className="italic text-royal">Next<span className="not-italic" style={{ fontFamily: '"Josefin Sans", sans-serif', fontWeight: 100 }}>-</span>gen</span><br />Productivity</>
                 )}
               </motion.h1>
 
