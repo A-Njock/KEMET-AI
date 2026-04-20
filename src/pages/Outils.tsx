@@ -10,6 +10,7 @@ export default function Outils() {
   const tools = [
     {
       title: t('kemet_chat_title'),
+      titleNode: <>Ganp<span style={{ fontFamily: '"Josefin Sans", sans-serif', fontWeight: 100 }}>-</span>Chat</>,
       description: t('kemet_chat_desc'),
       details: t('kemet_chat_details'),
       link: '/chatbot',
@@ -61,7 +62,7 @@ export default function Outils() {
               </div>
 
               <h2 className="font-display text-2xl font-semibold text-navy mb-3">
-                {tool.title}
+                {tool.titleNode ?? tool.title}
               </h2>
 
               <p className="text-slate text-sm leading-relaxed mb-3 flex-1">
