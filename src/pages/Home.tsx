@@ -113,12 +113,12 @@ export default function Home() {
                   <>
                     <span className="block">IA <span className="italic text-royal">Générative</span></span>
                     <span className="flex items-baseline gap-2 sm:gap-3 flex-wrap sm:flex-nowrap">
-                      <span className="text-[0.48em] font-medium tracking-widest shrink-0">pour une</span>
+                      <span className="text-[0.48em] font-medium tracking-widest shrink-0">pour la</span>
                       <span className="shrink-0">Productivité</span>
                     </span>
                     <span className="flex items-baseline gap-2 sm:gap-3 flex-wrap sm:flex-nowrap">
-                      <span className="text-[0.48em] font-medium tracking-widest shrink-0">de Niveau</span>
-                      <span className="shrink-0">Supérieur</span>
+                      <span className="text-[0.48em] font-medium tracking-widest shrink-0">de Nouvelle</span>
+                      <span className="shrink-0">Génération</span>
                     </span>
                   </>
                 ) : (
