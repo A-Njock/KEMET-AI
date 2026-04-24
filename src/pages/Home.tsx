@@ -94,7 +94,7 @@ export default function Home() {
           />
         </motion.div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pt-28 pb-20 w-full">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pt-20 sm:pt-28 pb-12 sm:pb-20 w-full">
           <div className="flex flex-col lg:flex-row lg:items-center gap-12 lg:gap-16">
 
             {/* Left: text content */}
@@ -107,16 +107,16 @@ export default function Home() {
               {/* Headline */}
               <motion.h1
                 variants={fadeUp}
-                className="font-display text-6xl md:text-7xl lg:text-8xl font-semibold leading-[1.05] text-navy mb-6"
+                className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-semibold leading-[1.05] text-navy mb-6"
               >
                 {isFr ? (
                   <>
                     <span className="block">IA <span className="italic text-royal">Générative</span></span>
-                    <span className="flex items-baseline gap-3 flex-nowrap">
+                    <span className="flex items-baseline gap-2 sm:gap-3 flex-wrap sm:flex-nowrap">
                       <span className="text-[0.48em] font-medium tracking-widest shrink-0">pour une</span>
                       <span className="shrink-0">Productivité</span>
                     </span>
-                    <span className="flex items-baseline gap-3 flex-nowrap">
+                    <span className="flex items-baseline gap-2 sm:gap-3 flex-wrap sm:flex-nowrap">
                       <span className="text-[0.48em] font-medium tracking-widest shrink-0">de Niveau</span>
                       <span className="shrink-0">Supérieur</span>
                     </span>
@@ -127,7 +127,7 @@ export default function Home() {
               </motion.h1>
 
               {/* Subheadline */}
-              <motion.p variants={fadeUp} className="text-lg md:text-xl text-slate max-w-xl leading-relaxed mb-10">
+              <motion.p variants={fadeUp} className="text-base md:text-xl text-slate max-w-xl leading-relaxed mb-8 sm:mb-10">
                 {t('hero_tagline')}
               </motion.p>
 

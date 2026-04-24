@@ -208,7 +208,7 @@ export default function Solutions() {
       <Header />
 
       {/* Page header */}
-      <div className="pt-32 pb-16 px-6 max-w-7xl mx-auto">
+      <div className="pt-24 sm:pt-32 pb-8 sm:pb-16 px-6 max-w-7xl mx-auto">
         <motion.p
           className="text-royal text-xs font-semibold tracking-[0.25em] uppercase mb-4"
           initial={{ opacity: 0, y: 16 }}
@@ -218,7 +218,7 @@ export default function Solutions() {
           {isFr ? 'Ce que nous faisons' : 'What We Do'}
         </motion.p>
         <motion.h1
-          className="font-display text-5xl md:text-6xl font-semibold text-navy mb-5 leading-tight"
+          className="font-display text-3xl sm:text-5xl md:text-6xl font-semibold text-navy mb-5 leading-tight"
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}

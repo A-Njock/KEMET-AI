@@ -86,7 +86,7 @@ export default function Header({ simple = false, chatMode = false }: HeaderProps
               to="/"
               className="px-3 py-1.5 border border-[#DDE2EE] rounded-full text-xs font-semibold text-slate hover:border-royal hover:text-royal transition-all duration-200 tracking-wide"
             >
-              {i18n.language.startsWith('fr') ? 'Menu Principal' : 'Main Menu'}
+              {i18n.language.startsWith('fr') ? 'Menu' : 'Main Menu'}
             </Link>
           )}
 

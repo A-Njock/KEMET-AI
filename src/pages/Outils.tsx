@@ -29,11 +29,11 @@ export default function Outils() {
       <Header />
 
       {/* Page header */}
-      <div className="pt-32 pb-12 px-6 max-w-7xl mx-auto">
+      <div className="pt-24 sm:pt-32 pb-8 sm:pb-12 px-6 max-w-7xl mx-auto">
         <p className="text-royal text-xs font-semibold tracking-[0.25em] uppercase mb-4">
           {isFr ? 'Nos Outils' : 'Our Tools'}
         </p>
-        <h1 className="font-display text-5xl md:text-6xl font-semibold text-navy mb-4 leading-tight">
+        <h1 className="font-display text-3xl sm:text-5xl md:text-6xl font-semibold text-navy mb-4 leading-tight">
           {t('outils_title')}
         </h1>
         <p className="text-slate text-lg max-w-xl leading-relaxed">

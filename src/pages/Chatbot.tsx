@@ -191,21 +191,21 @@ export default function Chatbot() {
     <div className="min-h-screen bg-ivory font-sans flex flex-col">
       <Header simple={true} chatMode={true} />
 
-      <main className="flex-1 flex flex-col max-w-4xl w-full mx-auto pt-20 pb-4 px-4">
+      <main className="flex-1 flex flex-col max-w-4xl w-full mx-auto pt-16 sm:pt-20 pb-4 px-3 sm:px-4">
 
         {/* Messages area */}
-        <div className="flex-1 overflow-y-auto py-8">
+        <div className="flex-1 overflow-y-auto py-4 sm:py-8">
           {messages.length === 0 && (
-            <div className="text-center py-16 animate-fade-in-up">
-              <h2 className="font-display text-4xl font-semibold text-navy mb-3">{t('chatbot_title')}</h2>
-              <p className="text-slate max-w-sm mx-auto">{t('chatbot_start')}</p>
+            <div className="text-center py-8 sm:py-16 animate-fade-in-up">
+              <h2 className="font-display text-2xl sm:text-4xl font-semibold text-navy mb-3">{t('chatbot_title')}</h2>
+              <p className="text-slate text-sm sm:text-base max-w-sm mx-auto">{t('chatbot_start')}</p>
 
-              <div className="mt-10 flex flex-wrap justify-center gap-3 max-w-lg mx-auto">
+              <div className="mt-6 sm:mt-10 flex flex-wrap justify-center gap-2 sm:gap-3 max-w-lg mx-auto px-1">
                 {(isFr ? suggestedFr : suggestedEn).map((q) => (
                   <button
                     key={q}
                     onClick={() => setInput(q)}
-                    className="px-4 py-2 bg-white border border-[#DDE2EE] rounded-full text-sm text-slate hover:border-royal hover:text-royal transition-all duration-200 text-left"
+                    className="px-3 py-2 sm:px-4 bg-white border border-[#DDE2EE] rounded-full text-xs sm:text-sm text-slate hover:border-royal hover:text-royal transition-all duration-200 text-left"
                   >
                     {q}
                   </button>
@@ -226,9 +226,9 @@ export default function Chatbot() {
                   </div>
                 )}
 
-                <div className="flex flex-col gap-2 max-w-xl">
+                <div className="flex flex-col gap-2 max-w-[85vw] sm:max-w-xl">
                   <div
-                    className={`rounded-2xl px-5 py-4 text-sm leading-relaxed ${
+                    className={`rounded-2xl px-4 py-3 sm:px-5 sm:py-4 text-sm leading-relaxed ${
                       msg.role === 'assistant'
                         ? 'bg-white border border-[#DDE2EE] text-navy shadow-card'
                         : 'bg-royal text-white'
